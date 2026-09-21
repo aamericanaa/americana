@@ -1073,6 +1073,108 @@ body.pets-active .pets-side{display:block}
 }
 </style>
 
+
+<style id="mobile-viewport-final-fix">
+/* =========================================================
+   CORREÇÃO FINAL — SOMENTE CELULAR
+   Força os blocos principais a ocupar a viewport inteira.
+   Não afeta desktop.
+   ========================================================= */
+@media (max-width:700px){
+  html, body{
+    width:100vw !important;
+    min-width:100vw !important;
+    max-width:100vw !important;
+    margin:0 !important;
+    padding:0 !important;
+    overflow-x:hidden !important;
+    box-sizing:border-box !important;
+  }
+  *, *::before, *::after{box-sizing:border-box;}
+
+  body > header.hero,
+  body > nav.nav,
+  body > main.shell,
+  body > footer.footer{
+    width:100vw !important;
+    max-width:100vw !important;
+    min-width:0 !important;
+    margin-left:0 !important;
+    margin-right:0 !important;
+    box-sizing:border-box !important;
+  }
+
+  body > header.hero{
+    overflow:hidden !important;
+  }
+
+  body > nav.nav{
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    display:flex !important;
+    flex-wrap:nowrap !important;
+  }
+  body > nav.nav::-webkit-scrollbar{display:none !important;}
+  body > nav.nav button{
+    flex:0 0 auto !important;
+    white-space:nowrap !important;
+  }
+
+  body > main.shell{
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) !important;
+    gap:10px !important;
+    padding-left:8px !important;
+    padding-right:8px !important;
+  }
+
+  body > main.shell > .side,
+  body > main.shell > .content{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+  }
+
+  body > main.shell > .content{
+    overflow:hidden !important;
+  }
+
+  #app,
+  .home-panel,
+  .animals-panel,
+  .extras-social-wrap,
+  .about-credits{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+  }
+
+  .home-hero-image,
+  .animals-image-frame{
+    width:100% !important;
+    max-width:100% !important;
+  }
+
+  img, iframe, video, canvas, svg{
+    max-width:100% !important;
+  }
+
+  #spotify-player-widget{
+    width:calc(100vw - 20px) !important;
+    max-width:300px !important;
+    left:auto !important;
+    right:10px !important;
+  }
+
+  /* O painel de receita nunca deve criar uma segunda coluna no celular. */
+  body.recipes-active > main.shell,
+  body.pets-active > main.shell{
+    grid-template-columns:minmax(0,1fr) !important;
+  }
+}
+</style>
 </head>
 
 <body>
