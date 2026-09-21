@@ -1,0 +1,11 @@
+{
+  "name": "Dreamlight Valley — Guia Completo",
+  "short_name": "Dreamlight Valley",
+  "lang": "pt-BR",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fff0f8",
+  "theme_color": "#c51b79",
+  "description": "Guia pessoal de consulta de Dreamlight Valley com receitas, animais, favoritos e dicas."
+}
