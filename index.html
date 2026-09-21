@@ -422,6 +422,43 @@ body:before, body:after{
 .recipe-star-line{display:flex;align-items:center;gap:7px;min-height:18px;flex-wrap:wrap}
 .recipe-pt-name{font-size:10.5px;color:#9a176f;font-weight:600;opacity:.88;line-height:1.15;max-width:72%;font-family:Georgia,"Times New Roman",serif}
 @media(max-width:560px){.recipe-pt-name{font-size:9.5px;max-width:70%}}
+
+/* ===== Presença em tempo real — Princesas conectadas ===== */
+#princesasOnlineCounter{
+  position:fixed;
+  top:12px;
+  left:12px;
+  z-index:100000;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  min-height:38px;
+  padding:8px 14px;
+  border:1px solid rgba(255,255,255,.62);
+  border-radius:13px;
+  background:rgba(211,76,155,.88);
+  box-shadow:0 5px 18px rgba(75,16,64,.22),inset 0 1px 0 rgba(255,255,255,.22);
+  color:#fff;
+  font-size:13px;
+  font-weight:900;
+  line-height:1;
+  white-space:nowrap;
+  backdrop-filter:blur(5px);
+  -webkit-backdrop-filter:blur(5px);
+}
+#princesasOnlineCounter .poc-dot{
+  width:10px;
+  height:10px;
+  flex:0 0 10px;
+  border-radius:50%;
+  background:#32df72;
+  box-shadow:0 0 0 2px rgba(255,255,255,.16),0 0 9px rgba(50,223,114,.75);
+}
+#princesasOnlineCounter .poc-number{min-width:1ch;text-align:center}
+@media(max-width:700px){
+  #princesasOnlineCounter{top:8px;left:8px;min-height:34px;padding:7px 10px;font-size:11px;gap:6px}
+  #princesasOnlineCounter .poc-dot{width:8px;height:8px;flex-basis:8px}
+}
 </style>
 
 <style id="user-header-image">
@@ -846,57 +883,17 @@ body{
 <div id="weatherEffectsCanvas" aria-hidden="true"></div>
 <div id="weatherFog" aria-hidden="true"></div>
 <div id="weatherSunny" aria-hidden="true"></div>
-
-<style id="princesas-online-style">
-/* ===== PRINCESAS CONECTADAS — adição isolada ===== */
-#princesas-online {
-  margin-left:auto;
-  flex:0 0 auto;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  min-height:42px;
-  padding:8px 14px;
-  border:1px solid rgba(255,199,232,.75);
-  border-radius:12px;
-  background:rgba(255,255,255,.12);
-  color:#fff;
-  font-weight:bold;
-  white-space:nowrap;
-  box-shadow:0 3px 10px rgba(91,0,64,.12);
-  text-shadow:0 1px 3px rgba(80,0,55,.35);
-}
-#princesas-online .online-dot {
-  width:10px;
-  height:10px;
-  flex:0 0 10px;
-  border-radius:50%;
-  background:#32d74b;
-  box-shadow:0 0 0 2px rgba(255,255,255,.25),0 0 10px rgba(50,215,75,.75);
-}
-#princesas-online .online-label {
-  font-size:14px;
-}
-#princesas-online .online-count {
-  font-size:16px;
-}
-@media(max-width:700px){
-  #princesas-online {
-    min-height:38px;
-    padding:7px 10px;
-  }
-  #princesas-online .online-label {
-    font-size:12px;
-  }
-  #princesas-online .online-count {
-    font-size:14px;
-  }
-}
-</style>
-
 </head>
+
 <body>
+
+<!-- Contador real de presença. A contagem só funciona depois de preencher FIREBASE_CONFIG abaixo. -->
+<div id="princesasOnlineCounter" aria-live="polite" aria-label="Princesas conectadas">
+  <span class="poc-dot" aria-hidden="true"></span>
+  <span>Princesas conectadas:</span>
+  <span id="princesasOnlineCount" class="poc-number">0</span>
+</div>
+
 
 
 <header class="hero" aria-label="Cabeçalho do guia">
@@ -992,11 +989,6 @@ body{
   <button data-section="animals">🐾 Guia de Animais ♥</button>
   <button data-section="extras">★ Dicas e Extras</button>
   <button data-section="about">💗 Sobre &amp; Créditos</button>
-  <div id="princesas-online" aria-live="polite" title="Quantidade de visitantes conectados neste momento">
-    <span class="online-dot" aria-hidden="true"></span>
-    <span class="online-label">Princesas conectadas:</span>
-    <span class="online-count" id="princesas-online-count">0</span>
-  </div>
 </nav>
 
 <main class="shell">
@@ -1762,93 +1754,108 @@ fetchWiki().catch(err=>{
 })();
 </script>
 
-<script id="princesas-online-script" type="module">
-/*
- * ===== PRINCESAS CONECTADAS — PRESENÇA EM TEMPO REAL =====
- *
- * Para o número representar pessoas REAIS conectadas, é necessário um projeto
- * Firebase Realtime Database. Preencha somente o objeto firebaseConfig abaixo.
- *
- * Este bloco é independente do restante do site.
- */
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-import {
-  getDatabase, ref, onValue, set, onDisconnect,
-  onChildAdded, onChildRemoved
-} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-database.js";
-import {
-  getAuth, signInAnonymously
-} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 
-/* ===== COLE A CONFIGURAÇÃO DO SEU FIREBASE AQUI ===== */
-const firebaseConfig = {
-  apiKey: "COLE_SUA_API_KEY_AQUI",
-  authDomain: "SEU-PROJETO.firebaseapp.com",
-  databaseURL: "https://SEU-PROJETO-default-rtdb.firebaseio.com",
-  projectId: "SEU-PROJETO",
-  storageBucket: "SEU-PROJETO.firebasestorage.app",
-  messagingSenderId: "SEU_MESSAGING_SENDER_ID",
-  appId: "SEU_APP_ID"
-};
-/* ==================================================== */
+<!-- ===== PRESENÇA REAL EM TEMPO REAL (Firebase Realtime Database) =====
+     1) Crie um projeto Firebase.
+     2) Ative Authentication > Anonymous.
+     3) Crie um Realtime Database.
+     4) Cole as regras fornecidas na mensagem de instruções.
+     5) Substitua os valores de FIREBASE_CONFIG pelos dados do seu app Web.
+     O Firebase Realtime Database mantém a presença sincronizada e onDisconnect()
+     remove a sessão quando a conexão é encerrada. -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+  import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+  import {
+    getDatabase,
+    ref,
+    set,
+    remove,
+    onDisconnect,
+    onValue,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
 
-const countEl = document.getElementById("princesas-online-count");
+  // ==============================================================
+  // COLE A CONFIGURAÇÃO DO SEU APP WEB DO FIREBASE AQUI.
+  // Não coloque senha, chave privada ou service account neste arquivo.
+  // A configuração Web do Firebase é própria para uso no navegador.
+  // ==============================================================
+  const FIREBASE_CONFIG = {
+    apiKey: "AIzaSyBkHvNaa5Gv4BR0eXyCgUdgZnhm_5EiEfk",
+    authDomain: "princesas-dreamlight.firebaseapp.com",
+    databaseURL: "https://princesas-dreamlight-default-rtdb.firebaseio.com",
+    projectId: "princesas-dreamlight",
+    storageBucket: "princesas-dreamlight.firebasestorage.app",
+    messagingSenderId: "97659948194",
+    appId: "1:97659948194:web:38f04a22fdf6cd3fbbdbfb"
+  };
 
-function setOnlineCount(n) {
-  if (countEl) countEl.textContent = String(Math.max(0, n));
-}
+  const countEl = document.getElementById('princesasOnlineCount');
+  const isConfigured = Object.values(FIREBASE_CONFIG).every(v => v && !String(v).includes('COLE_AQUI'));
 
-const configReady =
-  firebaseConfig.apiKey &&
-  !firebaseConfig.apiKey.includes("COLE_") &&
-  firebaseConfig.projectId &&
-  !firebaseConfig.projectId.includes("SEU-") &&
-  firebaseConfig.databaseURL &&
-  !firebaseConfig.databaseURL.includes("SEU-PROJETO");
-
-if (!configReady) {
-  // Mantém o site funcionando normalmente até o Firebase ser configurado.
-  setOnlineCount(0);
-} else {
-  try {
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getDatabase(app);
-
-    signInAnonymously(auth).then(() => {
-      const connectionRef = ref(db, ".info/connected");
-
-      onValue(connectionRef, async (snap) => {
-        if (snap.val() !== true) return;
-
-        // Um visitante = uma presença temporária.
-        const presenceId =
-          (crypto.randomUUID ? crypto.randomUUID() :
-           Math.random().toString(36).slice(2) + Date.now());
-
-        const presenceRef = ref(db, "princesas-online/" + presenceId);
-
-        // Remove automaticamente quando a conexão cair/for encerrada.
-        await onDisconnect(presenceRef).remove();
-        await set(presenceRef, {
-          connectedAt: Date.now()
-        });
-
-        // Conta as presenças existentes.
-        onValue(ref(db, "princesas-online"), (snapshot) => {
-          setOnlineCount(snapshot.exists() ? snapshot.size : 0);
-        });
-      });
-    }).catch((error) => {
-      console.error("Princesas conectadas — autenticação:", error);
-      setOnlineCount(0);
-    });
-  } catch (error) {
-    console.error("Princesas conectadas — Firebase:", error);
-    setOnlineCount(0);
+  function showCount(value){
+    if(countEl) countEl.textContent = String(Math.max(0, Number(value)||0));
   }
-}
-</script>
 
+  async function startPresence(){
+    if(!isConfigured){
+      console.warn('[Presença] Firebase ainda não foi configurado. Preencha FIREBASE_CONFIG no index.html.');
+      showCount(0);
+      return;
+    }
+
+    try{
+      const app = initializeApp(FIREBASE_CONFIG);
+      const auth = getAuth(app);
+      const db = getDatabase(app);
+
+      // Login anônimo: ninguém precisa criar conta para aparecer como conectado.
+      const credential = await signInAnonymously(auth);
+      const uid = credential.user.uid;
+
+      // Uma sessão própria por aba/conexão evita que uma aba apague a presença de outra.
+      const sessionId = (crypto.randomUUID ? crypto.randomUUID() :
+        `${Date.now()}_${Math.random().toString(36).slice(2)}`)
+        .replace(/[^A-Za-z0-9_-]/g,'');
+
+      const presenceRef = ref(db, `presence/${uid}/${sessionId}`);
+      const allPresenceRef = ref(db, 'presence');
+
+      // Primeiro armamos a remoção no servidor. Assim o registro é retirado
+      // também quando a aba é fechada, perde a conexão ou o navegador encerra.
+      await onDisconnect(presenceRef).remove();
+
+      await set(presenceRef, {
+        uid,
+        online: true,
+        connectedAt: serverTimestamp()
+      });
+
+      // O total é a quantidade de sessões realmente presentes no banco.
+      onValue(allPresenceRef, snapshot => {
+        let total = 0;
+        snapshot.forEach(userSnapshot => {
+          total += userSnapshot.size;
+        });
+        showCount(total);
+      }, error => {
+        console.error('[Presença] Erro ao ler presença:', error);
+        showCount(0);
+      });
+
+      // Limpeza extra para saída normal; o onDisconnect continua sendo a garantia
+      // principal no servidor.
+      window.addEventListener('pagehide', () => {
+        remove(presenceRef).catch(()=>{});
+      }, { once:true });
+    }catch(error){
+      console.error('[Presença] Não foi possível iniciar o contador:', error);
+      showCount(0);
+    }
+  }
+
+  startPresence();
+</script>
 </body>
 </html>
