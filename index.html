@@ -907,6 +907,172 @@ body.pets-active .pets-side{display:block}
   @media (max-width:700px){.content{min-width:0}.grid{grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr))}.title-row{min-width:0}.recipe-translate-image{max-width:100%}.magic-clock-wrap{max-width:100vw}.modal{padding:10px}.modal-box{max-height:94vh}}
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.nav button,.side button,.card,.close,.offline-btn{transition:none!important}.nav button:hover,.side button:hover,.card:hover,.close:hover,.offline-btn:hover{transform:none!important}.weather-canvas,.magic-clock-wrap{animation:none!important}}
 </style>
+
+<style id="mobile-only-responsiveness-fix">
+/* =========================================================
+   MOBILE ONLY — CORREÇÃO DE RESPONSIVIDADE
+   Não altera a apresentação desktop.
+   ========================================================= */
+@media (max-width: 700px){
+  html, body{
+    width:100%;
+    max-width:100%;
+    min-width:0;
+    overflow-x:hidden !important;
+  }
+
+  #app{
+    width:100%;
+    max-width:100%;
+    min-width:0;
+  }
+
+  .hero,
+  .nav,
+  .shell,
+  .footer{
+    width:100%;
+    max-width:100%;
+    min-width:0;
+  }
+
+  .nav{
+    overflow-x:auto;
+    overflow-y:hidden;
+    max-width:100vw;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .nav::-webkit-scrollbar{display:none}
+  .nav button{flex:0 0 auto;white-space:nowrap}
+
+  /* O seletor específico do modo receitas precisa ser sobrescrito
+     porque ele é mais específico que .shell. */
+  body.recipes-active .shell,
+  body.pets-active .shell{
+    grid-template-columns:minmax(0,1fr) !important;
+    width:100%;
+    max-width:100%;
+  }
+
+  .shell{
+    margin-left:0;
+    margin-right:0;
+    padding-left:8px;
+    padding-right:8px;
+    gap:10px;
+  }
+
+  .side,
+  .content{
+    width:100%;
+    min-width:0 !important;
+    max-width:100%;
+  }
+
+  .content{padding:12px;overflow:hidden}
+  .side{padding:12px}
+
+  .title-row{
+    width:100%;
+    min-width:0 !important;
+    max-width:100%;
+    align-items:flex-start;
+  }
+  .recipe-title-block{
+    min-width:0 !important;
+    max-width:100%;
+    flex:1 1 100%;
+  }
+
+  /* A imagem de instruções não pode manter os 320px fixos
+     em celulares de 320px, pois isso cria overflow horizontal. */
+  .recipe-translate-image{
+    width:min(320px,100%) !important;
+    max-width:100% !important;
+    flex:0 1 min(320px,100%) !important;
+    height:auto !important;
+    aspect-ratio:380 / 227;
+    margin-left:auto;
+    margin-right:0;
+  }
+  .recipe-translate-image img{
+    max-width:100% !important;
+    height:100% !important;
+  }
+
+  .controls,
+  .pets-controls{
+    width:100%;
+    min-width:0;
+    max-width:100%;
+  }
+
+  .controls input,
+  .controls select,
+  .pets-controls input,
+  .pets-controls select{
+    min-width:0;
+    max-width:100%;
+  }
+
+  .grid{
+    width:100%;
+    min-width:0;
+    grid-template-columns:minmax(0,1fr) !important;
+  }
+  .card{
+    width:100%;
+    min-width:0;
+    max-width:100%;
+  }
+
+  .card h3,
+  .card p,
+  .meta,
+  .ing,
+  .badge{
+    overflow-wrap:anywhere;
+    word-break:normal;
+  }
+
+  img, iframe, video, canvas, svg{
+    max-width:100%;
+  }
+
+  #spotify-player-widget{
+    width:calc(100vw - 20px) !important;
+    max-width:300px;
+    right:10px !important;
+    left:auto !important;
+  }
+
+  #magicClockControls{
+    max-width:calc(100vw - 20px);
+  }
+
+  .modal{
+    width:100%;
+    max-width:100%;
+    padding:10px;
+  }
+  .modal-box{
+    width:100%;
+    min-width:0;
+    max-width:100%;
+  }
+}
+
+@media (max-width: 380px){
+  .shell{padding-left:6px;padding-right:6px}
+  .content{padding:10px}
+  .side{padding:10px}
+  .title-row h2{font-size:25px}
+  .nav{gap:5px;padding-left:6px;padding-right:6px}
+  .nav button{padding:11px 14px;font-size:13px}
+}
+</style>
+
 </head>
 
 <body>
