@@ -351,20 +351,6 @@ body:after{
   line-height:.95 !important;
 }
 
-.offline-btn{
-  margin:10px 0 14px;
-  border:2px solid #e8a0ce;
-  border-radius:14px;
-  padding:10px 15px;
-  background:linear-gradient(#fff,#ffe1f2);
-  color:#8c166d;
-  font-weight:bold;
-  cursor:pointer;
-  box-shadow:0 5px 12px rgba(119,13,82,.12);
-}
-.offline-btn:hover{transform:translateY(-1px)}
-.offline-progress{margin-bottom:8px}
-
 .translation-tip{
   width:min(100%, 980px);
   margin:0 auto 18px;
@@ -898,14 +884,14 @@ body.pets-active .pets-side{display:block}
   :where(button,a,input,select,[tabindex]):focus-visible{outline:3px solid #8c166d;outline-offset:3px}
   button,a,input,select{touch-action:manipulation}
   img{max-width:100%}
-  .nav button,.side button,.card,.close,.offline-btn{transition:transform .18s ease,box-shadow .18s ease,filter .18s ease,background-color .18s ease}
-  .nav button:hover,.side button:hover,.offline-btn:hover{filter:brightness(1.06)}
+  .nav button,.side button,.card,.close,
+  .nav button:hover,.side button:hover,
   .card:hover{transform:translateY(-3px) scale(1.005)}
   .close:hover{transform:scale(1.06);filter:brightness(1.08)}
   .card:focus-within{box-shadow:0 0 0 3px rgba(197,27,121,.22),0 12px 25px rgba(130,18,91,.22)}
-  @media (hover:none){.nav button:hover,.side button:hover,.offline-btn:hover,.close:hover{transform:none;filter:none}.card:hover{transform:none}}
+  @media (hover:none){.nav button:hover,.side button:hover:hover,.close:hover{transform:none;filter:none}.card:hover{transform:none}}
   @media (max-width:700px){.content{min-width:0}.grid{grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr))}.title-row{min-width:0}.recipe-translate-image{max-width:100%}.magic-clock-wrap{max-width:100vw}.modal{padding:10px}.modal-box{max-height:94vh}}
-  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.nav button,.side button,.card,.close,.offline-btn{transition:none!important}.nav button:hover,.side button:hover,.card:hover,.close:hover,.offline-btn:hover{transform:none!important}.weather-canvas,.magic-clock-wrap{animation:none!important}}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.nav button,.side button,.card,.close,.nav button:hover,.side button:hover,.card:hover,.close:hover,.weather-canvas,.magic-clock-wrap{animation:none!important}}
 </style>
 
 <style id="ddv-mobile-overflow-final">
@@ -1078,14 +1064,6 @@ body > nav.nav::after{
   .card,
   .pet-card,
   .close,
-  .offline-btn{
-    transition:
-      transform .22s ease,
-      box-shadow .22s ease,
-      filter .22s ease,
-      border-color .22s ease,
-      background .22s ease !important;
-  }
 
   .nav button:hover{
     transform:translateY(-2px) !important;
@@ -1117,13 +1095,6 @@ body > nav.nav::after{
   }
 
   .close:hover,
-  .offline-btn:hover{
-    transform:translateY(-1px) !important;
-    border-color:#ffe7ad !important;
-    box-shadow:
-      0 0 12px rgba(255,139,205,.42),
-      0 0 18px rgba(245,196,93,.18) !important;
-  }
 }
 
 @media (hover:none){
@@ -1132,8 +1103,68 @@ body > nav.nav::after{
   .card:hover,
   .pet-card:hover,
   .close:hover,
-  .offline-btn:hover{
-    filter:none !important;
+}
+</style>
+
+
+<style id="recipe-mobile-layout-fix">
+@media (max-width:700px){
+  /* The main shell must become one column on phones. */
+  .shell{
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) !important;
+    grid-template-areas:none !important;
+    gap:12px !important;
+    width:100% !important;
+    max-width:100% !important;
+  }
+
+  .side,
+  .content,
+  #app{
+    grid-column:1 / -1 !important;
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+  }
+
+  /* Recipe controls/search must use the whole available width. */
+  .toolbar,
+  .search,
+  .filters,
+  .controls{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    box-sizing:border-box !important;
+  }
+
+  .toolbar input,
+  .toolbar select,
+  .search input,
+  .controls input,
+  .controls select{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    box-sizing:border-box !important;
+  }
+
+  /* Recipe grid/cards can never force a second desktop column. */
+  .grid,
+  .recipes-grid,
+  .recipe-grid{
+    grid-template-columns:minmax(0,1fr) !important;
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+  }
+
+  .card{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    box-sizing:border-box !important;
   }
 }
 </style>
@@ -1333,98 +1364,7 @@ function parseCookingTable(doc){
 }
 
 
-/* ===== MODO OFFLINE =====
-   Na primeira vez, abra com internet e use "Salvar para uso offline".
-   Depois os dados e imagens armazenados podem ser usados sem internet.
-*/
-const OFF_DB='dreamlight-valley-offline-v1';
-function openOfflineDB(){
-  return new Promise((resolve,reject)=>{
-    const req=indexedDB.open(OFF_DB,1);
-    req.onupgradeneeded=()=>{const db=req.result;
-      if(!db.objectStoreNames.contains('store')) db.createObjectStore('store');
-    };
-    req.onsuccess=()=>resolve(req.result);
-    req.onerror=()=>reject(req.error);
-  });
-}
-async function offlinePut(key,value){
-  try{const db=await openOfflineDB();return new Promise((resolve,reject)=>{
-    const tx=db.transaction('store','readwrite');tx.objectStore('store').put(value,key);
-    tx.oncomplete=()=>resolve();tx.onerror=()=>reject(tx.error);
-  })}catch(e){console.warn('Cache offline:',e)}
-}
-async function offlineGet(key){
-  try{const db=await openOfflineDB();return new Promise((resolve,reject)=>{
-    const tx=db.transaction('store','readonly');const q=tx.objectStore('store').get(key);
-    q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error);
-  })}catch(e){return null}
-}
-async function cacheImageData(url){
-  if(!url||url.startsWith('data:')) return url;
-  try{
-    const res=await fetch(url,{mode:'cors'});
-    if(!res.ok) return url;
-    const blob=await res.blob();
-    return await new Promise(resolve=>{
-      const fr=new FileReader();
-      fr.onload=()=>resolve(fr.result);
-      fr.onerror=()=>resolve(url);
-      fr.readAsDataURL(blob);
-    });
-  }catch(e){return url}
-}
-async function saveOfflineSnapshot(){
-  await offlinePut('recipes',state.recipes);
-  let cached=0;
-  for(let i=0;i<state.recipes.length;i++){
-    const r=state.recipes[i];
-    if(r.img && !r.img.startsWith('data:')){
-      const local=await cacheImageData(r.img);
-      if(local.startsWith('data:')){r.img=local;cached++}
-      if(i%10===0){
-        $('#app').insertAdjacentHTML('afterbegin',`<div class="notice offline-progress">💾 Salvando imagens offline… ${i+1}/${state.recipes.length}</div>`);
-      }
-    }
-  }
-  await offlinePut('recipes',state.recipes);
-  localStorage.setItem('ddvOfflineReady','1');
-  render();
-  alert(`Pronto! ${cached} imagens foram armazenadas para uso offline.`);
-}
-async function loadOfflineSnapshot(){
-  const saved=await offlineGet('recipes');
-  if(saved && Array.isArray(saved) && saved.length){
-    state.recipes=saved;state.loaded=true;render();loadPortugueseMealNames();return true;
-  }
-  return false;
-}
-
-async function fetchWiki(){
-  // O Wiki é carregado em segundo plano sem substituir a tela inicial.
-  // A mensagem de carregamento só aparece se o usuário estiver na aba Receitas.
-  const activeSection=()=>document.querySelector('#mainNav button.active')?.dataset.section;
-  if(activeSection()==='recipes') $('#app').innerHTML='<div class="notice">✨ Carregando o guia…</div>';
-  if(await loadOfflineSnapshot()) return;
-  try{
-    const res=await fetch(API,{mode:'cors'});
-    if(!res.ok) throw new Error('HTTP '+res.status);
-    const json=await res.json();
-    const raw=json?.parse?.text?.['*'];
-    if(!raw) throw new Error('O Wiki não retornou a tabela.');
-    const doc=new DOMParser().parseFromString(raw,'text/html');
-    state.recipes=parseCookingTable(doc);
-    state.loaded=true;
-    render();
-    hydrateMealImages();
-    loadPortugueseMealNames();
-  }catch(e){
-    const ok=await loadOfflineSnapshot();
-    if(!ok && activeSection()==='recipes') $('#app').innerHTML='<div class="empty"><h2>Sem internet e sem dados offline salvos</h2><p>Abra este arquivo uma vez com internet e use o botão <b>Salvar para uso offline</b>.</p></div>';
-  }
-}
-
-function mealWorldCode(collection){
+/* ===== CARREGAMENTO DAS RECEITAS ===== */ function mealWorldCode(collection){
   const c=String(collection||'');
   if(c==='Eternity Isle') return 'world_xtny';
   if(c==='Storybook Vale') return 'world_xsbv';
@@ -1619,8 +1559,7 @@ function render(){
 
   const c=loadChecked(); const done=Object.keys(c).length;
   a.innerHTML=`
-  <div class="title-row"><div class="recipe-title-block"><h2>GUIA DE RECEITAS</h2><p class="subtitle">Todas as refeições encontradas na tabela atual de Cooking do Wiki. As fotos são carregadas da página correspondente de cada receita.</p></div><div class="recipe-translate-image"><img src="assets/embedded-284646185d8e.webp" alt="Instruções para traduzir as receitas para o seu idioma"></div></div><button id="offlineSave" class="offline-btn" type="button">💾 Salvar para uso offline</button>
-  <div class="controls">
+  <div class="title-row"><div class="recipe-title-block"><h2>GUIA DE RECEITAS</h2><p class="subtitle">Todas as refeições encontradas na tabela atual de Cooking do Wiki. As fotos são carregadas da página correspondente de cada receita.</p></div><div class="recipe-translate-image"><img src="assets/embedded-284646185d8e.webp" alt="Instruções para traduzir as receitas para o seu idioma"></div></div><div class="controls">
     <input id="search" placeholder="🔎 Pesquisar receita, ingrediente ou DLC…" value="${esc(state.query)}">
     <select id="type"><option value="all">Todas as categorias</option><option value="Appetizers">Aperitivos</option><option value="Entrées">Entradas</option><option value="Desserts">Sobremesas</option></select>
     <select id="stars"><option value="all">Todas as estrelas</option><option value="5">5 estrelas</option><option value="4">4 estrelas</option><option value="3">3 estrelas</option><option value="2">2 estrelas</option><option value="1">1 estrela</option></select>
@@ -1654,7 +1593,6 @@ function render(){
   $('#stars').onchange=e=>{state.filter=e.target.value==='all'?'all':'stars'+e.target.value;render()};
   $('#source').onchange=e=>{state.filter=e.target.value;render()};
   $('#sort').onchange=e=>{state.sort=e.target.value;render()};
-  const off=$('#offlineSave'); if(off) off.onclick=saveOfflineSnapshot;
 
   const grid=$('#grid');
   if(!list.length){grid.innerHTML='<div class="empty">Nenhuma receita encontrada com esses filtros.</div>';return}
