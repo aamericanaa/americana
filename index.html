@@ -907,10 +907,204 @@ body.pets-active .pets-side{display:block}
   @media (max-width:700px){.content{min-width:0}.grid{grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr))}.title-row{min-width:0}.recipe-translate-image{max-width:100%}.magic-clock-wrap{max-width:100vw}.modal{padding:10px}.modal-box{max-height:94vh}}
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.nav button,.side button,.card,.close,.offline-btn{transition:none!important}.nav button:hover,.side button:hover,.card:hover,.close:hover,.offline-btn:hover{transform:none!important}.weather-canvas,.magic-clock-wrap{animation:none!important}}
 </style>
+
+<style id="mobile-responsive-and-magic-hover-fix">
+/* =========================================================
+   CORREÇÃO MOBILE + HOVER MÁGICO
+   Não altera dados ou lógica do site.
+   ========================================================= */
+
+/* Impede que qualquer largura fixa faça o documento ficar menor
+   que a viewport no iPhone/Android. */
+html,
+body{
+  width:100% !important;
+  max-width:100% !important;
+  min-width:0 !important;
+  margin-left:0 !important;
+  margin-right:0 !important;
+}
+
+body{
+  overflow-x:hidden !important;
+}
+
+img,
+video,
+iframe{
+  max-width:100%;
+}
+
+/* Estruturas principais sempre acompanham a largura disponível. */
+.hero,
+.nav,
+.shell,
+#app,
+.content,
+.side,
+.footer{
+  max-width:100% !important;
+  min-width:0 !important;
+  box-sizing:border-box !important;
+}
+
+/* A navegação pode rolar horizontalmente no celular,
+   mas nunca cria uma página inteira mais larga que a tela. */
+.nav{
+  width:100% !important;
+  max-width:100% !important;
+  box-sizing:border-box !important;
+}
+
+/* ===== Hover princesa: rosa + dourado, suave ===== */
+@media (hover:hover) and (pointer:fine){
+  .nav button,
+  .side button,
+  .card,
+  .close,
+  .offline-btn{
+    transition:
+      transform .22s ease,
+      box-shadow .22s ease,
+      filter .22s ease,
+      border-color .22s ease,
+      background .22s ease !important;
+  }
+
+  .nav button:hover{
+    transform:translateY(-2px) !important;
+    border-color:rgba(255,231,171,.98) !important;
+    box-shadow:
+      0 0 0 1px rgba(255,224,151,.42),
+      0 0 12px rgba(255,143,208,.55),
+      0 0 22px rgba(245,196,93,.24),
+      0 7px 16px rgba(91,0,64,.24) !important;
+    filter:brightness(1.06);
+  }
+
+  .side button:hover{
+    transform:translateX(2px) !important;
+    box-shadow:
+      0 0 12px rgba(255,143,208,.38),
+      0 0 18px rgba(245,196,93,.16) !important;
+  }
+
+  .card:hover{
+    transform:translateY(-4px) !important;
+    border-color:rgba(245,196,93,.72) !important;
+    box-shadow:
+      0 0 0 1px rgba(255,211,237,.72),
+      0 0 15px rgba(255,137,204,.30),
+      0 0 26px rgba(245,196,93,.16),
+      0 14px 28px rgba(130,18,91,.20) !important;
+  }
+
+  .close:hover,
+  .offline-btn:hover{
+    transform:translateY(-1px) !important;
+    border-color:rgba(255,231,171,.95) !important;
+    box-shadow:
+      0 0 12px rgba(255,143,208,.42),
+      0 0 18px rgba(245,196,93,.18) !important;
+  }
+}
+
+/* Foco visível para teclado/acessibilidade, sem depender do hover. */
+.nav button:focus-visible,
+.side button:focus-visible,
+.card button:focus-visible,
+.close:focus-visible,
+.offline-btn:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible{
+  outline:2px solid #f5c45d !important;
+  outline-offset:3px;
+  box-shadow:0 0 0 4px rgba(255,143,208,.28) !important;
+}
+
+/* No toque, não "simula" o hover. */
+@media (hover:none){
+  .nav button:hover,
+  .side button:hover,
+  .card:hover,
+  .close:hover,
+  .offline-btn:hover{
+    filter:none;
+  }
+}
+
+/* Ajustes específicos para telas estreitas. */
+@media (max-width:700px){
+  html,
+  body{
+    width:100% !important;
+    max-width:100% !important;
+    overflow-x:hidden !important;
+  }
+
+  .hero{
+    width:100% !important;
+    max-width:100% !important;
+  }
+
+  .nav{
+    width:100% !important;
+    max-width:100% !important;
+    overflow-x:auto !important;
+    overflow-y:visible !important;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  .shell{
+    width:100% !important;
+    max-width:100% !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+    padding-left:10px !important;
+    padding-right:10px !important;
+  }
+
+  .content,
+  .side{
+    width:100% !important;
+    max-width:100% !important;
+  }
+
+  .home-panel,
+  .animals-panel,
+  .extras-social-wrap{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+  }
+
+  .home-hero-image,
+  .animals-image-frame{
+    max-width:100% !important;
+  }
+
+  .home-hero-image img,
+  .animals-image-frame img{
+    max-width:100% !important;
+    height:auto;
+  }
+
+  .recipe-translate-image{
+    max-width:100% !important;
+    min-width:0 !important;
+  }
+
+  #spotify-player-widget{
+    max-width:calc(100vw - 20px) !important;
+  }
+}
+</style>
+
 </head>
 
 <body>
-<noscript><div class="notice" style="margin:12px">Este guia precisa do JavaScript ativado para carregar receitas, pets, traduções e o contador de presença.</div></noscript>
+<noscript><div class="notice" style="margin:12px">Este guia precisa do JavaScript ativado para carregar receitas, pets e traduções.</div></noscript>
 
 
 
