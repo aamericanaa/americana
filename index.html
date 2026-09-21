@@ -907,250 +907,6 @@ body.pets-active .pets-side{display:block}
   @media (max-width:700px){.content{min-width:0}.grid{grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr))}.title-row{min-width:0}.recipe-translate-image{max-width:100%}.magic-clock-wrap{max-width:100vw}.modal{padding:10px}.modal-box{max-height:94vh}}
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.nav button,.side button,.card,.close,.offline-btn{transition:none!important}.nav button:hover,.side button:hover,.card:hover,.close:hover,.offline-btn:hover{transform:none!important}.weather-canvas,.magic-clock-wrap{animation:none!important}}
 </style>
-
-<style id="ddv-mobile-overflow-final">
-/* =========================================================
-   CORREÇÃO DEFINITIVA DE LARGURA MOBILE
-   O problema vinha de elementos do layout/padrões de overflow
-   que permitiam que a página inteira ficasse mais larga que a
-   viewport. A barra pode rolar; o documento não.
-   ========================================================= */
-
-html{
-  width:100% !important;
-  max-width:100% !important;
-  min-width:0 !important;
-  overflow-x:hidden !important;
-}
-
-body{
-  width:100% !important;
-  max-width:100% !important;
-  min-width:0 !important;
-  overflow-x:hidden !important;
-}
-
-/* Cada bloco principal ocupa a viewport, independentemente de
-   larguras antigas ou regras herdadas. */
-body > header.hero,
-body > main.shell,
-body > footer.footer{
-  width:100% !important;
-  max-width:100% !important;
-  min-width:0 !important;
-  margin-left:0 !important;
-  margin-right:0 !important;
-  box-sizing:border-box !important;
-}
-
-/* A margem lateral do conteúdo é criada pelo padding, não pela
-   largura do documento. */
-main.shell{
-  padding-left:14px !important;
-  padding-right:14px !important;
-}
-
-/* Navegação: somente os BOTÕES podem ultrapassar a largura e
-   serem deslizados. A própria página não acompanha esse overflow. */
-body > nav.nav{
-  width:calc(100% - 10px) !important;
-  max-width:calc(100% - 10px) !important;
-  min-width:0 !important;
-  margin-left:5px !important;
-  margin-right:5px !important;
-  box-sizing:border-box !important;
-  overflow-x:auto !important;
-  overflow-y:hidden !important;
-  -webkit-overflow-scrolling:touch !important;
-  overscroll-behavior-x:contain !important;
-  scrollbar-width:none;
-}
-body > nav.nav::-webkit-scrollbar{
-  display:none;
-}
-body > nav.nav > button{
-  flex:0 0 auto !important;
-  max-width:none !important;
-}
-
-/* As "nuvens" decorativas não podem aumentar a área rolável do
-   documento. */
-body > nav.nav::before,
-body > nav.nav::after{
-  pointer-events:none !important;
-}
-
-/* Conteúdo interno nunca pode forçar a página a crescer. */
-.shell > *,
-.content,
-.side,
-.title-row,
-.recipe-title-block,
-.recipe-translate-image,
-.grid,
-.controls,
-.pets-controls,
-.animals-panel,
-.home-hero,
-.home-welcome,
-.extras-social-wrap{
-  min-width:0 !important;
-  max-width:100% !important;
-  box-sizing:border-box !important;
-}
-
-.grid{
-  width:100% !important;
-}
-
-.card,
-.pet-card{
-  min-width:0 !important;
-  max-width:100% !important;
-}
-
-/* Elementos flutuantes ficam presos à viewport. */
-#spotify-player-widget{
-  max-width:calc(100vw - 20px) !important;
-  box-sizing:border-box !important;
-}
-#spotify-player-widget iframe{
-  max-width:100% !important;
-}
-
-@media(max-width:700px){
-  body > header.hero{
-    width:100vw !important;
-    max-width:100vw !important;
-    min-width:0 !important;
-  }
-
-  main.shell{
-    width:100% !important;
-    max-width:100% !important;
-    padding-left:10px !important;
-    padding-right:10px !important;
-  }
-
-  body > nav.nav{
-    width:calc(100% - 10px) !important;
-    max-width:calc(100% - 10px) !important;
-    margin-left:5px !important;
-    margin-right:5px !important;
-  }
-
-  .content,
-  .side{
-    width:100% !important;
-    max-width:100% !important;
-  }
-
-  .title-row{
-    width:100% !important;
-  }
-
-  .recipe-translate-image{
-    width:min(320px,100%) !important;
-    flex-basis:min(320px,100%) !important;
-  }
-
-  .home-hero-image,
-  .home-hero-image img,
-  .animals-image-frame,
-  .animals-image-frame img{
-    max-width:100% !important;
-  }
-
-  #spotify-player-widget{
-    left:10px !important;
-    right:auto !important;
-    width:calc(100vw - 20px) !important;
-    max-width:300px !important;
-  }
-}
-
-/* =========================================================
-   HOVER MÁGICO — rosa + dourado, apenas com mouse
-   ========================================================= */
-@media (hover:hover) and (pointer:fine){
-  .nav button,
-  .side button,
-  .card,
-  .pet-card,
-  .close,
-  .offline-btn{
-    transition:
-      transform .22s ease,
-      box-shadow .22s ease,
-      filter .22s ease,
-      border-color .22s ease,
-      background .22s ease !important;
-  }
-
-  .nav button:hover{
-    transform:translateY(-2px) !important;
-    border-color:#ffe7ad !important;
-    box-shadow:
-      0 0 0 1px rgba(255,228,161,.38),
-      0 0 12px rgba(255,139,205,.55),
-      0 0 24px rgba(245,196,93,.22),
-      0 7px 16px rgba(91,0,64,.24) !important;
-    filter:brightness(1.06);
-  }
-
-  .side button:hover{
-    transform:translateX(2px) !important;
-    box-shadow:
-      0 0 12px rgba(255,139,205,.40),
-      0 0 20px rgba(245,196,93,.17) !important;
-  }
-
-  .card:hover,
-  .pet-card:hover{
-    transform:translateY(-4px) !important;
-    border-color:rgba(245,196,93,.75) !important;
-    box-shadow:
-      0 0 0 1px rgba(255,211,237,.75),
-      0 0 15px rgba(255,137,204,.30),
-      0 0 27px rgba(245,196,93,.16),
-      0 14px 28px rgba(130,18,91,.20) !important;
-  }
-
-  .close:hover,
-  .offline-btn:hover{
-    transform:translateY(-1px) !important;
-    border-color:#ffe7ad !important;
-    box-shadow:
-      0 0 12px rgba(255,139,205,.42),
-      0 0 18px rgba(245,196,93,.18) !important;
-  }
-}
-
-@media (hover:none){
-  .nav button:hover,
-  .side button:hover,
-  .card:hover,
-  .pet-card:hover,
-  .close:hover,
-  .offline-btn:hover{
-    filter:none !important;
-  }
-}
-</style>
-
-
-<style id="recipe-mobile-layout-fix-v3">
-@media (max-width:700px){
-  html,body{width:100% !important;max-width:100% !important;overflow-x:hidden !important}
-  .shell{display:grid !important;grid-template-columns:minmax(0,1fr) !important;gap:12px !important;width:100% !important;max-width:100% !important;min-width:0 !important;box-sizing:border-box !important}
-  .shell > *{grid-column:1 / -1 !important;width:100% !important;max-width:100% !important;min-width:0 !important;box-sizing:border-box !important}
-  .side,.content,#app,.toolbar,.search,.filters,.controls{width:100% !important;max-width:100% !important;min-width:0 !important;box-sizing:border-box !important}
-  .toolbar input,.toolbar select,.search input,.controls input,.controls select{width:100% !important;max-width:100% !important;min-width:0 !important;box-sizing:border-box !important}
-  .grid,.recipes-grid,.recipe-grid{width:100% !important;max-width:100% !important;min-width:0 !important;grid-template-columns:minmax(0,1fr) !important;box-sizing:border-box !important}
-  .card{width:100% !important;max-width:100% !important;min-width:0 !important;box-sizing:border-box !important}
-}
-</style>
-
 </head>
 
 <body>
@@ -1305,7 +1061,7 @@ body > nav.nav::after{
 <footer class="footer">Dados de receitas carregados do Dreamlight Valley Wiki. O site é uma interface pessoal de consulta.</footer>
 
 <script>
-const API='https://www.dreamlightvalleywiki.com/api.php';
+const API='https://dreamlightvalleywiki.com/api.php?action=parse&page=Cooking&prop=text&format=json&origin=*';
 const state={recipes:[], filter:'all', query:'', sort:'name', loaded:false, translatedText:{}, ptNames:new Map(), ptNamesLoaded:false, ptTranslationRunning:false};
 let checkedCache=null;
 
@@ -1347,7 +1103,7 @@ function parseCookingTable(doc){
 
 
 /* ===== MODO OFFLINE =====
-   Na primeira vez, abra com internet e use "".
+   Na primeira vez, abra com internet e use "Salvar para uso offline".
    Depois os dados e imagens armazenados podem ser usados sem internet.
 */
 const OFF_DB='dreamlight-valley-offline-v1';
@@ -1413,48 +1169,28 @@ async function loadOfflineSnapshot(){
   return false;
 }
 
-function fetchWiki(){
+async function fetchWiki(){
+  // O Wiki é carregado em segundo plano sem substituir a tela inicial.
+  // A mensagem de carregamento só aparece se o usuário estiver na aba Receitas.
   const activeSection=()=>document.querySelector('#mainNav button.active')?.dataset.section;
   if(activeSection()==='recipes') $('#app').innerHTML='<div class="notice">✨ Carregando o guia…</div>';
-
-  const old=document.getElementById('ddv-wiki-jsonp');
-  if(old) old.remove();
-
-  const callbackName='ddvWikiCallback_'+Date.now();
-  const cleanup=()=>{
-    try{delete window[callbackName]}catch{}
-    const s=document.getElementById('ddv-wiki-jsonp');
-    if(s) s.remove();
-  };
-
-  window[callbackName]=(json)=>{
-    try{
-      const raw=json?.parse?.text ?? json?.parse?.['*'];
-      if(!raw) throw new Error('O Wiki não retornou a tabela de receitas.');
-      const doc=new DOMParser().parseFromString(raw,'text/html');
-      state.recipes=parseCookingTable(doc);
-      state.loaded=true;
-      render();
-      hydrateMealImages();
-      loadPortugueseMealNames();
-    }catch(e){
-      console.error('Falha ao interpretar as receitas do Wiki:',e);
-      if(activeSection()==='recipes') $('#app').innerHTML='<div class="empty"><h2>Não foi possível carregar as receitas</h2><p>O Wiki respondeu, mas a tabela não pôde ser lida.</p></div>';
-    }finally{
-      cleanup();
-    }
-  };
-
-  const script=document.createElement('script');
-  script.id='ddv-wiki-jsonp';
-  script.async=true;
-  script.src=API+'?action=parse&page=Meals&prop=text&format=json&formatversion=2&callback='+encodeURIComponent(callbackName);
-  script.onerror=()=>{
-    cleanup();
-    console.error('Falha ao acessar a API do Dreamlight Valley Wiki.');
-    if(activeSection()==='recipes') $('#app').innerHTML='<div class="empty"><h2>Não foi possível carregar as receitas</h2><p>O Dreamlight Valley Wiki não respondeu. Tente atualizar a página em alguns segundos.</p></div>';
-  };
-  document.head.appendChild(script);
+  if(await loadOfflineSnapshot()) return;
+  try{
+    const res=await fetch(API,{mode:'cors'});
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const json=await res.json();
+    const raw=json?.parse?.text?.['*'];
+    if(!raw) throw new Error('O Wiki não retornou a tabela.');
+    const doc=new DOMParser().parseFromString(raw,'text/html');
+    state.recipes=parseCookingTable(doc);
+    state.loaded=true;
+    render();
+    hydrateMealImages();
+    loadPortugueseMealNames();
+  }catch(e){
+    const ok=await loadOfflineSnapshot();
+    if(!ok && activeSection()==='recipes') $('#app').innerHTML='<div class="empty"><h2>Sem internet e sem dados offline salvos</h2><p>Abra este arquivo uma vez com internet e use o botão <b>Salvar para uso offline</b>.</p></div>';
+  }
 }
 
 function mealWorldCode(collection){
@@ -1652,7 +1388,8 @@ function render(){
 
   const c=loadChecked(); const done=Object.keys(c).length;
   a.innerHTML=`
-  <div class="title-row"><div class="recipe-title-block"><h2>GUIA DE RECEITAS</h2><p class="subtitle">Todas as refeições encontradas na tabela atual de Cooking do Wiki. As fotos são carregadas da página correspondente de cada receita.</p></div><div class="recipe-translate-image"><img src="assets/embedded-284646185d8e.webp" alt="Instruções para traduzir as receitas para o seu idioma"></div></div><div class="controls">
+  <div class="title-row"><div class="recipe-title-block"><h2>GUIA DE RECEITAS</h2><p class="subtitle">Todas as refeições encontradas na tabela atual de Cooking do Wiki. As fotos são carregadas da página correspondente de cada receita.</p></div><div class="recipe-translate-image"><img src="assets/embedded-284646185d8e.webp" alt="Instruções para traduzir as receitas para o seu idioma"></div></div><button id="offlineSave" class="offline-btn" type="button">💾 Salvar para uso offline</button>
+  <div class="controls">
     <input id="search" placeholder="🔎 Pesquisar receita, ingrediente ou DLC…" value="${esc(state.query)}">
     <select id="type"><option value="all">Todas as categorias</option><option value="Appetizers">Aperitivos</option><option value="Entrées">Entradas</option><option value="Desserts">Sobremesas</option></select>
     <select id="stars"><option value="all">Todas as estrelas</option><option value="5">5 estrelas</option><option value="4">4 estrelas</option><option value="3">3 estrelas</option><option value="2">2 estrelas</option><option value="1">1 estrela</option></select>
