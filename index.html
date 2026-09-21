@@ -425,10 +425,12 @@ body:before, body:after{
 
 /* ===== Presença em tempo real — Princesas conectadas ===== */
 #princesasOnlineCounter{
-  position:fixed;
-  top:12px;
-  left:12px;
-  z-index:100000;
+  position:relative;
+  top:auto;
+  left:auto;
+  z-index:21;
+  margin-left:auto;
+  flex:0 0 auto;
   display:inline-flex;
   align-items:center;
   gap:8px;
@@ -456,7 +458,7 @@ body:before, body:after{
 }
 #princesasOnlineCounter .poc-number{min-width:1ch;text-align:center}
 @media(max-width:700px){
-  #princesasOnlineCounter{top:8px;left:8px;min-height:34px;padding:7px 10px;font-size:11px;gap:6px}
+  #princesasOnlineCounter{top:auto;left:auto;min-height:34px;padding:7px 10px;font-size:11px;gap:6px}
   #princesasOnlineCounter .poc-dot{width:8px;height:8px;flex-basis:8px}
 }
 </style>
@@ -888,11 +890,7 @@ body{
 <body>
 
 <!-- Contador real de presença. A contagem só funciona depois de preencher FIREBASE_CONFIG abaixo. -->
-<div id="princesasOnlineCounter" aria-live="polite" aria-label="Princesas conectadas">
-  <span class="poc-dot" aria-hidden="true"></span>
-  <span>Princesas conectadas:</span>
-  <span id="princesasOnlineCount" class="poc-number">0</span>
-</div>
+
 
 
 
@@ -989,6 +987,12 @@ body{
   <button data-section="animals">🐾 Guia de Animais ♥</button>
   <button data-section="extras">★ Dicas e Extras</button>
   <button data-section="about">💗 Sobre &amp; Créditos</button>
+
+  <div id="princesasOnlineCounter" aria-live="polite" aria-label="Princesas conectadas">
+  <span class="poc-dot" aria-hidden="true"></span>
+  <span>Princesas conectadas:</span>
+  <span id="princesasOnlineCount" class="poc-number">0</span>
+</div>
 </nav>
 
 <main class="shell">
