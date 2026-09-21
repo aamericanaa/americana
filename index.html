@@ -885,6 +885,36 @@ body{
 <div id="weatherEffectsCanvas" aria-hidden="true"></div>
 <div id="weatherFog" aria-hidden="true"></div>
 <div id="weatherSunny" aria-hidden="true"></div>
+<style id="pets-wiki-style">
+body.pets-active .shell{grid-template-columns:270px 1fr}
+body.pets-active .side{display:block}
+.pets-side{display:none}
+body.pets-active .recipe-side{display:none}
+body.pets-active .pets-side{display:block}
+.pets-controls{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:9px;padding:12px;border:2px solid #f2a5d2;border-radius:17px;background:rgba(255,248,252,.78);margin-bottom:15px}
+.pets-controls input,.pets-controls select{width:100%;border:1px solid #e889c0;border-radius:12px;padding:10px;background:#fff}
+.pets-stats{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 15px}
+.pet-card{position:relative;background:linear-gradient(145deg,rgba(255,250,253,.92),rgba(255,224,241,.82));border:2px solid #e79bc9;border-radius:18px;padding:13px;box-shadow:0 7px 18px rgba(130,18,91,.12);transition:.2s;cursor:pointer}
+.pet-card:hover{transform:translateY(-3px);box-shadow:0 12px 25px rgba(130,18,91,.22)}
+.pet-pic{height:170px;border-radius:13px;display:grid;place-items:center;background:rgba(255,224,242,.68);overflow:hidden;border:1px solid #f0b0d7}
+.pet-pic img{width:100%;height:100%;object-fit:contain;image-rendering:auto;filter:contrast(1.03) saturate(1.03)}.pet-fallback{font-size:55px}
+.pet-card h3{font-size:19px;margin:10px 0 6px}.pet-fav{position:absolute;right:10px;top:10px;border:1px solid #f2a5d2;background:rgba(255,255,255,.9);color:#d42b91;border-radius:999px;width:35px;height:35px;cursor:pointer;font-size:18px}.pet-fav.on{background:#d42b91;color:#fff}
+.pet-meta{display:flex;gap:7px;flex-wrap:wrap;font-size:12px;margin-bottom:7px}.pet-badge{background:rgba(255,248,252,.82);border:1px solid #efacd2;border-radius:999px;padding:4px 8px}.pet-food{font-size:13px;line-height:1.45;margin-top:8px}
+.pet-days{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:10px}.pet-day{border:1px solid #edb0d3;border-radius:9px;padding:5px 3px;text-align:center;font-size:10px;background:rgba(255,255,255,.72)}.pet-day b{display:block;color:#9a176f;font-size:9px;margin-bottom:3px}.pet-day.off{opacity:.42;background:rgba(240,220,232,.5)}.pet-day.all{background:#ffe0f1}
+.pet-note{padding:13px;border-radius:14px;background:rgba(255,243,184,.82);border:1px solid #e7c45a;color:#744f00;margin-bottom:14px}
+@media(max-width:900px){body.pets-active .shell{grid-template-columns:1fr}.pets-controls{grid-template-columns:1fr 1fr}.pets-controls input{grid-column:1/-1}}
+@media(max-width:560px){.pets-controls{grid-template-columns:1fr}.pet-days{gap:2px}.pet-day{font-size:8px;padding:4px 1px}.pet-day b{font-size:8px}}
+</style>
+
+<style id="pet-wiki-original-images-final">
+.pet-pic{height:180px !important;background:#f2f2ff !important;}
+.pet-image-link{display:grid;width:100%;height:100%;place-items:center;text-decoration:none;}
+.pet-image-link img{width:auto !important;height:auto !important;max-width:100%;max-height:100%;object-fit:contain;image-rendering:auto;filter:none !important;}
+.pet-image-link:hover img{transform:scale(1.025);transition:transform .18s ease;}
+@media(max-width:700px){.pet-pic{height:170px !important;}}
+</style>
+
+<style id="pet-translation-style">.pet-translation{display:block;font-size:10px;line-height:1.15;color:#9a176f;font-weight:600;opacity:.72;margin-top:2px}.pet-badge .pet-translation{font-size:9px;font-weight:500}.pet-food .pet-translation{display:block;font-size:10px;margin:2px 0 4px 19px;font-weight:500}.pet-day .pet-translation{font-size:9px;font-weight:500}.pet-card h3 .pet-translation{font-size:11px;font-weight:600;margin-top:2px}.pets-controls .pet-translation{display:inline;font-size:9px;margin-left:4px}@media(max-width:560px){.pet-translation{font-size:9px}.pet-card h3 .pet-translation{font-size:10px}}</style>
 </head>
 
 <body>
@@ -985,6 +1015,7 @@ body{
   <button class="active" data-section="home">⌂ Início</button>
   <button data-section="recipes">🍳 Guia de Receitas ♥</button>
   <button data-section="animals">🐾 Guia de Animais ♥</button>
+  <button data-section="pets">🐾 Wiki dos animais ♥</button>
   <button data-section="extras">★ Dicas e Extras</button>
   <button data-section="about">💗 Sobre &amp; Créditos</button>
 
@@ -997,6 +1028,7 @@ body{
 
 <main class="shell">
   <aside class="side" id="side">
+    <div class="recipe-side">
     <h3>🍳 GUIA DE RECEITAS</h3>
     <button class="active" data-filter="all">★ Todas as Receitas</button>
     <button data-filter="Appetizers">🥗 Aperitivos</button>
@@ -1013,6 +1045,25 @@ body{
     <button data-filter="Wishblossom Mountains">📦 Wishblossom Mountains</button>
     <button data-filter="Honeyglow Woods">📦 Honeyglow Woods</button>
     <button data-filter="checked">☑ Checklist</button>
+    </div>
+    <div class="pets-side">
+      <h3>🐾 WIKI DE PETS</h3>
+      <button class="active" data-pet-filter="all">★ Todos os Pets</button>
+      <button data-pet-filter="favorites">❤️ Meus Favoritos</button>
+      <button data-pet-filter="Plaza">🏰 Plaza</button>
+      <button data-pet-filter="Peaceful Meadow">🌿 Peaceful Meadow</button>
+      <button data-pet-filter="Forest of Valor">🌲 Forest of Valor</button>
+      <button data-pet-filter="Dazzle Beach">🏖️ Dazzle Beach</button>
+      <button data-pet-filter="Frosted Heights">❄️ Frosted Heights</button>
+      <button data-pet-filter="Forgotten Lands">🌑 Forgotten Lands</button>
+      <button data-pet-filter="Sunlit Plateau">☀️ Sunlit Plateau</button>
+      <button data-pet-filter="Wild Tangle">🌴 Wild Tangle</button>
+      <button data-pet-filter="Glittering Dunes">🏜️ Glittering Dunes</button>
+      <button data-pet-filter="Ancient's Landing">🏛️ Ancient's Landing</button>
+      <button data-pet-filter="Storybook Vale">📖 Storybook Vale</button>
+      <button data-pet-filter="Wishblossom">🌸 Wishblossom</button>
+      <button data-pet-filter="Honeyglow Woods">🍯 Honeyglow Woods</button>
+    </div>
   </aside>
 
   <section class="content">
@@ -1440,9 +1491,117 @@ function openModal(r){
 $('#close').onclick=()=>$('#modal').classList.remove('open');
 $('#modal').onclick=e=>{if(e.target.id==='modal')$('#modal').classList.remove('open')};
 
+
+/* ===== WIKI DE PETS / CRITTERS ===== */
+const CRITTER_API='https://dreamlightvalleywiki.com/api.php?action=parse&page=Critters&prop=text&format=json&origin=*';
+const petState={pets:[],query:'',species:'all',location:'all',filter:'all',loaded:false,error:''};
+let petFavCache=null;
+const petDays=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+const petSpeciesMap={'Crocodiles':'Crocodile','Foxes':'Fox','Rabbits':'Rabbit','Raccoons':'Raccoon','Ravens':'Raven','Sea Turtles':'Sea Turtle','Squirrels':'Squirrel','Sunbirds':'Sunbird','Capybaras':'Capybara','Cobras':'Cobra','Monkeys':'Monkey','Baby Dragons':'Baby Dragon','Pegasi':'Pegasus','Owls':'Owl','Geese':'Goose','Skunks':'Skunk','Bees':'Bee','Hedgehogs':'Hedgehog'};
+function loadPetFavs(){if(petFavCache)return petFavCache;try{petFavCache=JSON.parse(localStorage.getItem('ddv_pet_favorites')||'{}')||{}}catch{petFavCache={}}return petFavCache}
+function togglePetFav(name){const x=loadPetFavs();if(x[name])delete x[name];else x[name]=1;localStorage.setItem('ddv_pet_favorites',JSON.stringify(x));renderPets()}
+function petText(el){return (el?.innerText||'').replace(/\s+/g,' ').trim()}
+const PET_WIKI_IMAGES={"Beige Monkey":"https://dreamlightvalleywiki.com/images/c/ca/Beige_Monkey.png","Black and Brown Monkey":"https://dreamlightvalleywiki.com/images/1/13/Black_and_Brown_Monkey.png","Black and Gray Monkey":"https://dreamlightvalleywiki.com/images/e/e4/Black_and_Gray_Monkey.png","Black and White Capybara":"https://dreamlightvalleywiki.com/images/c/c1/Black_and_White_Capybara.png","Black Fox":"https://dreamlightvalleywiki.com/images/b/be/Black_Fox.png","Black Goose":"https://dreamlightvalleywiki.com/images/e/e2/Black_Goose.png","Black Pegasus":"https://dreamlightvalleywiki.com/images/8/84/Black_Pegasus.png","Black Rabbit":"https://dreamlightvalleywiki.com/images/2/2a/Black_Rabbit.png","Black Raccoon":"https://dreamlightvalleywiki.com/images/f/f7/Black_Raccoon.png","Black Sea Turtle":"https://dreamlightvalleywiki.com/images/f/f4/Black_Sea_Turtle.png","Black Squirrel":"https://dreamlightvalleywiki.com/images/9/9e/Black_Squirrel.png","Blue and Red Striped Cobra":"https://dreamlightvalleywiki.com/images/0/0e/Blue_and_Red_Striped_Cobra.png","Blue Baby Dragon":"https://dreamlightvalleywiki.com/images/0/05/Blue_Baby_Dragon.png","Blue Crocodile":"https://dreamlightvalleywiki.com/images/e/e1/Blue_Crocodile.png","Blue Fox":"https://dreamlightvalleywiki.com/images/9/9c/Blue_Fox.png","Blue Goose":"https://dreamlightvalleywiki.com/images/7/72/Blue_Goose.png","Blue Pegasus":"https://dreamlightvalleywiki.com/images/f/f7/Blue_Pegasus.png","Blue Raccoon":"https://dreamlightvalleywiki.com/images/7/7e/Blue_Raccoon.png","Blue Raven":"https://dreamlightvalleywiki.com/images/c/c9/Blue_Raven.png","Blue Striped Capybara":"https://dreamlightvalleywiki.com/images/4/49/Blue_Striped_Capybara.png","Blue Sweet Bee":"https://dreamlightvalleywiki.com/images/0/04/Blue_Sweet_Bee.png","Brown Owl":"https://dreamlightvalleywiki.com/images/b/bf/Brown_Owl.png","Brown Rabbit":"https://dreamlightvalleywiki.com/images/9/93/Brown_Rabbit.png","Brown Raven":"https://dreamlightvalleywiki.com/images/5/51/Brown_Raven.png","Brown Sea Turtle":"https://dreamlightvalleywiki.com/images/f/f3/Brown_Sea_Turtle.png","Brown Skunk":"https://dreamlightvalleywiki.com/images/1/12/Brown_Skunk.png","Calico Rabbit":"https://dreamlightvalleywiki.com/images/1/13/Calico_Rabbit.png","Classic Capybara":"https://dreamlightvalleywiki.com/images/7/77/Classic_Capybara.png","Classic Cobra":"https://dreamlightvalleywiki.com/images/5/5f/Classic_Cobra.png","Classic Crocodile":"https://dreamlightvalleywiki.com/images/8/88/Classic_Crocodile.png","Classic Fox":"https://dreamlightvalleywiki.com/images/8/88/Classic_Fox.png","Classic Hedgehog":"https://dreamlightvalleywiki.com/images/3/31/Classic_Hedgehog.png","Classic Monkey":"https://dreamlightvalleywiki.com/images/f/f6/Classic_Monkey.png","Classic Rabbit":"https://dreamlightvalleywiki.com/images/e/e2/Classic_Rabbit.png","Classic Raccoon":"https://dreamlightvalleywiki.com/images/b/b4/Classic_Raccoon.png","Classic Raven":"https://dreamlightvalleywiki.com/images/b/bd/Classic_Raven.png","Classic Sea Turtle":"https://dreamlightvalleywiki.com/images/6/69/Classic_Sea_Turtle.png","Classic Squirrel":"https://dreamlightvalleywiki.com/images/5/54/Classic_Squirrel.png","Dark Owl":"https://dreamlightvalleywiki.com/images/b/be/Dark_Owl.png","Emerald Sunbird":"https://dreamlightvalleywiki.com/images/7/75/Emerald_Sunbird.png","Golden Crocodile":"https://dreamlightvalleywiki.com/images/8/84/Golden_Crocodile.png","Golden Goose":"https://dreamlightvalleywiki.com/images/c/c0/Golden_Goose.png","Golden Sunbird":"https://dreamlightvalleywiki.com/images/9/92/Golden_Sunbird.png","Goose":"https://dreamlightvalleywiki.com/images/d/dd/Goose.png","Gray Spotted Capybara":"https://dreamlightvalleywiki.com/images/9/95/Gray_Spotted_Capybara.png","Gray Squirrel":"https://dreamlightvalleywiki.com/images/5/58/Gray_Squirrel.png","Green and White Striped Cobra":"https://dreamlightvalleywiki.com/images/e/e6/Green_and_White_Striped_Cobra.png","Green Baby Dragon":"https://dreamlightvalleywiki.com/images/e/e3/Green_Baby_Dragon.png","Orange Hedgehog":"https://dreamlightvalleywiki.com/images/e/eb/Orange_Hedgehog.png","Orchid Sunbird":"https://dreamlightvalleywiki.com/images/e/e0/Orchid_Sunbird.png","Patterned Skunk":"https://dreamlightvalleywiki.com/images/6/6b/Patterned_Skunk.png","Peach Pegasus":"https://dreamlightvalleywiki.com/images/c/ce/Peach_Pegasus.png","Pink Crocodile":"https://dreamlightvalleywiki.com/images/9/9e/Pink_Crocodile.png","Pink Pegasus":"https://dreamlightvalleywiki.com/images/9/96/Pink_Pegasus.png","Pink Spotted Cobra":"https://dreamlightvalleywiki.com/images/d/dc/Pink_Spotted_Cobra.png","Pink Sweet Bee":"https://dreamlightvalleywiki.com/images/8/8b/Pink_Sweet_Bee.png","Purple Baby Dragon":"https://dreamlightvalleywiki.com/images/3/33/Purple_Baby_Dragon.png","Purple Owl":"https://dreamlightvalleywiki.com/images/1/15/Purple_Owl.png","Purple Sea Turtle":"https://dreamlightvalleywiki.com/images/d/d0/Purple_Sea_Turtle.png","Red and Beige Monkey":"https://dreamlightvalleywiki.com/images/6/68/Red_and_Beige_Monkey.png","Red and White Striped Capybara":"https://dreamlightvalleywiki.com/images/a/ad/Red_and_White_Striped_Capybara.png","Red Baby Dragon":"https://dreamlightvalleywiki.com/images/d/d4/Red_Baby_Dragon.png","Red Crocodile":"https://dreamlightvalleywiki.com/images/8/8b/Red_Crocodile.png","Red Fox":"https://dreamlightvalleywiki.com/images/2/21/Red_Fox.png","Red Raccoon":"https://dreamlightvalleywiki.com/images/3/31/Red_Raccoon.png","Red Raven":"https://dreamlightvalleywiki.com/images/d/d4/Red_Raven.png","Red Squirrel":"https://dreamlightvalleywiki.com/images/f/f9/Red_Squirrel.png","Red Sunbird":"https://dreamlightvalleywiki.com/images/f/fe/Red_Sunbird.png","Skunk":"https://dreamlightvalleywiki.com/images/7/79/Skunk.png","Sweet Bee":"https://dreamlightvalleywiki.com/images/f/fd/Sweet_Bee.png","Teal Baby Dragon":"https://dreamlightvalleywiki.com/images/d/d0/Teal_Baby_Dragon.png","Toon Capybara":"https://dreamlightvalleywiki.com/images/7/70/Toon_Capybara.png","Toon Cobra":"https://dreamlightvalleywiki.com/images/3/32/Toon_Cobra.png","Toon Monkey":"https://dreamlightvalleywiki.com/images/7/78/Toon_Monkey.png","True North Goose":"https://dreamlightvalleywiki.com/images/6/61/True_North_Goose.png","Turquoise Sunbird":"https://dreamlightvalleywiki.com/images/0/08/Turquoise_Sunbird.png","White Crocodile":"https://dreamlightvalleywiki.com/images/4/48/White_Crocodile.png","White Fox":"https://dreamlightvalleywiki.com/images/0/00/White_Fox.png","White Owl":"https://dreamlightvalleywiki.com/images/e/ee/White_Owl.png","White Rabbit":"https://dreamlightvalleywiki.com/images/e/e6/White_Rabbit.png","White Raccoon":"https://dreamlightvalleywiki.com/images/1/15/White_Raccoon.png","White Raven":"https://dreamlightvalleywiki.com/images/2/2f/White_Raven.png","White Sea Turtle":"https://dreamlightvalleywiki.com/images/6/67/White_Sea_Turtle.png","White Skunk":"https://dreamlightvalleywiki.com/images/c/cc/White_Skunk.png","White Squirrel":"https://dreamlightvalleywiki.com/images/9/97/White_Squirrel.png","White Sweet Bee":"https://dreamlightvalleywiki.com/images/f/f6/White_Sweet_Bee.png","Yellow and Purple Striped Cobra":"https://dreamlightvalleywiki.com/images/e/ea/Yellow_and_Purple_Striped_Cobra.png","Yellow Hedgehog":"https://dreamlightvalleywiki.com/images/c/cb/Yellow_Hedgehog.png","Yellow Pegasus":"https://dreamlightvalleywiki.com/images/b/b4/Yellow_Pegasus.png"};
+function petImageFromCell(cell,name){
+  const key=String(name||'').trim();
+  if(PET_WIKI_IMAGES[key]) return PET_WIKI_IMAGES[key];
+  const fileName=(key.replace(/\s+/g,'_')+'.png');
+  return `https://dreamlightvalleywiki.com/wiki/Special:Redirect/file/${encodeURIComponent(fileName)}`;
+}
+function cleanPetCell(el){
+  if(!el)return '';
+  let t=petText(el).replace(/^Image\s*/,'').replace(/\[\d+\]/g,'').replace(/\s+/g,' ').trim();
+  // Remove textos de rodapé que às vezes aparecem dentro da célula no HTML do Wiki.
+  t=t.replace(/\s*\^?\s*\[\d+\].*$/,'').trim();
+  return t;
+}
+function normalizePetKey(v){
+  return normalizeSearchText(String(v||'')).replace(/[^a-z0-9]+/g,'');
+}
+function findPetSpecies(name){
+  const n=normalizePetKey(name);
+  for(const [plural,singular] of Object.entries(petSpeciesMap)){
+    if(n.includes(normalizePetKey(singular))) return plural;
+  }
+  return 'Outros';
+}
+const petFoodFallbacks={
+  'Crocodiles':{favorite:'Lobster',liked:'Fish and Seafood',location:'Glade of Trust',method:'Red Light, Green Light: Stop when they have their heads up. Go when they have their heads down. Repeat until they lay on their bellies. Approach them carefully to start the game.'},
+  'Foxes':{favorite:'White Sturgeon',liked:'Fish and Seafood',location:'Frosted Heights',method:'Tag: When you have caught their attention, chase after them until they stop.'},
+  'Rabbits':{favorite:'Carrot',liked:'Grains, Spices & Herbs, Vegetables, and Fruit grown from seeds',location:'Peaceful Meadow',method:'Tag: When you have caught their attention, chase after them until they stop.'},
+  'Raccoons':{favorite:'Blueberry',liked:'Gooseberry, Raspberry, and Strawberry',location:'Forest of Valor',method:'Red Light, Green Light: Watch their body language, and approach when they are relaxed. When they are alert, with their head up, remain still - otherwise, the Critter will move to a new location.'},
+  'Ravens':{favorite:'5-Star Meals',liked:'3-Star Meals and 4-Star Meals',location:'Forgotten Lands',method:'Patience: Wait until they have finished circling your head.'},
+  'Sea Turtles':{favorite:'Seaweed',liked:'Seafood',location:'Dazzle Beach',method:'Patience: Wait until they are ready to come out of their shells. You can also drop food, like seaweed, in front of them and they will come out immediately.'},
+  'Squirrels':{favorite:'Peanut',liked:'Fruit foraged from Bushes and Trees',location:'Plaza',method:'Squirrels play no games. Simply approach and be ready to feed them!'},
+  'Capybaras':{favorite:'Cabbage',liked:'Grains, Spices & Herbs, Vegetables, and Fruit grown from seeds',location:'Wild Tangle',method:'Capybaras play no games. Simply approach and be ready to feed them!'},
+  'Cobras':{favorite:'Egg',liked:'Dairy and Oil',location:'Glittering Dunes',method:'Red Light, Green Light: Watch their body language, and approach when they are relaxed. When they are alert, with their head up, remain still - otherwise, the Critter will move to a new location.'},
+  'Monkeys':{favorite:'5-Star Dessert Meals',liked:'3-Star or higher Meals',location:"Ancient's Landing",method:'Tag: When you have caught their attention, chase after them until they stop.'},
+  'Baby Dragons':{favorite:'Pure Ice or Magma',liked:'Gems',location:'Everafter',method:"Patience: Wait until they aren't shy."},
+  'Pegasi':{favorite:'5-Star Vegetable-Based Meals',liked:'4-Star Vegetable-Based Meals',location:'Mythopia',method:'Tag: When you have caught their attention, chase after them until they stop.'},
+  'Owls':{favorite:'Barley',liked:'Grains',location:'The Bind',method:'Owls play no games. Simply approach and be ready to feed them!'},
+  'Geese':{favorite:'Red Currants',liked:'Blueberry, Gooseberry, Raspberry, and Strawberry',location:'Wishing Alps',method:"Patience: Wait until they aren't shy."},
+  'Skunks':{favorite:'Button Mushroom and Pincushion Peach',liked:'Cheese, Egg, Fruit, and Vegetables',location:'Glamour Gulch',method:'Red Light, Green Light: Watch their body language, and approach when they are relaxed. When they are alert, with their head up, remain still - otherwise, the Critter will move to a new location.'},
+  'Bees':{favorite:'Honey Coral',liked:'Any Flowers',location:'Pixie Acres',method:'Tag: When you have caught their attention, chase after them until they stop.'},
+  'Hedgehogs':{favorite:'Pufflebud Pods and Golden Honey',liked:'Any Fruit',location:'Honeyglow Woods',method:'Patience: Wait until they are ready to come out of being rolled up. You can also drop food in front of them and they will come out immediately.'}
+};
+const petVariantFoodFallbacks={
+  'Emerald Sunbird':{favorite:'Green and Yellow Flowers',liked:'All Other Flowers'},
+  'Golden Sunbird':{favorite:'Orange and Yellow Flowers',liked:'All Other Flowers'},
+  'Orchid Sunbird':{favorite:'Pink and Purple Flowers',liked:'All Other Flowers'},
+  'Red Sunbird':{favorite:'Blue and Red Flowers',liked:'All Other Flowers'},
+  'Turquoise Sunbird':{favorite:'Green and Pink Flowers',liked:'All Other Flowers'}
+};
+function parsePetWiki(html){
+ const doc=new DOMParser().parseFromString(html,'text/html');const tables=[...doc.querySelectorAll('table')];
+ const typeTable=tables.find(t=>/Favorite Food/i.test(t.innerText)&&/Feeding Method/i.test(t.innerText));const scheduleTable=tables.find(t=>/Sunday/i.test(t.innerText)&&/Saturday/i.test(t.innerText)&&/Location/i.test(t.innerText));
+ if(!scheduleTable)throw new Error('Tabela de horários dos pets não encontrada no Wiki.');const info={};
+ if(typeTable)for(const tr of [...typeTable.querySelectorAll('tr')].slice(1)){const c=[...tr.children];if(c.length<6)continue;const species=cleanPetCell(c[1]);if(!species)continue;info[species]={species,favorite:cleanPetCell(c[2])||'—',liked:cleanPetCell(c[3])||'—',location:cleanPetCell(c[4])||'—',method:cleanPetCell(c[5])||'—'};}
+ const findPetInfo=(name)=>{
+   const normalized=normalizePetKey(name);
+   if(petVariantFoodFallbacks[name]) return {...petVariantFoodFallbacks[name],...(info[name]||{})};
+   for(const [key,val] of Object.entries(info)){
+     const nk=normalizePetKey(key);
+     if(nk===normalized) return val;
+   }
+   const species=findPetSpecies(name);
+   if(info[species]) return {...petFoodFallbacks[species],...info[species]};
+   const fallback=petFoodFallbacks[species]||{};
+   const singular=petSpeciesMap[species]||species.replace(/s$/,'');
+   const ns=normalizePetKey(singular);
+   for(const [key,val] of Object.entries(info)){
+     if(normalizePetKey(key).includes(ns)) return {...fallback,...val};
+   }
+   return fallback;
+ };
+ const out=[];for(const tr of [...scheduleTable.querySelectorAll('tr')].slice(1)){const c=[...tr.children];if(c.length<10)continue;const name=cleanPetCell(c[1]);if(!name)continue;const location=cleanPetCell(c[2]);const schedule=c.slice(3,10).map(x=>cleanPetCell(x)||'n/a');const species=findPetSpecies(name);const base=findPetInfo(name);out.push({name,species,location:location||base.location||'—',favorite:base.favorite||'—',liked:base.liked||'—',method:base.method||'—',schedule,img:petImageFromCell(c[0],name),href:`https://dreamlightvalleywiki.com/${encodeURIComponent(name.replace(/ /g,'_'))}`});}return out;
+}
+async function loadPets(){petState.loaded=false;petState.error='';renderPets();try{const r=await fetch(CRITTER_API,{cache:'no-store'});if(!r.ok)throw new Error('Falha ao acessar o Wiki.');const j=await r.json();const html=j?.parse?.text?.['*'];if(!html)throw new Error('O Wiki não retornou os dados.');petState.pets=parsePetWiki(html);petState.loaded=true;renderPets()}catch(e){petState.error=e.message||'Não foi possível carregar os pets.';petState.loaded=true;renderPets()}}
+function petMatches(p){const q=normalizeSearchText(p.name+' '+p.species+' '+p.location+' '+p.favorite+' '+p.liked);if(petState.query&&!q.includes(normalizeSearchText(petState.query)))return false;if(petState.species!=='all'&&p.species!==petState.species)return false;if(petState.location!=='all'&&!p.location.toLowerCase().includes(petState.location.toLowerCase()))return false;if(petState.filter==='favorites'&&!loadPetFavs()[p.name])return false;return true}
+function petDayCell(v,i){const off=/n\/a|not here/i.test(v);const all=/all day/i.test(v);return `<div class="pet-day ${off?'off':''} ${all?'all':''}"><b>${petDays[i]}</b>${esc(v)}</div>`}
+const PET_TRANSLATIONS={"Beige Monkey":"Macaco bege","Black and Brown Monkey":"Macaco preto e marrom","Black and Gray Monkey":"Macaco preto e cinza","Black and White Capybara":"Capivara preta e branca","Black Fox":"Raposa preta","Black Goose":"Ganso preto","Black Pegasus":"Pégaso preto","Black Rabbit":"Coelho preto","Black Raccoon":"Guaxinim preto","Black Sea Turtle":"Tartaruga-marinha preta","Black Squirrel":"Esquilo preto","Blue and Red Striped Cobra":"Cobra listrada azul e vermelha","Blue Baby Dragon":"Dragão bebê azul","Blue Crocodile":"Crocodilo azul","Blue Fox":"Raposa azul","Blue Goose":"Ganso azul","Blue Pegasus":"Pégaso azul","Blue Raccoon":"Guaxinim azul","Blue Raven":"Corvo azul","Blue Striped Capybara":"Capivara listrada azul","Blue Sweet Bee":"Abelha-doce azul","Brown Owl":"Coruja marrom","Brown Rabbit":"Coelho marrom","Brown Raven":"Corvo marrom","Brown Sea Turtle":"Tartaruga-marinha marrom","Brown Skunk":"Gambá marrom","Calico Rabbit":"Coelho tricolor","Classic Capybara":"Capivara clássica","Classic Cobra":"Cobra clássica","Classic Crocodile":"Crocodilo clássico","Classic Fox":"Raposa clássica","Classic Hedgehog":"Ouriço clássico","Classic Monkey":"Macaco clássico","Classic Rabbit":"Coelho clássico","Classic Raccoon":"Guaxinim clássico","Classic Raven":"Corvo clássico","Classic Sea Turtle":"Tartaruga-marinha clássica","Classic Squirrel":"Esquilo clássico","Dark Owl":"Coruja escura","Emerald Sunbird":"Pássaro-do-sol esmeralda","Golden Crocodile":"Crocodilo dourado","Golden Goose":"Ganso dourado","Golden Sunbird":"Pássaro-do-sol dourado","Goose":"Ganso","Gray Spotted Capybara":"Capivara cinza malhada","Gray Squirrel":"Esquilo cinza","Green and White Striped Cobra":"Cobra listrada verde e branca","Green Baby Dragon":"Dragão bebê verde","Orange Hedgehog":"Ouriço laranja","Orchid Sunbird":"Pássaro-do-sol orquídea","Patterned Skunk":"Gambá estampado","Peach Pegasus":"Pégaso pêssego","Pink Crocodile":"Crocodilo rosa","Pink Pegasus":"Pégaso rosa","Pink Spotted Cobra":"Cobra rosa malhada","Pink Sweet Bee":"Abelha-doce rosa","Purple Baby Dragon":"Dragão bebê roxo","Purple Owl":"Coruja roxa","Purple Sea Turtle":"Tartaruga-marinha roxa","Red and Beige Monkey":"Macaco vermelho e bege","Red and White Striped Capybara":"Capivara listrada vermelha e branca","Red Baby Dragon":"Dragão bebê vermelho","Red Crocodile":"Crocodilo vermelho","Red Fox":"Raposa vermelha","Red Raccoon":"Guaxinim vermelho","Red Raven":"Corvo vermelho","Red Squirrel":"Esquilo vermelho","Red Sunbird":"Pássaro-do-sol vermelho","Skunk":"Gambá","Sweet Bee":"Abelha-doce","Teal Baby Dragon":"Dragão bebê verde-azulado","Toon Capybara":"Capivara cartunesca","Toon Cobra":"Cobra cartunesca","Toon Monkey":"Macaco cartunesco","True North Goose":"Ganso do Norte Verdadeiro","Turquoise Sunbird":"Pássaro-do-sol turquesa","White Crocodile":"Crocodilo branco","White Fox":"Raposa branca","White Owl":"Coruja branca","White Rabbit":"Coelho branco","White Raccoon":"Guaxinim branco","White Raven":"Corvo branco","White Sea Turtle":"Tartaruga-marinha branca","White Skunk":"Gambá branco","White Squirrel":"Esquilo branco","White Sweet Bee":"Abelha-doce branca","Yellow and Purple Striped Cobra":"Cobra listrada amarela e roxa","Yellow Hedgehog":"Ouriço amarelo","Yellow Pegasus":"Pégaso amarelo"};
+function petTranslateText(v){const s=String(v||'').trim();return PET_TRANSLATIONS[s]||''}
+function petTranslateSchedule(v){const s=String(v||'').trim();return s}
+function petTranslationHtml(v){const t=petTranslateText(v);return t&&t!==String(v||'').trim()?`<small class="pet-translation">${esc(t)}</small>`:''}
+function petRenderCards(list){return list.map(p=>{const fav=!!loadPetFavs()[p.name];return `<article class="pet-card" data-pet="${esc(p.name)}"><button class="pet-fav ${fav?'on':''}" title="${fav?'Remover dos favoritos':'Adicionar aos favoritos'}">${fav?'♥':'♡'}</button><div class="pet-pic"><a class="pet-image-link" href="${esc(p.img)}" target="_blank" rel="noopener" title="Abrir imagem original do Wiki"><img src="${esc(p.img)}" alt="${esc(p.name)}" loading="lazy" referrerpolicy="origin" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><div class="pet-fallback" style="display:none">🐾</div></a></div><h3>${esc(p.name)}${petTranslationHtml(p.name)}</h3><div class="pet-meta"><span class="pet-badge">${esc(p.species)}</span><span class="pet-badge">📍 ${esc(p.location)}</span></div><div class="pet-food"><b>🍎 Favorita:</b> ${esc(p.favorite)}<br><b>💗 Gosta:</b> ${esc(p.liked)}</div><div class="pet-days">${p.schedule.map(petDayCell).join('')}</div></article>`}).join('')}
+function bindPetControls(a){$('#petSearch').oninput=e=>{petState.query=e.target.value;renderPets(true)};$('#petSpecies').onchange=e=>{petState.species=e.target.value;renderPets()};$('#petLocation').onchange=e=>{petState.location=e.target.value;renderPets()};$('#petFilter').onchange=e=>{petState.filter=e.target.value;renderPets()};a.querySelectorAll('.pet-card').forEach(card=>{card.onclick=e=>{if(e.target.closest('.pet-fav'))return;const p=petState.pets.find(x=>x.name===card.dataset.pet);if(p)openPetModal(p)};card.querySelector('.pet-fav').onclick=e=>{e.stopPropagation();togglePetFav(card.dataset.pet)}})}
+function renderPets(keepSearchFocus=false){if(document.querySelector('#mainNav button.active')?.dataset.section!=='pets')return;const a=$('#app');const active=document.activeElement;const oldSearch=active?.id==='petSearch'?active:null;const caret=oldSearch?oldSearch.selectionStart:null;const caretEnd=oldSearch?oldSearch.selectionEnd:null;if(!petState.loaded){a.innerHTML='<div class="empty">🐾 Carregando os dados reais dos Pets/Critters do Wiki…</div>';return}if(petState.error){a.innerHTML=`<div class="empty"><h3>Não foi possível carregar a Wiki de Pets.</h3><p>${esc(petState.error)}</p><button class="offline-btn" onclick="loadPets()">Tentar novamente</button></div>`;return}const species=[...new Set(petState.pets.map(p=>p.species))].sort((a,b)=>a.localeCompare(b));const locations=[...new Set(petState.pets.map(p=>p.location).filter(Boolean))].sort((a,b)=>a.localeCompare(b));const list=petState.pets.filter(petMatches).sort((a,b)=>a.name.localeCompare(b.name,'en'));const favCount=Object.keys(loadPetFavs()).length;
+a.innerHTML=`<div class="title-row"><div><h2>🐾 WIKI DE PETS</h2><p class="subtitle">Critters, variantes, comida favorita, localização e horários de aparição — usando os dados atuais do Dreamlight Valley Wiki.</p></div></div><div class="pet-note">✨ <b>Dica:</b> cada variante segue um horário próprio. Os horários abaixo são os publicados atualmente na tabela de Critter Schedules do Wiki.</div><div class="pets-controls"><input id="petSearch" placeholder="🔎 Procurar pet, raça, local ou comida…" value="${esc(petState.query)}"><select id="petSpecies"><option value="all">🐾 Todas as espécies</option>${species.map(x=>`<option value="${esc(x)}" ${petState.species===x?'selected':''}>${esc(x)}</option>`).join('')}</select><select id="petLocation"><option value="all">📍 Todos os locais</option>${locations.map(x=>`<option value="${esc(x)}" ${petState.location===x?'selected':''}>${esc(x)}</option>`).join('')}</select><select id="petFilter"><option value="all" ${petState.filter==='all'?'selected':''}>✨ Todos</option><option value="favorites" ${petState.filter==='favorites'?'selected':''}>❤️ Favoritos (${favCount})</option></select></div><div class="pets-stats"><span class="stat">🐾 ${petState.pets.length} variantes</span><span class="stat">🗂️ ${species.length} espécies</span><span class="stat">❤️ ${favCount} favoritos</span><span class="stat">📖 Dados do Wiki</span></div><div class="grid">${petRenderCards(list)}</div>${list.length?'':'<div class="empty">Nenhum pet encontrado com esses filtros.</div>'}`;bindPetControls(a);if(keepSearchFocus){const search=$('#petSearch');if(search){search.focus({preventScroll:true});const p=Math.min(caret??search.value.length,search.value.length);const q=Math.min(caretEnd??p,search.value.length);search.setSelectionRange(p,q)}}}
+
+function openPetModal(p){$('#modalBody').innerHTML=`<div class="pic" style="height:230px;margin-bottom:14px"><img src="${esc(p.img)}" alt="${esc(p.name)}" referrerpolicy="origin" decoding="async" style="width:100%;height:100%;object-fit:contain" onerror="this.style.display='none'"></div><h2>🐾 ${esc(p.name)}</h2><p><span class="badge">${esc(p.species)}</span> <span class="badge">📍 ${esc(p.location)}</span></p><h3>🍎 Alimentação</h3><p><b>Comida favorita:</b> ${esc(p.favorite)}<br><b>Também gosta:</b> ${esc(p.liked)}</p><h3>🎯 Como alimentar</h3><p>${esc(p.method)}</p><h3>🕐 Horários</h3><div class="pet-days">${p.schedule.map(petDayCell).join('')}</div><p style="margin-top:16px"><a target="_blank" rel="noopener" href="${esc(p.href)}">Abrir página deste pet no Wiki ↗</a></p><p><small>Dados obtidos da página Critters do Dreamlight Valley Wiki.</small></p>`;$('#modal').classList.add('open')}
+function setupPetSide(){document.querySelectorAll('[data-pet-filter]').forEach(b=>b.onclick=()=>{petState.filter=b.dataset.petFilter;petState.location=(b.dataset.petFilter==='all'||b.dataset.petFilter==='favorites')?'all':b.dataset.petFilter;document.querySelectorAll('[data-pet-filter]').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderPets()})}setupPetSide();
+
 document.querySelectorAll('#mainNav button').forEach(b=>b.onclick=()=>{
   document.body.classList.toggle('recipes-active', b.dataset.section==='recipes');
+  document.body.classList.toggle('pets-active', b.dataset.section==='pets');
   document.querySelectorAll('#mainNav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+  if(b.dataset.section==='pets'){
+    document.querySelectorAll('[data-pet-filter]').forEach(x=>x.classList.remove('active'));
+    document.querySelector('[data-pet-filter="all"]')?.classList.add('active');
+    petState.filter='all'; petState.location='all';
+    renderPets();
+    if(!petState.pets.length) loadPets();
+    return
+  }
   if(b.dataset.section==='recipes'){
       render();
       const tip=document.querySelector('.translation-tip');
@@ -1564,8 +1723,8 @@ if(b.dataset.section==='animals'){
     $('#app').innerHTML=`<div class="empty"><h2>${labels[b.dataset.section]}</h2><p>Esta seção está preparada para receber dados reais do Wiki. Nenhum conteúdo fictício foi preenchido.</p></div>`;
 });
 
-document.querySelectorAll('#side button').forEach(b=>b.onclick=()=>{
-  document.querySelectorAll('#side button').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+document.querySelectorAll('.recipe-side button[data-filter]').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.recipe-side button[data-filter]').forEach(x=>x.classList.remove('active'));b.classList.add('active');
   state.filter=b.dataset.filter;document.querySelector('[data-section="recipes"]').click();render();
 });
 
