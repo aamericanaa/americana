@@ -846,6 +846,55 @@ body{
 <div id="weatherEffectsCanvas" aria-hidden="true"></div>
 <div id="weatherFog" aria-hidden="true"></div>
 <div id="weatherSunny" aria-hidden="true"></div>
+
+<style id="princesas-online-style">
+/* ===== PRINCESAS CONECTADAS — adição isolada ===== */
+#princesas-online {
+  margin-left:auto;
+  flex:0 0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  min-height:42px;
+  padding:8px 14px;
+  border:1px solid rgba(255,199,232,.75);
+  border-radius:12px;
+  background:rgba(255,255,255,.12);
+  color:#fff;
+  font-weight:bold;
+  white-space:nowrap;
+  box-shadow:0 3px 10px rgba(91,0,64,.12);
+  text-shadow:0 1px 3px rgba(80,0,55,.35);
+}
+#princesas-online .online-dot {
+  width:10px;
+  height:10px;
+  flex:0 0 10px;
+  border-radius:50%;
+  background:#32d74b;
+  box-shadow:0 0 0 2px rgba(255,255,255,.25),0 0 10px rgba(50,215,75,.75);
+}
+#princesas-online .online-label {
+  font-size:14px;
+}
+#princesas-online .online-count {
+  font-size:16px;
+}
+@media(max-width:700px){
+  #princesas-online {
+    min-height:38px;
+    padding:7px 10px;
+  }
+  #princesas-online .online-label {
+    font-size:12px;
+  }
+  #princesas-online .online-count {
+    font-size:14px;
+  }
+}
+</style>
+
 </head>
 <body>
 
@@ -943,6 +992,11 @@ body{
   <button data-section="animals">🐾 Guia de Animais ♥</button>
   <button data-section="extras">★ Dicas e Extras</button>
   <button data-section="about">💗 Sobre &amp; Créditos</button>
+  <div id="princesas-online" aria-live="polite" title="Quantidade de visitantes conectados neste momento">
+    <span class="online-dot" aria-hidden="true"></span>
+    <span class="online-label">Princesas conectadas:</span>
+    <span class="online-count" id="princesas-online-count">0</span>
+  </div>
 </nav>
 
 <main class="shell">
@@ -1707,5 +1761,94 @@ fetchWiki().catch(err=>{
   iv.textContent=pct(intensity.value); sv.textContent=pct(speed.value);
 })();
 </script>
+
+<script id="princesas-online-script" type="module">
+/*
+ * ===== PRINCESAS CONECTADAS — PRESENÇA EM TEMPO REAL =====
+ *
+ * Para o número representar pessoas REAIS conectadas, é necessário um projeto
+ * Firebase Realtime Database. Preencha somente o objeto firebaseConfig abaixo.
+ *
+ * Este bloco é independente do restante do site.
+ */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+import {
+  getDatabase, ref, onValue, set, onDisconnect,
+  onChildAdded, onChildRemoved
+} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-database.js";
+import {
+  getAuth, signInAnonymously
+} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+
+/* ===== COLE A CONFIGURAÇÃO DO SEU FIREBASE AQUI ===== */
+const firebaseConfig = {
+  apiKey: "COLE_SUA_API_KEY_AQUI",
+  authDomain: "SEU-PROJETO.firebaseapp.com",
+  databaseURL: "https://SEU-PROJETO-default-rtdb.firebaseio.com",
+  projectId: "SEU-PROJETO",
+  storageBucket: "SEU-PROJETO.firebasestorage.app",
+  messagingSenderId: "SEU_MESSAGING_SENDER_ID",
+  appId: "SEU_APP_ID"
+};
+/* ==================================================== */
+
+const countEl = document.getElementById("princesas-online-count");
+
+function setOnlineCount(n) {
+  if (countEl) countEl.textContent = String(Math.max(0, n));
+}
+
+const configReady =
+  firebaseConfig.apiKey &&
+  !firebaseConfig.apiKey.includes("COLE_") &&
+  firebaseConfig.projectId &&
+  !firebaseConfig.projectId.includes("SEU-") &&
+  firebaseConfig.databaseURL &&
+  !firebaseConfig.databaseURL.includes("SEU-PROJETO");
+
+if (!configReady) {
+  // Mantém o site funcionando normalmente até o Firebase ser configurado.
+  setOnlineCount(0);
+} else {
+  try {
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    signInAnonymously(auth).then(() => {
+      const connectionRef = ref(db, ".info/connected");
+
+      onValue(connectionRef, async (snap) => {
+        if (snap.val() !== true) return;
+
+        // Um visitante = uma presença temporária.
+        const presenceId =
+          (crypto.randomUUID ? crypto.randomUUID() :
+           Math.random().toString(36).slice(2) + Date.now());
+
+        const presenceRef = ref(db, "princesas-online/" + presenceId);
+
+        // Remove automaticamente quando a conexão cair/for encerrada.
+        await onDisconnect(presenceRef).remove();
+        await set(presenceRef, {
+          connectedAt: Date.now()
+        });
+
+        // Conta as presenças existentes.
+        onValue(ref(db, "princesas-online"), (snapshot) => {
+          setOnlineCount(snapshot.exists() ? snapshot.size : 0);
+        });
+      });
+    }).catch((error) => {
+      console.error("Princesas conectadas — autenticação:", error);
+      setOnlineCount(0);
+    });
+  } catch (error) {
+    console.error("Princesas conectadas — Firebase:", error);
+    setOnlineCount(0);
+  }
+}
+</script>
+
 </body>
 </html>
