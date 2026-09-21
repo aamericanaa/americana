@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Dreamlight Valley — Guia Completo</title>
 <style>
 :root{
@@ -423,44 +424,6 @@ body:before, body:after{
 .recipe-pt-name{font-size:10.5px;color:#9a176f;font-weight:600;opacity:.88;line-height:1.15;max-width:72%;font-family:Georgia,"Times New Roman",serif}
 @media(max-width:560px){.recipe-pt-name{font-size:9.5px;max-width:70%}}
 
-/* ===== Presença em tempo real — Princesas conectadas ===== */
-#princesasOnlineCounter{
-  position:relative;
-  top:auto;
-  left:auto;
-  z-index:21;
-  margin-left:auto;
-  flex:0 0 auto;
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  min-height:38px;
-  padding:8px 14px;
-  border:1px solid rgba(255,255,255,.62);
-  border-radius:13px;
-  background:rgba(211,76,155,.88);
-  box-shadow:0 5px 18px rgba(75,16,64,.22),inset 0 1px 0 rgba(255,255,255,.22);
-  color:#fff;
-  font-size:13px;
-  font-weight:900;
-  line-height:1;
-  white-space:nowrap;
-  backdrop-filter:blur(5px);
-  -webkit-backdrop-filter:blur(5px);
-}
-#princesasOnlineCounter .poc-dot{
-  width:10px;
-  height:10px;
-  flex:0 0 10px;
-  border-radius:50%;
-  background:#32df72;
-  box-shadow:0 0 0 2px rgba(255,255,255,.16),0 0 9px rgba(50,223,114,.75);
-}
-#princesasOnlineCounter .poc-number{min-width:1ch;text-align:center}
-@media(max-width:700px){
-  #princesasOnlineCounter{top:auto;left:auto;min-height:34px;padding:7px 10px;font-size:11px;gap:6px}
-  #princesasOnlineCounter .poc-dot{width:8px;height:8px;flex-basis:8px}
-}
 </style>
 
 <style id="user-header-image">
@@ -918,8 +881,8 @@ body.pets-active .pets-side{display:block}
 </head>
 
 <body>
+<noscript><div class="notice" style="margin:12px">Este guia precisa do JavaScript ativado para carregar receitas, pets, traduções e o contador de presença.</div></noscript>
 
-<!-- Contador real de presença. A contagem só funciona depois de preencher FIREBASE_CONFIG abaixo. -->
 
 
 
@@ -1018,12 +981,6 @@ body.pets-active .pets-side{display:block}
   <button data-section="pets">🐾 Wiki dos animais ♥</button>
   <button data-section="extras">★ Dicas e Extras</button>
   <button data-section="about">💗 Sobre &amp; Créditos</button>
-
-  <div id="princesasOnlineCounter" aria-live="polite" aria-label="Princesas conectadas">
-  <span class="poc-dot" aria-hidden="true"></span>
-  <span>Princesas conectadas:</span>
-  <span id="princesasOnlineCount" class="poc-number">0</span>
-</div>
 </nav>
 
 <main class="shell">
@@ -1444,7 +1401,7 @@ function render(){
   grid.innerHTML=list.map((r,i)=>`
     <article class="card" data-i="${state.recipes.indexOf(r)}">
       <label class="check" title="Marcar como coletada"><input type="checkbox" ${checked(r.name)?'checked':''}></label>
-      <div class="pic">${r.img?`<img loading="lazy" src="${esc(r.img)}" alt="${esc(r.name)}" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='https://dreamlightvalleywiki.com/wiki/Special:Redirect/file/'+encodeURIComponent('${esc(r.name)}.png')}else{this.replaceWith(Object.assign(document.createElement('div'),{className:'fallback',textContent:'⌛'}))}">`:'<div class="fallback">⌛</div>'}</div>
+      <div class="pic">${r.img?`<img loading="lazy" src="${esc(r.img)}" alt="${esc(r.name)}" data-recipe-image="1" data-recipe-name="${esc(r.name)}">`:'<div class="fallback">⌛</div>'}</div>
       <h3>${esc(r.name)}</h3>
       <div class="meta"><span class="badge">${esc(r.type||'Meal')}</span><span class="badge">${esc(r.collection)}</span></div>
       <div class="recipe-star-line"><span class="stars">${stars(r.stars)}</span>${getPtName(r)?`<span class="recipe-pt-name" title="Nome em português">${esc(getPtName(r))}</span>`:''}</div>
@@ -1484,7 +1441,7 @@ function openModal(r){
   <p><b>Categoria:</b> ${esc(r.type)}<br><b>Origem:</b> ${esc(r.collection)}</p>
   <h3>Ingredientes</h3><ul>${r.ingredients.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
   <p><b>Energia:</b> ${esc(r.energy||'não informado')}<br><b>Preço de venda:</b> ${esc(r.price||'não informado')}</p>
-  ${r.href?`<p><a target="_blank" rel="noopener" href="${esc(r.href)}">Abrir página desta receita no Wiki ↗</a></p>`:''}
+  ${r.href?`<p><a target="_blank" rel="noopener noreferrer" href="${esc(r.href)}">Abrir página desta receita no Wiki ↗</a></p>`:''}
   <p><small>Dados carregados diretamente da tabela de Cooking do Dreamlight Valley Wiki.</small></p>`;
   $('#modal').classList.add('open');
 }
@@ -1582,12 +1539,12 @@ const PET_TRANSLATIONS={"Beige Monkey":"Macaco bege","Black and Brown Monkey":"M
 function petTranslateText(v){const s=String(v||'').trim();return PET_TRANSLATIONS[s]||''}
 function petTranslateSchedule(v){const s=String(v||'').trim();return s}
 function petTranslationHtml(v){const t=petTranslateText(v);return t&&t!==String(v||'').trim()?`<small class="pet-translation">${esc(t)}</small>`:''}
-function petRenderCards(list){return list.map(p=>{const fav=!!loadPetFavs()[p.name];return `<article class="pet-card" data-pet="${esc(p.name)}"><button class="pet-fav ${fav?'on':''}" title="${fav?'Remover dos favoritos':'Adicionar aos favoritos'}">${fav?'♥':'♡'}</button><div class="pet-pic"><a class="pet-image-link" href="${esc(p.img)}" target="_blank" rel="noopener" title="Abrir imagem original do Wiki"><img src="${esc(p.img)}" alt="${esc(p.name)}" loading="lazy" referrerpolicy="origin" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><div class="pet-fallback" style="display:none">🐾</div></a></div><h3>${esc(p.name)}${petTranslationHtml(p.name)}</h3><div class="pet-meta"><span class="pet-badge">${esc(p.species)}</span><span class="pet-badge">📍 ${esc(p.location)}</span></div><div class="pet-food"><b>🍎 Favorita:</b> ${esc(p.favorite)}<br><b>💗 Gosta:</b> ${esc(p.liked)}</div><div class="pet-days">${p.schedule.map(petDayCell).join('')}</div></article>`}).join('')}
+function petRenderCards(list){return list.map(p=>{const fav=!!loadPetFavs()[p.name];return `<article class="pet-card" data-pet="${esc(p.name)}"><button class="pet-fav ${fav?'on':''}" title="${fav?'Remover dos favoritos':'Adicionar aos favoritos'}">${fav?'♥':'♡'}</button><div class="pet-pic"><a class="pet-image-link" href="${esc(p.img)}" target="_blank" rel="noopener noreferrer" title="Abrir imagem original do Wiki"><img src="${esc(p.img)}" alt="${esc(p.name)}" loading="lazy" referrerpolicy="origin" decoding="async" data-pet-image="1"><div class="pet-fallback" style="display:none">🐾</div></a></div><h3>${esc(p.name)}${petTranslationHtml(p.name)}</h3><div class="pet-meta"><span class="pet-badge">${esc(p.species)}</span><span class="pet-badge">📍 ${esc(p.location)}</span></div><div class="pet-food"><b>🍎 Favorita:</b> ${esc(p.favorite)}<br><b>💗 Gosta:</b> ${esc(p.liked)}</div><div class="pet-days">${p.schedule.map(petDayCell).join('')}</div></article>`}).join('')}
 function bindPetControls(a){$('#petSearch').oninput=e=>{petState.query=e.target.value;renderPets(true)};$('#petSpecies').onchange=e=>{petState.species=e.target.value;renderPets()};$('#petLocation').onchange=e=>{petState.location=e.target.value;renderPets()};$('#petFilter').onchange=e=>{petState.filter=e.target.value;renderPets()};a.querySelectorAll('.pet-card').forEach(card=>{card.onclick=e=>{if(e.target.closest('.pet-fav'))return;const p=petState.pets.find(x=>x.name===card.dataset.pet);if(p)openPetModal(p)};card.querySelector('.pet-fav').onclick=e=>{e.stopPropagation();togglePetFav(card.dataset.pet)}})}
-function renderPets(keepSearchFocus=false){if(document.querySelector('#mainNav button.active')?.dataset.section!=='pets')return;const a=$('#app');const active=document.activeElement;const oldSearch=active?.id==='petSearch'?active:null;const caret=oldSearch?oldSearch.selectionStart:null;const caretEnd=oldSearch?oldSearch.selectionEnd:null;if(!petState.loaded){a.innerHTML='<div class="empty">🐾 Carregando os dados reais dos Pets/Critters do Wiki…</div>';return}if(petState.error){a.innerHTML=`<div class="empty"><h3>Não foi possível carregar a Wiki de Pets.</h3><p>${esc(petState.error)}</p><button class="offline-btn" onclick="loadPets()">Tentar novamente</button></div>`;return}const species=[...new Set(petState.pets.map(p=>p.species))].sort((a,b)=>a.localeCompare(b));const locations=[...new Set(petState.pets.map(p=>p.location).filter(Boolean))].sort((a,b)=>a.localeCompare(b));const list=petState.pets.filter(petMatches).sort((a,b)=>a.name.localeCompare(b.name,'en'));const favCount=Object.keys(loadPetFavs()).length;
+function renderPets(keepSearchFocus=false){if(document.querySelector('#mainNav button.active')?.dataset.section!=='pets')return;const a=$('#app');const active=document.activeElement;const oldSearch=active?.id==='petSearch'?active:null;const caret=oldSearch?oldSearch.selectionStart:null;const caretEnd=oldSearch?oldSearch.selectionEnd:null;if(!petState.loaded){a.innerHTML='<div class="empty">🐾 Carregando os dados reais dos Pets/Critters do Wiki…</div>';return}if(petState.error){a.innerHTML=`<div class="empty"><h3>Não foi possível carregar a Wiki de Pets.</h3><p>${esc(petState.error)}</p><button class="offline-btn" type="button" data-action="load-pets">Tentar novamente</button></div>`;return}const species=[...new Set(petState.pets.map(p=>p.species))].sort((a,b)=>a.localeCompare(b));const locations=[...new Set(petState.pets.map(p=>p.location).filter(Boolean))].sort((a,b)=>a.localeCompare(b));const list=petState.pets.filter(petMatches).sort((a,b)=>a.name.localeCompare(b.name,'en'));const favCount=Object.keys(loadPetFavs()).length;
 a.innerHTML=`<div class="title-row"><div><h2>🐾 WIKI DE PETS</h2><p class="subtitle">Critters, variantes, comida favorita, localização e horários de aparição — usando os dados atuais do Dreamlight Valley Wiki.</p></div></div><div class="pet-note">✨ <b>Dica:</b> cada variante segue um horário próprio. Os horários abaixo são os publicados atualmente na tabela de Critter Schedules do Wiki.</div><div class="pets-controls"><input id="petSearch" placeholder="🔎 Procurar pet, raça, local ou comida…" value="${esc(petState.query)}"><select id="petSpecies"><option value="all">🐾 Todas as espécies</option>${species.map(x=>`<option value="${esc(x)}" ${petState.species===x?'selected':''}>${esc(x)}</option>`).join('')}</select><select id="petLocation"><option value="all">📍 Todos os locais</option>${locations.map(x=>`<option value="${esc(x)}" ${petState.location===x?'selected':''}>${esc(x)}</option>`).join('')}</select><select id="petFilter"><option value="all" ${petState.filter==='all'?'selected':''}>✨ Todos</option><option value="favorites" ${petState.filter==='favorites'?'selected':''}>❤️ Favoritos (${favCount})</option></select></div><div class="pets-stats"><span class="stat">🐾 ${petState.pets.length} variantes</span><span class="stat">🗂️ ${species.length} espécies</span><span class="stat">❤️ ${favCount} favoritos</span><span class="stat">📖 Dados do Wiki</span></div><div class="grid">${petRenderCards(list)}</div>${list.length?'':'<div class="empty">Nenhum pet encontrado com esses filtros.</div>'}`;bindPetControls(a);if(keepSearchFocus){const search=$('#petSearch');if(search){search.focus({preventScroll:true});const p=Math.min(caret??search.value.length,search.value.length);const q=Math.min(caretEnd??p,search.value.length);search.setSelectionRange(p,q)}}}
 
-function openPetModal(p){$('#modalBody').innerHTML=`<div class="pic" style="height:230px;margin-bottom:14px"><img src="${esc(p.img)}" alt="${esc(p.name)}" referrerpolicy="origin" decoding="async" style="width:100%;height:100%;object-fit:contain" onerror="this.style.display='none'"></div><h2>🐾 ${esc(p.name)}</h2><p><span class="badge">${esc(p.species)}</span> <span class="badge">📍 ${esc(p.location)}</span></p><h3>🍎 Alimentação</h3><p><b>Comida favorita:</b> ${esc(p.favorite)}<br><b>Também gosta:</b> ${esc(p.liked)}</p><h3>🎯 Como alimentar</h3><p>${esc(p.method)}</p><h3>🕐 Horários</h3><div class="pet-days">${p.schedule.map(petDayCell).join('')}</div><p style="margin-top:16px"><a target="_blank" rel="noopener" href="${esc(p.href)}">Abrir página deste pet no Wiki ↗</a></p><p><small>Dados obtidos da página Critters do Dreamlight Valley Wiki.</small></p>`;$('#modal').classList.add('open')}
+function openPetModal(p){$('#modalBody').innerHTML=`<div class="pic" style="height:230px;margin-bottom:14px"><img src="${esc(p.img)}" alt="${esc(p.name)}" referrerpolicy="origin" decoding="async" style="width:100%;height:100%;object-fit:contain" data-pet-modal-image="1"></div><h2>🐾 ${esc(p.name)}</h2><p><span class="badge">${esc(p.species)}</span> <span class="badge">📍 ${esc(p.location)}</span></p><h3>🍎 Alimentação</h3><p><b>Comida favorita:</b> ${esc(p.favorite)}<br><b>Também gosta:</b> ${esc(p.liked)}</p><h3>🎯 Como alimentar</h3><p>${esc(p.method)}</p><h3>🕐 Horários</h3><div class="pet-days">${p.schedule.map(petDayCell).join('')}</div><p style="margin-top:16px"><a target="_blank" rel="noopener noreferrer" href="${esc(p.href)}">Abrir página deste pet no Wiki ↗</a></p><p><small>Dados obtidos da página Critters do Dreamlight Valley Wiki.</small></p>`;$('#modal').classList.add('open')}
 function setupPetSide(){document.querySelectorAll('[data-pet-filter]').forEach(b=>b.onclick=()=>{petState.filter=b.dataset.petFilter;petState.location=(b.dataset.petFilter==='all'||b.dataset.petFilter==='favorites')?'all':b.dataset.petFilter;document.querySelectorAll('[data-pet-filter]').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderPets()})}setupPetSide();
 
 document.querySelectorAll('#mainNav button').forEach(b=>b.onclick=()=>{
@@ -1769,13 +1726,13 @@ fetchWiki().catch(err=>{
   $('#app').innerHTML=`<div class="empty"><h2>Não foi possível carregar o Wiki automaticamente.</h2>
   <p>O navegador pode estar bloqueando a consulta externa ou o Wiki pode ter limitado a requisição. As imagens dos pratos são buscadas diretamente no acervo de imagens do Wiki.</p>
   <p><b>Erro:</b> ${esc(err.message)}</p>
-  <p><a target="_blank" rel="noopener" href="https://dreamlightvalleywiki.com/Collections/Meals">Abrir a coleção de 480 refeições no Wiki ↗</a></p>
+  <p><a target="_blank" rel="noopener noreferrer" href="https://dreamlightvalleywiki.com/Collections/Meals">Abrir a coleção de 480 refeições no Wiki ↗</a></p>
   </div>`;
 });
 </script>
 
 <div id="spotify-player-widget" aria-label="Música do site">
-  <iframe src="https://open.spotify.com/embed/playlist/6ttyOgjqgwyUCkdpPWfh9p?utm_source=generator&theme=0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  <iframe src="https://open.spotify.com/embed/playlist/6ttyOgjqgwyUCkdpPWfh9p?utm_source=generator&theme=0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 </div>
 <style id="hero-position-fix">
 /* Ajuste do cabeçalho: mostra mais a parte superior da arte, incluindo os rostos. */
@@ -1918,108 +1875,45 @@ fetchWiki().catch(err=>{
 </script>
 
 
-<!-- ===== PRESENÇA REAL EM TEMPO REAL (Firebase Realtime Database) =====
-     1) Crie um projeto Firebase.
-     2) Ative Authentication > Anonymous.
-     3) Crie um Realtime Database.
-     4) Cole as regras fornecidas na mensagem de instruções.
-     5) Substitua os valores de FIREBASE_CONFIG pelos dados do seu app Web.
-     O Firebase Realtime Database mantém a presença sincronizada e onDisconnect()
-     remove a sessão quando a conexão é encerrada. -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-  import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-  import {
-    getDatabase,
-    ref,
-    set,
-    remove,
-    onDisconnect,
-    onValue,
-    serverTimestamp
-  } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
-
-  // ==============================================================
-  // COLE A CONFIGURAÇÃO DO SEU APP WEB DO FIREBASE AQUI.
-  // Não coloque senha, chave privada ou service account neste arquivo.
-  // A configuração Web do Firebase é própria para uso no navegador.
-  // ==============================================================
-  const FIREBASE_CONFIG = {
-    apiKey: "AIzaSyBkHvNaa5Gv4BROeXyCgUdqZnhm_5EiEfk",
-    authDomain: "princesas-dreamlight.firebaseapp.com",
-    databaseURL: "https://princesas-dreamlight-default-rtdb.firebaseio.com",
-    projectId: "princesas-dreamlight",
-    storageBucket: "princesas-dreamlight.firebasestorage.app",
-    messagingSenderId: "97659948194",
-    appId: "1:97659948194:web:38f04a22fdf6cd3fbbdbfb",
-    measurementId: "G-BMKQJC4CZR"
-  };
-
-  const countEl = document.getElementById('princesasOnlineCount');
-  const isConfigured = Object.values(FIREBASE_CONFIG).every(v => v && !String(v).includes('COLE_AQUI'));
-
-  function showCount(value){
-    if(countEl) countEl.textContent = String(Math.max(0, Number(value)||0));
-  }
-
-  async function startPresence(){
-    if(!isConfigured){
-      console.warn('[Presença] Firebase ainda não foi configurado. Preencha FIREBASE_CONFIG no index.html.');
-      showCount(0);
+<!-- ===== HARDENING DE SEGURANÇA E COMPATIBILIDADE =====
+     Eventos de erro/ações são tratados via JavaScript em vez de atributos inline.
+     Isso reduz a superfície de XSS e facilita a aplicação futura de CSP. -->
+<script>
+(function(){
+  'use strict';
+  // Fallback seguro para imagens de receitas: mantém exatamente o comportamento anterior.
+  window.addEventListener('error', function(event){
+    const img = event.target;
+    if(!(img instanceof HTMLImageElement)) return;
+    if(img.dataset.recipeImage === '1'){
+      if(!img.dataset.fallback){
+        img.dataset.fallback = '1';
+        const name = img.dataset.recipeName || img.alt || '';
+        img.src = 'https://dreamlightvalleywiki.com/wiki/Special:Redirect/file/' + encodeURIComponent(name + '.png');
+      }else{
+        const fallback = document.createElement('div');
+        fallback.className = 'fallback';
+        fallback.textContent = '⌛';
+        img.replaceWith(fallback);
+      }
       return;
     }
-
-    try{
-      const app = initializeApp(FIREBASE_CONFIG);
-      const auth = getAuth(app);
-      const db = getDatabase(app);
-
-      // Login anônimo: ninguém precisa criar conta para aparecer como conectado.
-      const credential = await signInAnonymously(auth);
-      const uid = credential.user.uid;
-
-      // Uma sessão própria por aba/conexão evita que uma aba apague a presença de outra.
-      const sessionId = (crypto.randomUUID ? crypto.randomUUID() :
-        `${Date.now()}_${Math.random().toString(36).slice(2)}`)
-        .replace(/[^A-Za-z0-9_-]/g,'');
-
-      const presenceRef = ref(db, `presence/${uid}/${sessionId}`);
-      const allPresenceRef = ref(db, 'presence');
-
-      // Primeiro armamos a remoção no servidor. Assim o registro é retirado
-      // também quando a aba é fechada, perde a conexão ou o navegador encerra.
-      await onDisconnect(presenceRef).remove();
-
-      await set(presenceRef, {
-        uid,
-        online: true,
-        connectedAt: serverTimestamp()
-      });
-
-      // O total é a quantidade de sessões realmente presentes no banco.
-      onValue(allPresenceRef, snapshot => {
-        let total = 0;
-        snapshot.forEach(userSnapshot => {
-          total += userSnapshot.size;
-        });
-        showCount(total);
-      }, error => {
-        console.error('[Presença] Erro ao ler presença:', error);
-        showCount(0);
-      });
-
-      // Limpeza extra para saída normal; o onDisconnect continua sendo a garantia
-      // principal no servidor.
-      window.addEventListener('pagehide', () => {
-        remove(presenceRef).catch(()=>{});
-      }, { once:true });
-    }catch(error){
-      console.error('[Presença] Não foi possível iniciar o contador:', error);
-      showCount(0);
+    if(img.dataset.petImage === '1'){
+      img.style.display = 'none';
+      const fallback = img.nextElementSibling;
+      if(fallback) fallback.style.display = 'block';
+      return;
     }
-  }
+    if(img.dataset.petModalImage === '1') img.style.display = 'none';
+  }, true);
 
-  startPresence();
+  // O botão é dinâmico; delegação funciona mesmo depois de re-renderizações.
+  document.addEventListener('click', function(event){
+    const button = event.target.closest('[data-action="load-pets"]');
+    if(button && typeof window.loadPets === 'function') window.loadPets();
+  });
+})();
 </script>
+
 </body>
 </html>
