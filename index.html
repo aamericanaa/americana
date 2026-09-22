@@ -1274,6 +1274,185 @@ body.pets-active .pets-side{display:block}
 }
 </style>
 
+
+<style id="mobile-real-layout-fix-v3">
+/* CORREÇÃO REAL DE LAYOUT MOBILE — não altera desktop */
+@media screen and (max-width:700px){
+  html{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    overflow-x:hidden !important;
+  }
+  body{
+    display:block !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    margin:0 !important;
+    padding:0 !important;
+    overflow-x:hidden !important;
+    position:relative !important;
+  }
+  body > header.hero,
+  body > nav.nav,
+  body > main.shell,
+  body > footer.footer{
+    display:block !important;
+    position:relative !important;
+    float:none !important;
+    clear:both !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    margin-left:0 !important;
+    margin-right:0 !important;
+    left:auto !important;
+    right:auto !important;
+  }
+
+  /* O cabeçalho precisa ser um bloco de largura total.
+     Isso impede que a arte fique presa em uma faixa estreita. */
+  body > header.hero{
+    height:260px !important;
+    min-height:260px !important;
+    max-height:260px !important;
+    padding:0 !important;
+    overflow:hidden !important;
+    background-image:url("assets/embedded-34a611395d90.webp") !important;
+    background-repeat:no-repeat !important;
+    background-size:cover !important;
+    background-position:center center !important;
+  }
+  body > header.hero .hero-banner-logo{
+    left:50% !important;
+    right:auto !important;
+    width:min(230px,58vw) !important;
+    max-width:58vw !important;
+  }
+  body > header.hero .hero-copy{
+    position:absolute !important;
+    left:50% !important;
+    right:auto !important;
+    width:min(78%,360px) !important;
+    max-width:78% !important;
+    margin:0 !important;
+    transform:translate(-50%,-50%) !important;
+    text-align:center !important;
+  }
+
+  /* Navegação ocupa a viewport; os botões continuam roláveis horizontalmente. */
+  body > nav.nav{
+    display:flex !important;
+    flex-direction:row !important;
+    flex-wrap:nowrap !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    gap:6px !important;
+    padding:7px 6px !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    -webkit-overflow-scrolling:touch !important;
+    scrollbar-width:none !important;
+    background:rgba(198,55,143,.92) !important;
+  }
+  body > nav.nav::-webkit-scrollbar{display:none !important;}
+  body > nav.nav button{
+    display:block !important;
+    flex:0 0 auto !important;
+    width:auto !important;
+    min-width:max-content !important;
+    max-width:none !important;
+    white-space:nowrap !important;
+  }
+
+  body > main.shell{
+    display:block !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    padding:0 6px !important;
+    margin:8px 0 !important;
+    overflow:visible !important;
+  }
+  body > main.shell > .side,
+  body > main.shell > .content{
+    display:block !important;
+    position:relative !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    margin:0 0 10px !important;
+    float:none !important;
+  }
+  body > main.shell > .content{
+    padding:10px !important;
+    overflow:hidden !important;
+  }
+
+  #app,
+  #app > *,
+  .home-panel,
+  .animals-panel,
+  .about-credits,
+  .extras-social-wrap{
+    display:block !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+  }
+
+  .home-hero-image,
+  .animals-image-frame{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    overflow:hidden !important;
+  }
+  .home-hero-image img,
+  .animals-image-frame img,
+  .extras-social-wrap img{
+    display:block !important;
+    width:100% !important;
+    max-width:100% !important;
+    height:auto !important;
+  }
+
+  .title-row,.controls,.pets-controls,.grid,.pet-grid{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+  }
+  .controls,.pets-controls{grid-template-columns:minmax(0,1fr) !important;}
+  .controls input,.controls select,.pets-controls input,.pets-controls select{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+  }
+  .grid,.pet-grid{grid-template-columns:minmax(0,1fr) !important;}
+  .card,.pet-card{width:100% !important;min-width:0 !important;max-width:none !important;}
+
+  /* Elementos fixos não podem alterar a largura do documento. */
+  #spotify-player-widget{
+    position:fixed !important;
+    left:10px !important;
+    right:10px !important;
+    bottom:10px !important;
+    width:auto !important;
+    max-width:none !important;
+  }
+  #spotify-player-widget iframe{width:100% !important;max-width:100% !important;}
+  .magic-clock-wrap{max-width:120px !important;overflow:visible !important;}
+
+  img,iframe,video,canvas,svg{max-width:100% !important;}
+}
+@media screen and (max-width:380px){
+  body > header.hero{height:235px !important;min-height:235px !important;max-height:235px !important;}
+  body > nav.nav button{padding:9px 11px !important;font-size:12px !important;}
+  body > main.shell{padding-left:4px !important;padding-right:4px !important;}
+}
+</style>
+
 </head>
 
 <body>
