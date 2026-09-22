@@ -1175,6 +1175,105 @@ body.pets-active .pets-side{display:block}
   }
 }
 </style>
+
+<style id="mobile-final-stability-fix">
+/* ===== RESPONSIVIDADE MOBILE FINAL =====
+   Somente telas de celular (até 700px). Desktop permanece intacto. */
+@media (max-width:700px){
+  html,body{width:100%;max-width:100%;min-width:0;overflow-x:hidden!important;-webkit-text-size-adjust:100%;}
+  body{background-attachment:scroll!important;}
+  #app, main.shell, .content, .side, section, article, header, nav, footer,
+  .home-panel,.animals-panel,.about-credits,.extras-social-wrap{min-width:0!important;}
+
+  /* Cabeçalho: impede elementos absolutos de escaparem da tela. */
+  header.hero{height:260px!important;min-height:260px!important;width:100%!important;overflow:hidden!important;}
+  .hero-banner-logo{width:min(230px,58vw)!important;max-width:58vw!important;max-height:58px!important;bottom:8px!important;}
+  .hero .hero-copy{left:50%!important;right:auto!important;width:78%!important;max-width:78%!important;top:53%!important;transform:translate(-50%,-50%)!important;opacity:.9!important;}
+  .hero .hero-copy h1{font-size:clamp(19px,6vw,29px)!important;letter-spacing:1px!important;line-height:1!important;white-space:normal!important;}
+  .hero .hero-copy h2{font-size:clamp(14px,4.4vw,21px)!important;padding:5px 12px!important;margin:5px 0!important;}
+  .hero .hero-copy p{font-size:10px!important;letter-spacing:1px!important;}
+
+  /* Relógio: pequeno e contido dentro do banner. */
+  .magic-clock-wrap{right:5px!important;top:8px!important;width:104px!important;height:120px!important;transform:none!important;}
+  .magic-clock{width:88px!important;height:88px!important;border-width:2px!important;}
+  .magic-clock::before{inset:5px!important}.magic-clock::after{inset:-6px!important}
+  .mc-sky{inset:10px!important}.mc-moon{top:10px!important;font-size:25px!important}
+  .mc-title{top:7px!important;font-size:5px!important;letter-spacing:.5px!important}
+  .mc-star{font-size:5px!important}.mc-cloud{bottom:9px!important;height:26px!important}
+  .mc-cloud::before{width:48px!important;height:30px!important;left:13px!important;top:-13px!important}
+  .mc-cloud::after{width:40px!important;height:24px!important;right:10px!important;top:-9px!important}
+  .mc-castle{bottom:15px!important;width:62px!important;height:38px!important;transform:translateX(-50%)!important}
+  .mc-castle::before{left:26px!important;width:10px!important;height:19px!important}
+  .mc-castle::after{top:5px!important;font-size:8px!important}
+  .mc-time-panel{bottom:-27px!important;width:98px!important;padding:4px 3px!important;border-radius:10px!important;border-width:1px!important;}
+  .mc-time{font-size:14px!important;letter-spacing:1px!important}.mc-date{font-size:5px!important;margin-top:2px!important}
+  .mc-status{font-size:4.5px!important;padding:2px 4px!important;margin-top:3px!important;gap:3px!important}
+  .mc-status-dot{width:3px!important;height:3px!important}.mc-hanger{display:none!important}.mc-ornament{top:-10px!important;transform:translateX(-50%) scale(.45)!important;}
+
+  /* Navegação: cabe inteira em uma faixa rolável, sem quebrar a página. */
+  nav.nav{width:100%!important;max-width:100%!important;margin:0!important;border-radius:0!important;padding:7px 6px!important;gap:5px!important;overflow-x:auto!important;overflow-y:hidden!important;}
+  nav.nav button{padding:10px 13px!important;font-size:13px!important;line-height:1.1!important;min-height:38px;white-space:nowrap!important;}
+
+  /* Conteúdo principal. */
+  main.shell{display:block!important;width:100%!important;max-width:100%!important;margin:8px 0!important;padding:0 6px!important;}
+  main.shell>.side, main.shell>.content{width:100%!important;max-width:100%!important;min-width:0!important;}
+  main.shell>.content{padding:10px!important;overflow:hidden!important;border-radius:16px!important;}
+  main.shell>.side{margin-bottom:8px!important;padding:10px!important;}
+  body.recipes-active main.shell, body.pets-active main.shell{display:block!important;grid-template-columns:none!important;}
+
+  .title-row{display:flex!important;width:100%!important;max-width:100%!important;min-width:0!important;gap:8px!important;align-items:flex-start!important;flex-wrap:wrap!important;}
+  .recipe-title-block{width:100%!important;max-width:100%!important;min-width:0!important;flex:1 1 100%!important;}
+  .title-row h2{font-size:25px!important;line-height:1.12!important;overflow-wrap:anywhere!important;}
+  .subtitle{font-size:14px!important;line-height:1.35!important;}
+  .recipe-translate-image{width:100%!important;max-width:100%!important;flex:1 1 100%!important;height:auto!important;aspect-ratio:380/227!important;margin:0!important;}
+
+  /* Pesquisa/filtros: uma coluna para não esmagar os campos. */
+  .controls,.pets-controls{display:grid!important;grid-template-columns:minmax(0,1fr)!important;width:100%!important;max-width:100%!important;padding:9px!important;gap:7px!important;}
+  .controls input,.controls select,.pets-controls input,.pets-controls select{grid-column:auto!important;width:100%!important;min-width:0!important;height:42px!important;font-size:15px!important;}
+  .stats{gap:6px!important}.stat{font-size:12px!important;padding:7px 10px!important;}
+
+  /* Cards e grades. */
+  .grid,.pet-grid{display:grid!important;grid-template-columns:minmax(0,1fr)!important;width:100%!important;max-width:100%!important;min-width:0!important;gap:10px!important;}
+  .card,.pet-card{width:100%!important;max-width:100%!important;min-width:0!important;padding:10px!important;}
+  .card .pic,.pet-pic{max-width:100%!important;overflow:hidden!important;}
+  .card h3,.pet-card h3{font-size:18px!important;overflow-wrap:anywhere!important;}
+  .meta,.ing,.badge{max-width:100%!important;overflow-wrap:anywhere!important;}
+
+  /* Imagens, embeds e tabelas nunca podem aumentar a largura da viewport. */
+  img,iframe,video,canvas,svg,table{max-width:100%!important;}
+  .table-wrap,.recipe-table,.wiki-table{width:100%!important;max-width:100%!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch;}
+
+  /* Páginas ilustradas. */
+  .home-hero-image img{width:100%!important;height:auto!important;max-height:none!important;object-fit:contain!important;}
+  .animals-image-frame img{width:100%!important;height:auto!important;}
+  .extras-social-wrap img{width:100%!important;height:auto!important;}
+  .home-welcome{padding:13px!important;margin:12px auto!important;}
+  .home-welcome h2{font-size:22px!important}.home-welcome p{font-size:14px!important;line-height:1.45!important;}
+
+  /* Modal. */
+  .modal{padding:7px!important;}
+  .modal-box{width:100%!important;max-width:100%!important;max-height:94vh!important;padding:14px!important;border-radius:18px!important;overflow:auto!important;}
+
+  /* Spotify não pode ocupar a tela toda nem sair pela lateral. */
+  #spotify-player-widget{left:10px!important;right:10px!important;bottom:10px!important;width:auto!important;max-width:none!important;}
+  #spotify-player-widget iframe{width:100%!important;max-width:100%!important;}
+
+  /* Controles flutuantes não devem criar overflow horizontal. */
+  #magicClockControls{left:8px!important;right:8px!important;bottom:8px!important;max-width:calc(100vw - 16px)!important;}
+  #magicClockControls .mcc-panel{max-width:205px!important;}
+}
+
+@media (max-width:360px){
+  header.hero{height:235px!important;min-height:235px!important;}
+  .magic-clock-wrap{transform:scale(.88)!important;transform-origin:top right!important;right:2px!important;}
+  .hero .hero-copy{width:72%!important;max-width:72%!important;}
+  nav.nav button{padding:9px 11px!important;font-size:12px!important;}
+  main.shell{padding:0 4px!important;}
+  main.shell>.content{padding:8px!important;}
+  .title-row h2{font-size:23px!important;}
+}
+</style>
+
 </head>
 
 <body>
