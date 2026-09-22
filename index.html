@@ -1453,6 +1453,449 @@ body.pets-active .pets-side{display:block}
 }
 </style>
 
+
+<style id="mobile-responsive-final-v4">
+/* =========================================================
+   MOBILE RESPONSIVE FINAL V4
+   Corrige o layout real do celular sem alterar o desktop.
+   - Sem largura fixa de desktop no celular
+   - Banner ocupa a viewport inteira
+   - Menu vira grade no celular (sem botões espremidos/rolagem lateral)
+   - Landscape recebe uma grade de 3 colunas
+   ========================================================= */
+
+@media screen and (max-width:700px){
+  html{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    overflow-x:clip !important;
+    -webkit-text-size-adjust:100%;
+  }
+
+  body{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    margin:0 !important;
+    padding:0 !important;
+    overflow-x:clip !important;
+    background-attachment:scroll !important;
+  }
+
+  /* ---------- BANNER ---------- */
+  body > .hero,
+  header.hero{
+    position:relative !important;
+    display:block !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    height:280px !important;
+    min-height:280px !important;
+    max-height:none !important;
+    margin:0 !important;
+    padding:0 !important;
+    overflow:hidden !important;
+    background-image:none !important;
+    background-color:#f9d9ed !important;
+  }
+
+  /* Usa uma camada própria para a arte. Isso evita o recorte
+     estreito que pode ocorrer com background em alguns browsers móveis. */
+  body > .hero::before,
+  header.hero::before{
+    content:"" !important;
+    position:absolute !important;
+    inset:0 !important;
+    display:block !important;
+    pointer-events:none !important;
+    background-image:url("assets/embedded-34a611395d90.webp") !important;
+    background-repeat:no-repeat !important;
+    background-size:cover !important;
+    background-position:center 20% !important;
+    z-index:0 !important;
+  }
+
+  body > .hero::after,
+  header.hero::after{
+    content:"" !important;
+    position:absolute !important;
+    inset:0 !important;
+    pointer-events:none !important;
+    background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(177,25,119,.10)) !important;
+    z-index:1 !important;
+  }
+
+  body > .hero > *{
+    position:relative;
+    z-index:2;
+  }
+
+  .hero-banner-logo{
+    position:absolute !important;
+    left:50% !important;
+    right:auto !important;
+    bottom:8px !important;
+    transform:translateX(-50%) !important;
+    width:min(230px,58vw) !important;
+    max-width:58vw !important;
+    max-height:58px !important;
+    height:auto !important;
+    object-fit:contain !important;
+  }
+
+  .hero .hero-copy{
+    position:absolute !important;
+    left:50% !important;
+    right:auto !important;
+    top:54% !important;
+    width:min(78%,360px) !important;
+    max-width:78% !important;
+    min-width:0 !important;
+    margin:0 !important;
+    transform:translate(-50%,-50%) !important;
+    text-align:center !important;
+    z-index:3 !important;
+  }
+
+  .hero .hero-copy h1{
+    max-width:100% !important;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+    font-size:clamp(19px,6vw,29px) !important;
+    line-height:1.05 !important;
+  }
+
+  .hero .hero-copy h2{
+    max-width:100% !important;
+    font-size:clamp(14px,4.4vw,21px) !important;
+    line-height:1.1 !important;
+    padding:5px 10px !important;
+    margin:5px 0 !important;
+  }
+
+  .hero .hero-copy p{
+    max-width:100% !important;
+    font-size:10px !important;
+    line-height:1.2 !important;
+    overflow-wrap:anywhere !important;
+  }
+
+  /* ---------- RELÓGIO ---------- */
+  .magic-clock-wrap{
+    position:absolute !important;
+    right:5px !important;
+    left:auto !important;
+    top:7px !important;
+    width:104px !important;
+    height:120px !important;
+    max-width:none !important;
+    transform:none !important;
+    z-index:4 !important;
+  }
+
+  .magic-clock{
+    width:88px !important;
+    height:88px !important;
+  }
+
+  /* ---------- NAVEGAÇÃO ----------
+     Em vez de deixar os nomes atravessarem a tela,
+     os botões ocupam duas colunas e podem quebrar em 2 linhas. */
+  body > nav.nav,
+  nav.nav{
+    position:sticky !important;
+    top:0 !important;
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    align-items:stretch !important;
+    justify-content:stretch !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    margin:0 !important;
+    padding:7px !important;
+    gap:6px !important;
+    overflow:visible !important;
+    border-radius:0 !important;
+    box-sizing:border-box !important;
+  }
+
+  body > nav.nav button,
+  nav.nav button{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    min-height:46px !important;
+    height:auto !important;
+    flex:none !important;
+    padding:8px 6px !important;
+    margin:0 !important;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+    word-break:normal !important;
+    text-align:center !important;
+    line-height:1.12 !important;
+    font-size:clamp(12px,3.4vw,15px) !important;
+  }
+
+  /* ---------- ÁREA PRINCIPAL ---------- */
+  body > main.shell,
+  main.shell{
+    display:block !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    margin:8px 0 !important;
+    padding:0 6px !important;
+    box-sizing:border-box !important;
+    overflow:visible !important;
+  }
+
+  body > main.shell > .side,
+  body > main.shell > .content{
+    display:block !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    margin-left:0 !important;
+    margin-right:0 !important;
+    float:none !important;
+    box-sizing:border-box !important;
+  }
+
+  body > main.shell > .content{
+    padding:10px !important;
+    overflow:hidden !important;
+  }
+
+  body.recipes-active > main.shell,
+  body.pets-active > main.shell{
+    grid-template-columns:1fr !important;
+  }
+
+  #app,
+  #app > *,
+  .home-panel,
+  .animals-panel,
+  .about-credits,
+  .extras-social-wrap,
+  .home-hero-image,
+  .animals-image-frame{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    box-sizing:border-box !important;
+  }
+
+  img,iframe,video,canvas,svg{
+    max-width:100% !important;
+  }
+
+  .home-hero-image img,
+  .animals-image-frame img,
+  .extras-social-wrap img{
+    display:block !important;
+    width:100% !important;
+    max-width:100% !important;
+    height:auto !important;
+  }
+
+  /* ---------- TÍTULOS / PESQUISA ---------- */
+  .title-row{
+    display:flex !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    flex-wrap:wrap !important;
+    gap:8px !important;
+  }
+
+  .recipe-title-block{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    flex:1 1 100% !important;
+  }
+
+  .title-row h2{
+    max-width:100% !important;
+    font-size:clamp(22px,7vw,29px) !important;
+    line-height:1.12 !important;
+    overflow-wrap:anywhere !important;
+  }
+
+  .subtitle{
+    max-width:100% !important;
+    font-size:14px !important;
+    line-height:1.35 !important;
+  }
+
+  .recipe-translate-image{
+    width:100% !important;
+    max-width:100% !important;
+    flex:1 1 100% !important;
+    height:auto !important;
+    aspect-ratio:380 / 227 !important;
+    margin:0 !important;
+  }
+
+  .controls,
+  .pets-controls{
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    gap:7px !important;
+    padding:9px !important;
+  }
+
+  .controls input,
+  .controls select,
+  .pets-controls input,
+  .pets-controls select{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    grid-column:auto !important;
+    height:42px !important;
+  }
+
+  /* ---------- CARDS ---------- */
+  .grid,
+  .pet-grid{
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    gap:10px !important;
+  }
+
+  .card,
+  .pet-card{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+  }
+
+  .card h3,
+  .pet-card h3,
+  .meta,
+  .ing,
+  .badge{
+    max-width:100% !important;
+    overflow-wrap:anywhere !important;
+  }
+
+  /* ---------- SPOTIFY ---------- */
+  #spotify-player-widget{
+    position:fixed !important;
+    left:10px !important;
+    right:10px !important;
+    bottom:10px !important;
+    width:auto !important;
+    max-width:none !important;
+    box-sizing:border-box !important;
+  }
+
+  #spotify-player-widget iframe{
+    display:block !important;
+    width:100% !important;
+    max-width:100% !important;
+  }
+
+  /* ---------- MODAIS / TABELAS ---------- */
+  .modal{
+    width:100% !important;
+    max-width:none !important;
+    padding:7px !important;
+  }
+
+  .modal-box{
+    width:100% !important;
+    max-width:none !important;
+    min-width:0 !important;
+    padding:14px !important;
+  }
+
+  .table-wrap,
+  .recipe-table,
+  .wiki-table{
+    max-width:100% !important;
+    overflow-x:auto !important;
+    -webkit-overflow-scrolling:touch;
+  }
+}
+
+/* Celular em modo horizontal: mais espaço para o menu,
+   sem voltar ao layout de desktop. */
+@media screen and (max-width:900px) and (orientation:landscape){
+  body > .hero,
+  header.hero{
+    height:220px !important;
+    min-height:220px !important;
+  }
+
+  body > nav.nav,
+  nav.nav{
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  }
+
+  body > nav.nav button,
+  nav.nav button{
+    min-height:42px !important;
+    font-size:13px !important;
+  }
+
+  .magic-clock-wrap{
+    transform:scale(.82) !important;
+    transform-origin:top right !important;
+    right:4px !important;
+    top:5px !important;
+  }
+
+  body > main.shell,
+  main.shell{
+    margin-top:6px !important;
+  }
+}
+
+/* Telefones muito estreitos. */
+@media screen and (max-width:360px){
+  body > .hero,
+  header.hero{
+    height:245px !important;
+    min-height:245px !important;
+  }
+
+  body > nav.nav,
+  nav.nav{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:5px !important;
+    padding:6px !important;
+  }
+
+  body > nav.nav button,
+  nav.nav button{
+    min-height:43px !important;
+    padding:7px 5px !important;
+    font-size:12px !important;
+  }
+
+  body > main.shell,
+  main.shell{
+    padding-left:4px !important;
+    padding-right:4px !important;
+  }
+}
+</style>
+
 </head>
 
 <body>
