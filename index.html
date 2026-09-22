@@ -15,7 +15,15 @@
 <meta name="twitter:title" content="Dreamlight Valley — Guia Completo">
 <meta name="twitter:description" content="Guia pessoal de consulta de Dreamlight Valley com receitas, animais, favoritos e dicas.">
 <link rel="canonical" href="./">
-<link rel="manifest" href="manifest.json">
+
+<script>
+if (location.protocol === 'http:' || location.protocol === 'https:') {
+  const manifestLink = document.createElement('link');
+  manifestLink.rel = 'manifest';
+  manifestLink.href = 'manifest.json';
+  document.head.appendChild(manifestLink);
+}
+</script>
 <link rel="icon" href="assets/favicon-heart.svg" type="image/svg+xml">
 <title>Dreamlight Valley — Guia Completo</title>
 <style>
@@ -1238,27 +1246,10 @@ function assignPortugueseRows(rows){
   return assigned;
 }
 async function fetchPortugueseMealRows(){
-  const res=await fetch('https://www.mydreamlightvalley.com/pt/meal/',{mode:'cors',cache:'no-store'});
-  if(!res.ok) throw new Error('HTTP '+res.status);
-  const html=await res.text();
-  const doc=new DOMParser().parseFromString(html,'text/html');
-  const tables=[...doc.querySelectorAll('table')];
-  const table=tables.find(t=>/Nome/i.test(t.innerText)&&/Estrelas/i.test(t.innerText)&&/Ingredientes/i.test(t.innerText));
-  if(!table) throw new Error('Tabela portuguesa de refeições não encontrada.');
-  const rows=[];
-  for(const tr of table.querySelectorAll('tr')){
-    const cells=[...tr.querySelectorAll('th,td')].map(x=>(x.innerText||'').trim());
-    if(cells.length<8 || !/^world_/.test(cells[1]||'')) continue;
-    const links=[...tr.querySelectorAll('a')];
-    const name=(links[0]?.innerText||cells[3]||'').trim();
-    const stars=Number(cells[5])||0;
-    const price=cleanPtNumber(cells[6]);
-    const energy=cleanPtNumber(cells[7]);
-    const type=cells[4]||'';
-    if(name) rows.push({world:cells[1],name,stars,price,energy,type});
-  }
-  if(rows.length<300) throw new Error('A fonte portuguesa retornou poucas receitas: '+rows.length);
-  return rows;
+  // A fonte externa mydreamlightvalley.com não permite CORS para este site.
+  // Não fazemos mais a requisição bloqueada; a tradução automática abaixo
+  // continua sendo usada como fallback para os nomes que ainda não possuem tradução.
+  return [];
 }
 async function googleTranslateNameBatch(names){
   const q=names.join('\n');
@@ -1595,7 +1586,7 @@ document.querySelectorAll('#mainNav button').forEach(b=>b.onclick=()=>{
       const app=document.querySelector('#app');
       if(app){
         app.insertAdjacentHTML('afterbegin', `<div class="translation-tip">
-          <img src="${data}" alt="Instruções para traduzir as receitas para o seu idioma">
+          <img src="assets/embedded-284646185d8e.webp" alt="Instruções para traduzir as receitas para o seu idioma">
         </div>`);
       }
       return
