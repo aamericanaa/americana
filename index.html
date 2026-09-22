@@ -907,344 +907,6 @@ body.pets-active .pets-side{display:block}
   @media (max-width:700px){.content{min-width:0}.grid{grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr))}.title-row{min-width:0}.recipe-translate-image{max-width:100%}.magic-clock-wrap{max-width:100vw}.modal{padding:10px}.modal-box{max-height:94vh}}
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.nav button,.side button,.card,.close,.offline-btn{transition:none!important}.nav button:hover,.side button:hover,.card:hover,.close:hover,.offline-btn:hover{transform:none!important}.weather-canvas,.magic-clock-wrap{animation:none!important}}
 </style>
-<style>
-
-/* =========================================================
-   CORREÇÃO RESPONSIVA MOBILE — 320px a 430px
-   Mantém conteúdo, imagens e JavaScript; ajusta somente layout.
-   ========================================================= */
-html, body{
-  width:100%;
-  max-width:100%;
-  min-width:0;
-  overflow-x:hidden !important;
-}
-body{
-  -webkit-text-size-adjust:100%;
-  text-size-adjust:100%;
-}
-*, *::before, *::after{box-sizing:border-box;max-width:100%;}
-
-@media (max-width:700px){
-  /* Cabeçalho */
-  .hero{
-    width:100% !important;
-    min-height:270px !important;
-    height:270px !important;
-    overflow:hidden !important;
-    background-position:center center !important;
-  }
-  .hero .hero-copy{
-    position:absolute !important;
-    left:50% !important;
-    top:52% !important;
-    width:86% !important;
-    max-width:86% !important;
-    transform:translate(-50%,-50%) !important;
-    margin:0 !important;
-    text-align:center !important;
-    opacity:1 !important;
-  }
-  .hero .hero-copy h1{
-    position:static !important;
-    width:100% !important;
-    max-width:100% !important;
-    font-size:clamp(22px,7vw,34px) !important;
-    line-height:1 !important;
-    letter-spacing:1px !important;
-    margin:0 0 7px !important;
-  }
-  .hero .hero-copy h2{
-    display:inline-block !important;
-    max-width:100% !important;
-    font-size:clamp(17px,5.2vw,25px) !important;
-    line-height:1.1 !important;
-    padding:6px 12px !important;
-    margin:0 0 7px !important;
-  }
-  .hero .hero-copy p{
-    font-size:clamp(9px,2.8vw,13px) !important;
-    line-height:1.25 !important;
-    letter-spacing:1px !important;
-  }
-  .hero-banner-logo{
-    width:min(230px,58vw) !important;
-    max-height:58px !important;
-    bottom:7px !important;
-  }
-
-  /* Relógio: não ocupa a largura do conteúdo e não empurra nada */
-  .magic-clock-wrap{
-    right:7px !important;
-    top:9px !important;
-    transform:scale(.72) !important;
-    transform-origin:top right !important;
-    width:82.5px !important;
-    height:97.5px !important;
-  }
-
-  /* Navegação: rolagem horizontal real no celular */
-  .nav{
-    width:calc(100% - 10px) !important;
-    max-width:none !important;
-    margin:7px 5px !important;
-    padding:7px 8px !important;
-    display:flex !important;
-    flex-wrap:nowrap !important;
-    overflow-x:auto !important;
-    overflow-y:hidden !important;
-    -webkit-overflow-scrolling:touch;
-    scrollbar-width:thin;
-    border-radius:18px !important;
-  }
-  .nav button{
-    flex:0 0 auto !important;
-    min-height:42px !important;
-    padding:10px 13px !important;
-    font-size:14px !important;
-    white-space:nowrap !important;
-  }
-
-  /* Estrutura principal */
-  .shell,
-  body.recipes-active .shell,
-  body.pets-active .shell{
-    width:100% !important;
-    max-width:none !important;
-    display:grid !important;
-    grid-template-columns:minmax(0,1fr) !important;
-    gap:10px !important;
-    margin:8px 0 !important;
-    padding:0 7px !important;
-  }
-  .side{
-    width:100% !important;
-    max-width:100% !important;
-    position:static !important;
-    padding:10px !important;
-    overflow:hidden !important;
-  }
-  .content{
-    width:100% !important;
-    max-width:100% !important;
-    min-width:0 !important;
-    min-height:0 !important;
-    padding:11px !important;
-    border-radius:16px !important;
-    overflow:hidden !important;
-  }
-
-  /* Títulos */
-  .title-row{
-    width:100% !important;
-    min-width:0 !important;
-    display:flex !important;
-    flex-direction:column !important;
-    align-items:stretch !important;
-    gap:8px !important;
-  }
-  .title-row h2{
-    font-size:clamp(24px,7vw,30px) !important;
-    line-height:1.05 !important;
-    overflow-wrap:anywhere !important;
-  }
-  .subtitle{
-    font-size:14px !important;
-    line-height:1.35 !important;
-  }
-
-  /* Busca e filtros */
-  .controls,
-  .pets-controls{
-    width:100% !important;
-    min-width:0 !important;
-    grid-template-columns:minmax(0,1fr) !important;
-    gap:8px !important;
-    padding:9px !important;
-  }
-  .controls input,
-  .controls select,
-  .pets-controls input,
-  .pets-controls select{
-    width:100% !important;
-    min-width:0 !important;
-    max-width:100% !important;
-    font-size:16px !important;
-    padding:10px !important;
-  }
-  .controls input{grid-column:auto !important;}
-
-  /* Cards: uma coluna no celular, sem largura mínima que cause "espremido" */
-  .grid{
-    width:100% !important;
-    min-width:0 !important;
-    grid-template-columns:minmax(0,1fr) !important;
-    gap:10px !important;
-  }
-  .card,
-  .pet-card{
-    width:100% !important;
-    min-width:0 !important;
-    max-width:100% !important;
-    padding:10px !important;
-    overflow:hidden !important;
-  }
-  .card h3,
-  .pet-card h3{
-    font-size:18px !important;
-    line-height:1.15 !important;
-    overflow-wrap:anywhere !important;
-  }
-  .card .pic{
-    height:105px !important;
-  }
-  .pet-pic{
-    height:155px !important;
-  }
-  .meta,
-  .pet-meta{
-    min-width:0 !important;
-    overflow-wrap:anywhere !important;
-  }
-
-  /* Grade de dias dos pets cabe em 320px */
-  .pet-days{
-    width:100% !important;
-    grid-template-columns:repeat(7,minmax(0,1fr)) !important;
-    gap:2px !important;
-  }
-  .pet-day{
-    min-width:0 !important;
-    padding:4px 1px !important;
-    font-size:8px !important;
-    overflow:hidden !important;
-  }
-  .pet-day b{
-    font-size:7px !important;
-    overflow:hidden !important;
-  }
-
-  /* Imagens internas */
-  .home-panel,
-  .home-hero-image,
-  .animals-panel,
-  .animals-image-frame,
-  .extras-social-wrap,
-  .translation-tip{
-    width:100% !important;
-    max-width:100% !important;
-    min-width:0 !important;
-  }
-  .home-hero-image img,
-  .animals-image-frame img,
-  .extras-social-wrap img,
-  .translation-tip img{
-    width:100% !important;
-    max-width:100% !important;
-    height:auto !important;
-  }
-
-  /* Imagem de tradução das receitas */
-  .recipe-title-block{
-    width:100% !important;
-    min-width:0 !important;
-  }
-  .recipe-translate-image{
-    width:100% !important;
-    max-width:100% !important;
-    flex:0 0 auto !important;
-    height:auto !important;
-    max-height:190px !important;
-    margin:0 !important;
-    justify-content:center !important;
-  }
-  .recipe-translate-image img{
-    width:100% !important;
-    height:auto !important;
-    max-height:190px !important;
-  }
-
-  /* Modal */
-  .modal{
-    padding:8px !important;
-  }
-  .modal-box{
-    width:100% !important;
-    max-width:100% !important;
-    max-height:92vh !important;
-    padding:14px !important;
-    border-radius:18px !important;
-  }
-
-  .empty{
-    padding:28px 12px !important;
-    overflow-wrap:anywhere !important;
-  }
-  .notice{
-    overflow-wrap:anywhere !important;
-  }
-  .footer{
-    padding:20px 10px !important;
-    font-size:13px !important;
-    overflow-wrap:anywhere !important;
-  }
-
-  /* Dicas/Extras: links continuam proporcionais à arte */
-  .extras-social-wrap{
-    overflow:hidden !important;
-  }
-}
-
-@media (max-width:430px){
-  .hero{
-    min-height:245px !important;
-    height:245px !important;
-  }
-  .hero .hero-copy{
-    top:53% !important;
-    width:90% !important;
-  }
-  .hero .hero-copy h1{
-    font-size:clamp(20px,7vw,30px) !important;
-  }
-  .hero .hero-copy h2{
-    font-size:clamp(16px,5vw,23px) !important;
-  }
-  .hero-banner-logo{
-    width:min(205px,56vw) !important;
-    max-height:52px !important;
-  }
-  .content{
-    padding:9px !important;
-  }
-  .controls,
-  .pets-controls{
-    padding:8px !important;
-  }
-}
-
-@media (max-width:350px){
-  .hero{
-    min-height:225px !important;
-    height:225px !important;
-  }
-  .nav button{
-    font-size:13px !important;
-    padding:9px 11px !important;
-  }
-  .content{
-    padding:8px !important;
-  }
-  .card,
-  .pet-card{
-    padding:8px !important;
-  }
-  .pet-pic{
-    height:140px !important;
-  }
-}
-
-</style>
 </head>
 
 <body>
@@ -2306,5 +1968,147 @@ fetchWiki().catch(err=>{
   }
 })();
 </script>
+<style id="mobile-hard-fix-v3">
+/* =========================================================
+   MOBILE HARD FIX — 320–430px
+   Mantém o desktop intacto e força todos os containers principais
+   a respeitarem a largura real da tela.
+   ========================================================= */
+@media (max-width:700px){
+  html, body{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    margin:0 !important;
+    padding:0 !important;
+    overflow-x:hidden !important;
+  }
+  body > *{
+    max-width:100% !important;
+  }
+  .hero{
+    display:block !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    height:260px !important;
+    min-height:260px !important;
+    margin:0 !important;
+    padding:0 !important;
+    overflow:hidden !important;
+    background-size:cover !important;
+    background-position:center 28% !important;
+  }
+  .hero-banner-logo{
+    max-width:70% !important;
+    width:230px !important;
+    height:auto !important;
+  }
+  .hero-copy{
+    left:50% !important;
+    width:92% !important;
+    max-width:92% !important;
+  }
+  .magic-clock-wrap{
+    right:6px !important;
+    left:auto !important;
+    width:92px !important;
+    height:108px !important;
+    transform:none !important;
+    top:8px !important;
+  }
+  .magic-clock{
+    width:82px !important;
+    height:82px !important;
+  }
+  .mc-time-panel{width:105px !important;bottom:-21px !important}
+  .mc-time{font-size:17px !important}
+  .mc-date,.mc-status{font-size:6px !important}
+
+  .nav{
+    display:flex !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    margin:0 !important;
+    padding:7px 8px !important;
+    gap:6px !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    -webkit-overflow-scrolling:touch !important;
+    scrollbar-width:none !important;
+    box-sizing:border-box !important;
+  }
+  .nav::-webkit-scrollbar{display:none !important}
+  .nav button{
+    flex:0 0 auto !important;
+    width:auto !important;
+    min-width:0 !important;
+    max-width:none !important;
+    white-space:nowrap !important;
+    padding:11px 16px !important;
+    font-size:15px !important;
+  }
+
+  .shell,
+  body.recipes-active .shell,
+  body.pets-active .shell{
+    display:block !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    margin:10px 0 !important;
+    padding:0 8px !important;
+    box-sizing:border-box !important;
+  }
+  .side,
+  .content{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    box-sizing:border-box !important;
+  }
+  .content{padding:12px !important}
+  .grid{grid-template-columns:1fr !important}
+  .controls,.pets-controls{
+    width:100% !important;
+    min-width:0 !important;
+    grid-template-columns:1fr !important;
+  }
+  .controls input,.controls select,.pets-controls input,.pets-controls select{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+  }
+  .title-row{width:100% !important;min-width:0 !important}
+  .recipe-translate-image{
+    width:100% !important;
+    max-width:100% !important;
+    flex:0 1 100% !important;
+    margin:0 !important;
+  }
+  .card,.pet-card{min-width:0 !important;max-width:100% !important}
+  .modal{width:100vw !important;max-width:100vw !important;padding:8px !important}
+  .modal-box{width:100% !important;max-width:100% !important;box-sizing:border-box !important;padding:15px !important}
+  #spotify-player-widget{
+    right:8px !important;
+    left:8px !important;
+    bottom:8px !important;
+    width:auto !important;
+    max-width:none !important;
+    box-sizing:border-box !important;
+  }
+  #spotify-player-widget iframe{width:100% !important}
+}
+
+@media (max-width:430px){
+  .hero{height:230px !important;min-height:230px !important}
+  .hero-banner-logo{width:190px !important;max-width:62% !important}
+  .nav button{font-size:14px !important;padding:10px 14px !important}
+  .content{padding:10px !important}
+  .title-row h2{font-size:24px !important}
+}
+</style>
+
 </body>
 </html>
