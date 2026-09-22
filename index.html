@@ -2109,6 +2109,20 @@ fetchWiki().catch(err=>{
   .title-row h2{font-size:24px !important}
 }
 </style>
+<style id="mobile-final-v4">
+/* Correção final para 320–430px: o site ocupa a viewport inteira. */
+@media (max-width:700px){
+  html, body { width:100% !important; min-width:0 !important; max-width:none !important; overflow-x:hidden !important; }
+  body { margin:0 !important; }
+  .hero, .nav, .shell, .footer { width:100% !important; max-width:none !important; min-width:0 !important; }
+  .hero { box-sizing:border-box !important; }
+  .nav { box-sizing:border-box !important; }
+  .shell { box-sizing:border-box !important; padding-left:8px !important; padding-right:8px !important; }
+  .content, .side, #app { width:100% !important; min-width:0 !important; max-width:none !important; box-sizing:border-box !important; }
+  .grid { width:100% !important; min-width:0 !important; }
+  img, iframe { max-width:100% !important; }
+}
+</style>
 
 </body>
 </html>
