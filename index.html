@@ -907,995 +907,344 @@ body.pets-active .pets-side{display:block}
   @media (max-width:700px){.content{min-width:0}.grid{grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr))}.title-row{min-width:0}.recipe-translate-image{max-width:100%}.magic-clock-wrap{max-width:100vw}.modal{padding:10px}.modal-box{max-height:94vh}}
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.nav button,.side button,.card,.close,.offline-btn{transition:none!important}.nav button:hover,.side button:hover,.card:hover,.close:hover,.offline-btn:hover{transform:none!important}.weather-canvas,.magic-clock-wrap{animation:none!important}}
 </style>
+<style>
 
-<style id="mobile-only-responsiveness-fix">
 /* =========================================================
-   MOBILE ONLY — CORREÇÃO DE RESPONSIVIDADE
-   Não altera a apresentação desktop.
+   CORREÇÃO RESPONSIVA MOBILE — 320px a 430px
+   Mantém conteúdo, imagens e JavaScript; ajusta somente layout.
    ========================================================= */
-@media (max-width: 700px){
-  html, body{
-    width:100%;
-    max-width:100%;
-    min-width:0;
-    overflow-x:hidden !important;
-  }
-
-  #app{
-    width:100%;
-    max-width:100%;
-    min-width:0;
-  }
-
-  .hero,
-  .nav,
-  .shell,
-  .footer{
-    width:100%;
-    max-width:100%;
-    min-width:0;
-  }
-
-  .nav{
-    overflow-x:auto;
-    overflow-y:hidden;
-    max-width:100vw;
-    -webkit-overflow-scrolling:touch;
-    scrollbar-width:none;
-  }
-  .nav::-webkit-scrollbar{display:none}
-  .nav button{flex:0 0 auto;white-space:nowrap}
-
-  /* O seletor específico do modo receitas precisa ser sobrescrito
-     porque ele é mais específico que .shell. */
-  body.recipes-active .shell,
-  body.pets-active .shell{
-    grid-template-columns:minmax(0,1fr) !important;
-    width:100%;
-    max-width:100%;
-  }
-
-  .shell{
-    margin-left:0;
-    margin-right:0;
-    padding-left:8px;
-    padding-right:8px;
-    gap:10px;
-  }
-
-  .side,
-  .content{
-    width:100%;
-    min-width:0 !important;
-    max-width:100%;
-  }
-
-  .content{padding:12px;overflow:hidden}
-  .side{padding:12px}
-
-  .title-row{
-    width:100%;
-    min-width:0 !important;
-    max-width:100%;
-    align-items:flex-start;
-  }
-  .recipe-title-block{
-    min-width:0 !important;
-    max-width:100%;
-    flex:1 1 100%;
-  }
-
-  /* A imagem de instruções não pode manter os 320px fixos
-     em celulares de 320px, pois isso cria overflow horizontal. */
-  .recipe-translate-image{
-    width:min(320px,100%) !important;
-    max-width:100% !important;
-    flex:0 1 min(320px,100%) !important;
-    height:auto !important;
-    aspect-ratio:380 / 227;
-    margin-left:auto;
-    margin-right:0;
-  }
-  .recipe-translate-image img{
-    max-width:100% !important;
-    height:100% !important;
-  }
-
-  .controls,
-  .pets-controls{
-    width:100%;
-    min-width:0;
-    max-width:100%;
-  }
-
-  .controls input,
-  .controls select,
-  .pets-controls input,
-  .pets-controls select{
-    min-width:0;
-    max-width:100%;
-  }
-
-  .grid{
-    width:100%;
-    min-width:0;
-    grid-template-columns:minmax(0,1fr) !important;
-  }
-  .card{
-    width:100%;
-    min-width:0;
-    max-width:100%;
-  }
-
-  .card h3,
-  .card p,
-  .meta,
-  .ing,
-  .badge{
-    overflow-wrap:anywhere;
-    word-break:normal;
-  }
-
-  img, iframe, video, canvas, svg{
-    max-width:100%;
-  }
-
-  #spotify-player-widget{
-    width:calc(100vw - 20px) !important;
-    max-width:300px;
-    right:10px !important;
-    left:auto !important;
-  }
-
-  #magicClockControls{
-    max-width:calc(100vw - 20px);
-  }
-
-  .modal{
-    width:100%;
-    max-width:100%;
-    padding:10px;
-  }
-  .modal-box{
-    width:100%;
-    min-width:0;
-    max-width:100%;
-  }
+html, body{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  overflow-x:hidden !important;
 }
-
-@media (max-width: 380px){
-  .shell{padding-left:6px;padding-right:6px}
-  .content{padding:10px}
-  .side{padding:10px}
-  .title-row h2{font-size:25px}
-  .nav{gap:5px;padding-left:6px;padding-right:6px}
-  .nav button{padding:11px 14px;font-size:13px}
+body{
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
 }
-</style>
+*, *::before, *::after{box-sizing:border-box;max-width:100%;}
 
-
-<style id="mobile-viewport-final-fix">
-/* =========================================================
-   CORREÇÃO FINAL — SOMENTE CELULAR
-   Força os blocos principais a ocupar a viewport inteira.
-   Não afeta desktop.
-   ========================================================= */
 @media (max-width:700px){
-  html, body{
-    width:100vw !important;
-    min-width:100vw !important;
-    max-width:100vw !important;
-    margin:0 !important;
-    padding:0 !important;
-    overflow-x:hidden !important;
-    box-sizing:border-box !important;
-  }
-  *, *::before, *::after{box-sizing:border-box;}
-
-  body > header.hero,
-  body > nav.nav,
-  body > main.shell,
-  body > footer.footer{
-    width:100vw !important;
-    max-width:100vw !important;
-    min-width:0 !important;
-    margin-left:0 !important;
-    margin-right:0 !important;
-    box-sizing:border-box !important;
-  }
-
-  body > header.hero{
+  /* Cabeçalho */
+  .hero{
+    width:100% !important;
+    min-height:270px !important;
+    height:270px !important;
     overflow:hidden !important;
-  }
-
-  body > nav.nav{
-    overflow-x:auto !important;
-    overflow-y:hidden !important;
-    -webkit-overflow-scrolling:touch;
-    scrollbar-width:none;
-    display:flex !important;
-    flex-wrap:nowrap !important;
-  }
-  body > nav.nav::-webkit-scrollbar{display:none !important;}
-  body > nav.nav button{
-    flex:0 0 auto !important;
-    white-space:nowrap !important;
-  }
-
-  body > main.shell{
-    display:grid !important;
-    grid-template-columns:minmax(0,1fr) !important;
-    gap:10px !important;
-    padding-left:8px !important;
-    padding-right:8px !important;
-  }
-
-  body > main.shell > .side,
-  body > main.shell > .content{
-    width:100% !important;
-    min-width:0 !important;
-    max-width:100% !important;
-  }
-
-  body > main.shell > .content{
-    overflow:hidden !important;
-  }
-
-  #app,
-  .home-panel,
-  .animals-panel,
-  .extras-social-wrap,
-  .about-credits{
-    width:100% !important;
-    min-width:0 !important;
-    max-width:100% !important;
-  }
-
-  .home-hero-image,
-  .animals-image-frame{
-    width:100% !important;
-    max-width:100% !important;
-  }
-
-  img, iframe, video, canvas, svg{
-    max-width:100% !important;
-  }
-
-  #spotify-player-widget{
-    width:calc(100vw - 20px) !important;
-    max-width:300px !important;
-    left:auto !important;
-    right:10px !important;
-  }
-
-  /* O painel de receita nunca deve criar uma segunda coluna no celular. */
-  body.recipes-active > main.shell,
-  body.pets-active > main.shell{
-    grid-template-columns:minmax(0,1fr) !important;
-  }
-}
-</style>
-
-<style id="mobile-final-stability-fix">
-/* ===== RESPONSIVIDADE MOBILE FINAL =====
-   Somente telas de celular (até 700px). Desktop permanece intacto. */
-@media (max-width:700px){
-  html,body{width:100%;max-width:100%;min-width:0;overflow-x:hidden!important;-webkit-text-size-adjust:100%;}
-  body{background-attachment:scroll!important;}
-  #app, main.shell, .content, .side, section, article, header, nav, footer,
-  .home-panel,.animals-panel,.about-credits,.extras-social-wrap{min-width:0!important;}
-
-  /* Cabeçalho: impede elementos absolutos de escaparem da tela. */
-  header.hero{height:260px!important;min-height:260px!important;width:100%!important;overflow:hidden!important;}
-  .hero-banner-logo{width:min(230px,58vw)!important;max-width:58vw!important;max-height:58px!important;bottom:8px!important;}
-  .hero .hero-copy{left:50%!important;right:auto!important;width:78%!important;max-width:78%!important;top:53%!important;transform:translate(-50%,-50%)!important;opacity:.9!important;}
-  .hero .hero-copy h1{font-size:clamp(19px,6vw,29px)!important;letter-spacing:1px!important;line-height:1!important;white-space:normal!important;}
-  .hero .hero-copy h2{font-size:clamp(14px,4.4vw,21px)!important;padding:5px 12px!important;margin:5px 0!important;}
-  .hero .hero-copy p{font-size:10px!important;letter-spacing:1px!important;}
-
-  /* Relógio: pequeno e contido dentro do banner. */
-  .magic-clock-wrap{right:5px!important;top:8px!important;width:104px!important;height:120px!important;transform:none!important;}
-  .magic-clock{width:88px!important;height:88px!important;border-width:2px!important;}
-  .magic-clock::before{inset:5px!important}.magic-clock::after{inset:-6px!important}
-  .mc-sky{inset:10px!important}.mc-moon{top:10px!important;font-size:25px!important}
-  .mc-title{top:7px!important;font-size:5px!important;letter-spacing:.5px!important}
-  .mc-star{font-size:5px!important}.mc-cloud{bottom:9px!important;height:26px!important}
-  .mc-cloud::before{width:48px!important;height:30px!important;left:13px!important;top:-13px!important}
-  .mc-cloud::after{width:40px!important;height:24px!important;right:10px!important;top:-9px!important}
-  .mc-castle{bottom:15px!important;width:62px!important;height:38px!important;transform:translateX(-50%)!important}
-  .mc-castle::before{left:26px!important;width:10px!important;height:19px!important}
-  .mc-castle::after{top:5px!important;font-size:8px!important}
-  .mc-time-panel{bottom:-27px!important;width:98px!important;padding:4px 3px!important;border-radius:10px!important;border-width:1px!important;}
-  .mc-time{font-size:14px!important;letter-spacing:1px!important}.mc-date{font-size:5px!important;margin-top:2px!important}
-  .mc-status{font-size:4.5px!important;padding:2px 4px!important;margin-top:3px!important;gap:3px!important}
-  .mc-status-dot{width:3px!important;height:3px!important}.mc-hanger{display:none!important}.mc-ornament{top:-10px!important;transform:translateX(-50%) scale(.45)!important;}
-
-  /* Navegação: cabe inteira em uma faixa rolável, sem quebrar a página. */
-  nav.nav{width:100%!important;max-width:100%!important;margin:0!important;border-radius:0!important;padding:7px 6px!important;gap:5px!important;overflow-x:auto!important;overflow-y:hidden!important;}
-  nav.nav button{padding:10px 13px!important;font-size:13px!important;line-height:1.1!important;min-height:38px;white-space:nowrap!important;}
-
-  /* Conteúdo principal. */
-  main.shell{display:block!important;width:100%!important;max-width:100%!important;margin:8px 0!important;padding:0 6px!important;}
-  main.shell>.side, main.shell>.content{width:100%!important;max-width:100%!important;min-width:0!important;}
-  main.shell>.content{padding:10px!important;overflow:hidden!important;border-radius:16px!important;}
-  main.shell>.side{margin-bottom:8px!important;padding:10px!important;}
-  body.recipes-active main.shell, body.pets-active main.shell{display:block!important;grid-template-columns:none!important;}
-
-  .title-row{display:flex!important;width:100%!important;max-width:100%!important;min-width:0!important;gap:8px!important;align-items:flex-start!important;flex-wrap:wrap!important;}
-  .recipe-title-block{width:100%!important;max-width:100%!important;min-width:0!important;flex:1 1 100%!important;}
-  .title-row h2{font-size:25px!important;line-height:1.12!important;overflow-wrap:anywhere!important;}
-  .subtitle{font-size:14px!important;line-height:1.35!important;}
-  .recipe-translate-image{width:100%!important;max-width:100%!important;flex:1 1 100%!important;height:auto!important;aspect-ratio:380/227!important;margin:0!important;}
-
-  /* Pesquisa/filtros: uma coluna para não esmagar os campos. */
-  .controls,.pets-controls{display:grid!important;grid-template-columns:minmax(0,1fr)!important;width:100%!important;max-width:100%!important;padding:9px!important;gap:7px!important;}
-  .controls input,.controls select,.pets-controls input,.pets-controls select{grid-column:auto!important;width:100%!important;min-width:0!important;height:42px!important;font-size:15px!important;}
-  .stats{gap:6px!important}.stat{font-size:12px!important;padding:7px 10px!important;}
-
-  /* Cards e grades. */
-  .grid,.pet-grid{display:grid!important;grid-template-columns:minmax(0,1fr)!important;width:100%!important;max-width:100%!important;min-width:0!important;gap:10px!important;}
-  .card,.pet-card{width:100%!important;max-width:100%!important;min-width:0!important;padding:10px!important;}
-  .card .pic,.pet-pic{max-width:100%!important;overflow:hidden!important;}
-  .card h3,.pet-card h3{font-size:18px!important;overflow-wrap:anywhere!important;}
-  .meta,.ing,.badge{max-width:100%!important;overflow-wrap:anywhere!important;}
-
-  /* Imagens, embeds e tabelas nunca podem aumentar a largura da viewport. */
-  img,iframe,video,canvas,svg,table{max-width:100%!important;}
-  .table-wrap,.recipe-table,.wiki-table{width:100%!important;max-width:100%!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch;}
-
-  /* Páginas ilustradas. */
-  .home-hero-image img{width:100%!important;height:auto!important;max-height:none!important;object-fit:contain!important;}
-  .animals-image-frame img{width:100%!important;height:auto!important;}
-  .extras-social-wrap img{width:100%!important;height:auto!important;}
-  .home-welcome{padding:13px!important;margin:12px auto!important;}
-  .home-welcome h2{font-size:22px!important}.home-welcome p{font-size:14px!important;line-height:1.45!important;}
-
-  /* Modal. */
-  .modal{padding:7px!important;}
-  .modal-box{width:100%!important;max-width:100%!important;max-height:94vh!important;padding:14px!important;border-radius:18px!important;overflow:auto!important;}
-
-  /* Spotify não pode ocupar a tela toda nem sair pela lateral. */
-  #spotify-player-widget{left:10px!important;right:10px!important;bottom:10px!important;width:auto!important;max-width:none!important;}
-  #spotify-player-widget iframe{width:100%!important;max-width:100%!important;}
-
-  /* Controles flutuantes não devem criar overflow horizontal. */
-  #magicClockControls{left:8px!important;right:8px!important;bottom:8px!important;max-width:calc(100vw - 16px)!important;}
-  #magicClockControls .mcc-panel{max-width:205px!important;}
-}
-
-@media (max-width:360px){
-  header.hero{height:235px!important;min-height:235px!important;}
-  .magic-clock-wrap{transform:scale(.88)!important;transform-origin:top right!important;right:2px!important;}
-  .hero .hero-copy{width:72%!important;max-width:72%!important;}
-  nav.nav button{padding:9px 11px!important;font-size:12px!important;}
-  main.shell{padding:0 4px!important;}
-  main.shell>.content{padding:8px!important;}
-  .title-row h2{font-size:23px!important;}
-}
-</style>
-
-
-<style id="mobile-real-layout-fix-v3">
-/* CORREÇÃO REAL DE LAYOUT MOBILE — não altera desktop */
-@media screen and (max-width:700px){
-  html{
-    width:100% !important;
-    min-width:0 !important;
-    max-width:none !important;
-    overflow-x:hidden !important;
-  }
-  body{
-    display:block !important;
-    width:100% !important;
-    min-width:0 !important;
-    max-width:none !important;
-    margin:0 !important;
-    padding:0 !important;
-    overflow-x:hidden !important;
-    position:relative !important;
-  }
-  body > header.hero,
-  body > nav.nav,
-  body > main.shell,
-  body > footer.footer{
-    display:block !important;
-    position:relative !important;
-    float:none !important;
-    clear:both !important;
-    width:100% !important;
-    min-width:0 !important;
-    max-width:none !important;
-    margin-left:0 !important;
-    margin-right:0 !important;
-    left:auto !important;
-    right:auto !important;
-  }
-
-  /* O cabeçalho precisa ser um bloco de largura total.
-     Isso impede que a arte fique presa em uma faixa estreita. */
-  body > header.hero{
-    height:260px !important;
-    min-height:260px !important;
-    max-height:260px !important;
-    padding:0 !important;
-    overflow:hidden !important;
-    background-image:url("assets/embedded-34a611395d90.webp") !important;
-    background-repeat:no-repeat !important;
-    background-size:cover !important;
     background-position:center center !important;
   }
-  body > header.hero .hero-banner-logo{
-    left:50% !important;
-    right:auto !important;
-    width:min(230px,58vw) !important;
-    max-width:58vw !important;
-  }
-  body > header.hero .hero-copy{
-    position:absolute !important;
-    left:50% !important;
-    right:auto !important;
-    width:min(78%,360px) !important;
-    max-width:78% !important;
-    margin:0 !important;
-    transform:translate(-50%,-50%) !important;
-    text-align:center !important;
-  }
-
-  /* Navegação ocupa a viewport; os botões continuam roláveis horizontalmente. */
-  body > nav.nav{
-    display:flex !important;
-    flex-direction:row !important;
-    flex-wrap:nowrap !important;
-    align-items:center !important;
-    justify-content:flex-start !important;
-    gap:6px !important;
-    padding:7px 6px !important;
-    overflow-x:auto !important;
-    overflow-y:hidden !important;
-    -webkit-overflow-scrolling:touch !important;
-    scrollbar-width:none !important;
-    background:rgba(198,55,143,.92) !important;
-  }
-  body > nav.nav::-webkit-scrollbar{display:none !important;}
-  body > nav.nav button{
-    display:block !important;
-    flex:0 0 auto !important;
-    width:auto !important;
-    min-width:max-content !important;
-    max-width:none !important;
-    white-space:nowrap !important;
-  }
-
-  body > main.shell{
-    display:block !important;
-    width:100% !important;
-    min-width:0 !important;
-    max-width:none !important;
-    padding:0 6px !important;
-    margin:8px 0 !important;
-    overflow:visible !important;
-  }
-  body > main.shell > .side,
-  body > main.shell > .content{
-    display:block !important;
-    position:relative !important;
-    width:100% !important;
-    min-width:0 !important;
-    max-width:none !important;
-    margin:0 0 10px !important;
-    float:none !important;
-  }
-  body > main.shell > .content{
-    padding:10px !important;
-    overflow:hidden !important;
-  }
-
-  #app,
-  #app > *,
-  .home-panel,
-  .animals-panel,
-  .about-credits,
-  .extras-social-wrap{
-    display:block !important;
-    width:100% !important;
-    min-width:0 !important;
-    max-width:none !important;
-  }
-
-  .home-hero-image,
-  .animals-image-frame{
-    width:100% !important;
-    min-width:0 !important;
-    max-width:none !important;
-    overflow:hidden !important;
-  }
-  .home-hero-image img,
-  .animals-image-frame img,
-  .extras-social-wrap img{
-    display:block !important;
-    width:100% !important;
-    max-width:100% !important;
-    height:auto !important;
-  }
-
-  .title-row,.controls,.pets-controls,.grid,.pet-grid{
-    width:100% !important;
-    min-width:0 !important;
-    max-width:none !important;
-  }
-  .controls,.pets-controls{grid-template-columns:minmax(0,1fr) !important;}
-  .controls input,.controls select,.pets-controls input,.pets-controls select{
-    width:100% !important;
-    min-width:0 !important;
-    max-width:none !important;
-  }
-  .grid,.pet-grid{grid-template-columns:minmax(0,1fr) !important;}
-  .card,.pet-card{width:100% !important;min-width:0 !important;max-width:none !important;}
-
-  /* Elementos fixos não podem alterar a largura do documento. */
-  #spotify-player-widget{
-    position:fixed !important;
-    left:10px !important;
-    right:10px !important;
-    bottom:10px !important;
-    width:auto !important;
-    max-width:none !important;
-  }
-  #spotify-player-widget iframe{width:100% !important;max-width:100% !important;}
-  .magic-clock-wrap{max-width:120px !important;overflow:visible !important;}
-
-  img,iframe,video,canvas,svg{max-width:100% !important;}
-}
-@media screen and (max-width:380px){
-  body > header.hero{height:235px !important;min-height:235px !important;max-height:235px !important;}
-  body > nav.nav button{padding:9px 11px !important;font-size:12px !important;}
-  body > main.shell{padding-left:4px !important;padding-right:4px !important;}
-}
-</style>
-
-
-<style id="mobile-responsive-final-v4">
-/* =========================================================
-   MOBILE RESPONSIVE FINAL V4
-   Corrige o layout real do celular sem alterar o desktop.
-   - Sem largura fixa de desktop no celular
-   - Banner ocupa a viewport inteira
-   - Menu vira grade no celular (sem botões espremidos/rolagem lateral)
-   - Landscape recebe uma grade de 3 colunas
-   ========================================================= */
-
-@media screen and (max-width:700px){
-  html{
-    width:100% !important;
-    min-width:0 !important;
-    max-width:none !important;
-    overflow-x:clip !important;
-    -webkit-text-size-adjust:100%;
-  }
-
-  body{
-    width:100% !important;
-    min-width:0 !important;
-    max-width:none !important;
-    margin:0 !important;
-    padding:0 !important;
-    overflow-x:clip !important;
-    background-attachment:scroll !important;
-  }
-
-  /* ---------- BANNER ---------- */
-  body > .hero,
-  header.hero{
-    position:relative !important;
-    display:block !important;
-    width:100% !important;
-    min-width:0 !important;
-    max-width:none !important;
-    height:280px !important;
-    min-height:280px !important;
-    max-height:none !important;
-    margin:0 !important;
-    padding:0 !important;
-    overflow:hidden !important;
-    background-image:none !important;
-    background-color:#f9d9ed !important;
-  }
-
-  /* Usa uma camada própria para a arte. Isso evita o recorte
-     estreito que pode ocorrer com background em alguns browsers móveis. */
-  body > .hero::before,
-  header.hero::before{
-    content:"" !important;
-    position:absolute !important;
-    inset:0 !important;
-    display:block !important;
-    pointer-events:none !important;
-    background-image:url("assets/embedded-34a611395d90.webp") !important;
-    background-repeat:no-repeat !important;
-    background-size:cover !important;
-    background-position:center 20% !important;
-    z-index:0 !important;
-  }
-
-  body > .hero::after,
-  header.hero::after{
-    content:"" !important;
-    position:absolute !important;
-    inset:0 !important;
-    pointer-events:none !important;
-    background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(177,25,119,.10)) !important;
-    z-index:1 !important;
-  }
-
-  body > .hero > *{
-    position:relative;
-    z-index:2;
-  }
-
-  .hero-banner-logo{
-    position:absolute !important;
-    left:50% !important;
-    right:auto !important;
-    bottom:8px !important;
-    transform:translateX(-50%) !important;
-    width:min(230px,58vw) !important;
-    max-width:58vw !important;
-    max-height:58px !important;
-    height:auto !important;
-    object-fit:contain !important;
-  }
-
   .hero .hero-copy{
     position:absolute !important;
     left:50% !important;
-    right:auto !important;
-    top:54% !important;
-    width:min(78%,360px) !important;
-    max-width:78% !important;
-    min-width:0 !important;
-    margin:0 !important;
+    top:52% !important;
+    width:86% !important;
+    max-width:86% !important;
     transform:translate(-50%,-50%) !important;
+    margin:0 !important;
     text-align:center !important;
-    z-index:3 !important;
+    opacity:1 !important;
   }
-
   .hero .hero-copy h1{
+    position:static !important;
+    width:100% !important;
     max-width:100% !important;
-    white-space:normal !important;
-    overflow-wrap:anywhere !important;
-    font-size:clamp(19px,6vw,29px) !important;
-    line-height:1.05 !important;
+    font-size:clamp(22px,7vw,34px) !important;
+    line-height:1 !important;
+    letter-spacing:1px !important;
+    margin:0 0 7px !important;
   }
-
   .hero .hero-copy h2{
+    display:inline-block !important;
     max-width:100% !important;
-    font-size:clamp(14px,4.4vw,21px) !important;
+    font-size:clamp(17px,5.2vw,25px) !important;
     line-height:1.1 !important;
-    padding:5px 10px !important;
-    margin:5px 0 !important;
+    padding:6px 12px !important;
+    margin:0 0 7px !important;
   }
-
   .hero .hero-copy p{
-    max-width:100% !important;
-    font-size:10px !important;
-    line-height:1.2 !important;
-    overflow-wrap:anywhere !important;
+    font-size:clamp(9px,2.8vw,13px) !important;
+    line-height:1.25 !important;
+    letter-spacing:1px !important;
+  }
+  .hero-banner-logo{
+    width:min(230px,58vw) !important;
+    max-height:58px !important;
+    bottom:7px !important;
   }
 
-  /* ---------- RELÓGIO ---------- */
+  /* Relógio: não ocupa a largura do conteúdo e não empurra nada */
   .magic-clock-wrap{
-    position:absolute !important;
-    right:5px !important;
-    left:auto !important;
-    top:7px !important;
-    width:104px !important;
-    height:120px !important;
+    right:7px !important;
+    top:9px !important;
+    transform:scale(.72) !important;
+    transform-origin:top right !important;
+    width:82.5px !important;
+    height:97.5px !important;
+  }
+
+  /* Navegação: rolagem horizontal real no celular */
+  .nav{
+    width:calc(100% - 10px) !important;
     max-width:none !important;
-    transform:none !important;
-    z-index:4 !important;
-  }
-
-  .magic-clock{
-    width:88px !important;
-    height:88px !important;
-  }
-
-  /* ---------- NAVEGAÇÃO ----------
-     Em vez de deixar os nomes atravessarem a tela,
-     os botões ocupam duas colunas e podem quebrar em 2 linhas. */
-  body > nav.nav,
-  nav.nav{
-    position:sticky !important;
-    top:0 !important;
-    display:grid !important;
-    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
-    align-items:stretch !important;
-    justify-content:stretch !important;
-    width:100% !important;
-    min-width:0 !important;
-    max-width:none !important;
-    margin:0 !important;
-    padding:7px !important;
-    gap:6px !important;
-    overflow:visible !important;
-    border-radius:0 !important;
-    box-sizing:border-box !important;
-  }
-
-  body > nav.nav button,
-  nav.nav button{
+    margin:7px 5px !important;
+    padding:7px 8px !important;
     display:flex !important;
-    align-items:center !important;
-    justify-content:center !important;
-    width:100% !important;
-    min-width:0 !important;
-    max-width:none !important;
-    min-height:46px !important;
-    height:auto !important;
-    flex:none !important;
-    padding:8px 6px !important;
-    margin:0 !important;
-    white-space:normal !important;
-    overflow-wrap:anywhere !important;
-    word-break:normal !important;
-    text-align:center !important;
-    line-height:1.12 !important;
-    font-size:clamp(12px,3.4vw,15px) !important;
+    flex-wrap:nowrap !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:thin;
+    border-radius:18px !important;
+  }
+  .nav button{
+    flex:0 0 auto !important;
+    min-height:42px !important;
+    padding:10px 13px !important;
+    font-size:14px !important;
+    white-space:nowrap !important;
   }
 
-  /* ---------- ÁREA PRINCIPAL ---------- */
-  body > main.shell,
-  main.shell{
-    display:block !important;
+  /* Estrutura principal */
+  .shell,
+  body.recipes-active .shell,
+  body.pets-active .shell{
     width:100% !important;
-    min-width:0 !important;
     max-width:none !important;
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) !important;
+    gap:10px !important;
     margin:8px 0 !important;
-    padding:0 6px !important;
-    box-sizing:border-box !important;
-    overflow:visible !important;
+    padding:0 7px !important;
   }
-
-  body > main.shell > .side,
-  body > main.shell > .content{
-    display:block !important;
+  .side{
     width:100% !important;
-    min-width:0 !important;
-    max-width:none !important;
-    margin-left:0 !important;
-    margin-right:0 !important;
-    float:none !important;
-    box-sizing:border-box !important;
-  }
-
-  body > main.shell > .content{
+    max-width:100% !important;
+    position:static !important;
     padding:10px !important;
     overflow:hidden !important;
   }
-
-  body.recipes-active > main.shell,
-  body.pets-active > main.shell{
-    grid-template-columns:1fr !important;
-  }
-
-  #app,
-  #app > *,
-  .home-panel,
-  .animals-panel,
-  .about-credits,
-  .extras-social-wrap,
-  .home-hero-image,
-  .animals-image-frame{
+  .content{
     width:100% !important;
+    max-width:100% !important;
     min-width:0 !important;
-    max-width:none !important;
-    box-sizing:border-box !important;
+    min-height:0 !important;
+    padding:11px !important;
+    border-radius:16px !important;
+    overflow:hidden !important;
   }
 
-  img,iframe,video,canvas,svg{
-    max-width:100% !important;
-  }
-
-  .home-hero-image img,
-  .animals-image-frame img,
-  .extras-social-wrap img{
-    display:block !important;
-    width:100% !important;
-    max-width:100% !important;
-    height:auto !important;
-  }
-
-  /* ---------- TÍTULOS / PESQUISA ---------- */
+  /* Títulos */
   .title-row{
-    display:flex !important;
     width:100% !important;
     min-width:0 !important;
-    max-width:none !important;
-    flex-wrap:wrap !important;
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:stretch !important;
     gap:8px !important;
   }
-
-  .recipe-title-block{
-    width:100% !important;
-    min-width:0 !important;
-    max-width:none !important;
-    flex:1 1 100% !important;
-  }
-
   .title-row h2{
-    max-width:100% !important;
-    font-size:clamp(22px,7vw,29px) !important;
-    line-height:1.12 !important;
+    font-size:clamp(24px,7vw,30px) !important;
+    line-height:1.05 !important;
     overflow-wrap:anywhere !important;
   }
-
   .subtitle{
-    max-width:100% !important;
     font-size:14px !important;
     line-height:1.35 !important;
   }
 
-  .recipe-translate-image{
-    width:100% !important;
-    max-width:100% !important;
-    flex:1 1 100% !important;
-    height:auto !important;
-    aspect-ratio:380 / 227 !important;
-    margin:0 !important;
-  }
-
+  /* Busca e filtros */
   .controls,
   .pets-controls{
-    display:grid !important;
-    grid-template-columns:minmax(0,1fr) !important;
     width:100% !important;
     min-width:0 !important;
-    max-width:none !important;
-    gap:7px !important;
+    grid-template-columns:minmax(0,1fr) !important;
+    gap:8px !important;
     padding:9px !important;
   }
-
   .controls input,
   .controls select,
   .pets-controls input,
   .pets-controls select{
     width:100% !important;
     min-width:0 !important;
-    max-width:none !important;
-    grid-column:auto !important;
-    height:42px !important;
+    max-width:100% !important;
+    font-size:16px !important;
+    padding:10px !important;
   }
+  .controls input{grid-column:auto !important;}
 
-  /* ---------- CARDS ---------- */
-  .grid,
-  .pet-grid{
-    display:grid !important;
-    grid-template-columns:minmax(0,1fr) !important;
+  /* Cards: uma coluna no celular, sem largura mínima que cause "espremido" */
+  .grid{
     width:100% !important;
     min-width:0 !important;
-    max-width:none !important;
+    grid-template-columns:minmax(0,1fr) !important;
     gap:10px !important;
   }
-
   .card,
   .pet-card{
     width:100% !important;
     min-width:0 !important;
-    max-width:none !important;
-  }
-
-  .card h3,
-  .pet-card h3,
-  .meta,
-  .ing,
-  .badge{
     max-width:100% !important;
+    padding:10px !important;
+    overflow:hidden !important;
+  }
+  .card h3,
+  .pet-card h3{
+    font-size:18px !important;
+    line-height:1.15 !important;
+    overflow-wrap:anywhere !important;
+  }
+  .card .pic{
+    height:105px !important;
+  }
+  .pet-pic{
+    height:155px !important;
+  }
+  .meta,
+  .pet-meta{
+    min-width:0 !important;
     overflow-wrap:anywhere !important;
   }
 
-  /* ---------- SPOTIFY ---------- */
-  #spotify-player-widget{
-    position:fixed !important;
-    left:10px !important;
-    right:10px !important;
-    bottom:10px !important;
-    width:auto !important;
-    max-width:none !important;
-    box-sizing:border-box !important;
+  /* Grade de dias dos pets cabe em 320px */
+  .pet-days{
+    width:100% !important;
+    grid-template-columns:repeat(7,minmax(0,1fr)) !important;
+    gap:2px !important;
+  }
+  .pet-day{
+    min-width:0 !important;
+    padding:4px 1px !important;
+    font-size:8px !important;
+    overflow:hidden !important;
+  }
+  .pet-day b{
+    font-size:7px !important;
+    overflow:hidden !important;
   }
 
-  #spotify-player-widget iframe{
-    display:block !important;
+  /* Imagens internas */
+  .home-panel,
+  .home-hero-image,
+  .animals-panel,
+  .animals-image-frame,
+  .extras-social-wrap,
+  .translation-tip{
     width:100% !important;
     max-width:100% !important;
+    min-width:0 !important;
   }
-
-  /* ---------- MODAIS / TABELAS ---------- */
-  .modal{
+  .home-hero-image img,
+  .animals-image-frame img,
+  .extras-social-wrap img,
+  .translation-tip img{
     width:100% !important;
-    max-width:none !important;
-    padding:7px !important;
+    max-width:100% !important;
+    height:auto !important;
   }
 
+  /* Imagem de tradução das receitas */
+  .recipe-title-block{
+    width:100% !important;
+    min-width:0 !important;
+  }
+  .recipe-translate-image{
+    width:100% !important;
+    max-width:100% !important;
+    flex:0 0 auto !important;
+    height:auto !important;
+    max-height:190px !important;
+    margin:0 !important;
+    justify-content:center !important;
+  }
+  .recipe-translate-image img{
+    width:100% !important;
+    height:auto !important;
+    max-height:190px !important;
+  }
+
+  /* Modal */
+  .modal{
+    padding:8px !important;
+  }
   .modal-box{
     width:100% !important;
-    max-width:none !important;
-    min-width:0 !important;
-    padding:14px !important;
-  }
-
-  .table-wrap,
-  .recipe-table,
-  .wiki-table{
     max-width:100% !important;
-    overflow-x:auto !important;
-    -webkit-overflow-scrolling:touch;
-  }
-}
-
-/* Celular em modo horizontal: mais espaço para o menu,
-   sem voltar ao layout de desktop. */
-@media screen and (max-width:900px) and (orientation:landscape){
-  body > .hero,
-  header.hero{
-    height:220px !important;
-    min-height:220px !important;
+    max-height:92vh !important;
+    padding:14px !important;
+    border-radius:18px !important;
   }
 
-  body > nav.nav,
-  nav.nav{
-    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  .empty{
+    padding:28px 12px !important;
+    overflow-wrap:anywhere !important;
   }
-
-  body > nav.nav button,
-  nav.nav button{
-    min-height:42px !important;
+  .notice{
+    overflow-wrap:anywhere !important;
+  }
+  .footer{
+    padding:20px 10px !important;
     font-size:13px !important;
+    overflow-wrap:anywhere !important;
   }
 
-  .magic-clock-wrap{
-    transform:scale(.82) !important;
-    transform-origin:top right !important;
-    right:4px !important;
-    top:5px !important;
-  }
-
-  body > main.shell,
-  main.shell{
-    margin-top:6px !important;
+  /* Dicas/Extras: links continuam proporcionais à arte */
+  .extras-social-wrap{
+    overflow:hidden !important;
   }
 }
 
-/* Telefones muito estreitos. */
-@media screen and (max-width:360px){
-  body > .hero,
-  header.hero{
-    height:245px !important;
+@media (max-width:430px){
+  .hero{
     min-height:245px !important;
+    height:245px !important;
   }
-
-  body > nav.nav,
-  nav.nav{
-    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
-    gap:5px !important;
-    padding:6px !important;
+  .hero .hero-copy{
+    top:53% !important;
+    width:90% !important;
   }
-
-  body > nav.nav button,
-  nav.nav button{
-    min-height:43px !important;
-    padding:7px 5px !important;
-    font-size:12px !important;
+  .hero .hero-copy h1{
+    font-size:clamp(20px,7vw,30px) !important;
   }
-
-  body > main.shell,
-  main.shell{
-    padding-left:4px !important;
-    padding-right:4px !important;
+  .hero .hero-copy h2{
+    font-size:clamp(16px,5vw,23px) !important;
+  }
+  .hero-banner-logo{
+    width:min(205px,56vw) !important;
+    max-height:52px !important;
+  }
+  .content{
+    padding:9px !important;
+  }
+  .controls,
+  .pets-controls{
+    padding:8px !important;
   }
 }
-</style>
 
+@media (max-width:350px){
+  .hero{
+    min-height:225px !important;
+    height:225px !important;
+  }
+  .nav button{
+    font-size:13px !important;
+    padding:9px 11px !important;
+  }
+  .content{
+    padding:8px !important;
+  }
+  .card,
+  .pet-card{
+    padding:8px !important;
+  }
+  .pet-pic{
+    height:140px !important;
+  }
+}
+
+</style>
 </head>
 
 <body>
