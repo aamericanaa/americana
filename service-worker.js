@@ -1,4 +1,4 @@
-const CACHE="ddv-shell-v4";
+const CACHE="ddv-shell-v5";
 const SHELL=["./","./index.html","./manifest.json","./assets/favicon-heart.svg"];
 
 self.addEventListener("install", event=>{

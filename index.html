@@ -855,6 +855,8 @@ body{
 #weatherEffectsCanvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:15;display:none}
 #weatherFog{position:fixed;inset:-10%;pointer-events:none;z-index:14;display:none;background:radial-gradient(ellipse at center,rgba(255,255,255,.10),rgba(255,255,255,.48));backdrop-filter:blur(1px);animation:weatherFogMove 12s ease-in-out infinite alternate}
 #weatherSunny{position:fixed;inset:0;pointer-events:none;z-index:13;display:none;background:radial-gradient(circle at 82% 10%,rgba(255,235,151,.24),transparent 38%),linear-gradient(180deg,rgba(255,245,190,.08),transparent 55%)}
+#weatherUnderwater{position:fixed;inset:0;pointer-events:none;z-index:13;display:none;overflow:hidden;background:radial-gradient(ellipse at 18% 12%,rgba(66,222,229,.18),transparent 48%),linear-gradient(180deg,rgba(4,106,151,.14),rgba(1,31,83,.38));}
+#weatherUnderwater:before{content:"";position:absolute;inset:-30%;background:repeating-conic-gradient(from 18deg at 52% 4%,transparent 0deg 9deg,rgba(153,250,246,.07) 10deg 12deg,transparent 14deg 22deg);filter:blur(18px);animation:underwaterCaustics 13s ease-in-out infinite alternate}
 #weatherControls{position:relative;margin-top:10px;padding-top:10px;border-top:1px solid rgba(247,211,121,.25)}
 #weatherControls .weather-title{font-weight:900;font-size:12px;color:#ffe8f7;margin-bottom:7px}
 #weatherControls .weather-row{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:7px}
@@ -865,11 +867,14 @@ body{
 #weatherControls .weather-toggle{width:100%;min-height:34px}
 #weatherControls .weather-toggle.active{background:linear-gradient(145deg,#e85aa9,#a91670);border-color:#ffd58b}
 @keyframes weatherFogMove{from{transform:translate3d(-2%,0,0) scale(1.02)}to{transform:translate3d(2%,1%,0) scale(1.06)}}
+@keyframes underwaterCaustics{from{transform:translate3d(-3%,0,0) rotate(-2deg);opacity:.55}to{transform:translate3d(3%,2%,0) rotate(2deg);opacity:1}}
+@media(prefers-reduced-motion:reduce){#weatherUnderwater:before{animation:none!important}}
 @media(max-width:700px){#weatherControls .weather-row{grid-template-columns:1fr}#weatherControls select{font-size:12px}}
 </style>
 <div id="weatherEffectsCanvas" aria-hidden="true"></div>
 <div id="weatherFog" aria-hidden="true"></div>
 <div id="weatherSunny" aria-hidden="true"></div>
+<div id="weatherUnderwater" aria-hidden="true"></div>
 <style id="pets-wiki-style">
 body.pets-active .shell{grid-template-columns:270px 1fr}
 body.pets-active .side{display:block}
@@ -1006,6 +1011,7 @@ body.pets-active .pets-side{display:block}
           <option value="fog">🌫️ Nevoeiro</option>
           <option value="magic">✨ Partículas mágicas</option>
           <option value="stars">🌙 Noite estrelada</option>
+          <option value="underwater">🫧 Subaquático</option>
         </select>
         <button type="button" id="weatherToggle" class="weather-toggle" aria-pressed="false">Ativar efeito</button>
       </div>
@@ -1047,6 +1053,7 @@ body.pets-active .pets-side{display:block}
     <button type="button" data-filter="Storybook Vale">📦 Storybook Vale</button>
     <button type="button" data-filter="Wishblossom Mountains">📦 Wishblossom Mountains</button>
     <button type="button" data-filter="Honeyglow Woods">📦 Honeyglow Woods</button>
+    <button type="button" data-filter="Keepsake Sea">🌊 The Keepsake Sea</button>
     <button type="button" data-filter="checked">☑ Checklist</button>
     </div>
     <div class="pets-side">
@@ -1066,6 +1073,9 @@ body.pets-active .pets-side{display:block}
       <button type="button" data-pet-filter="Storybook Vale">📖 Storybook Vale</button>
       <button type="button" data-pet-filter="Wishblossom">🌸 Wishblossom</button>
       <button type="button" data-pet-filter="Honeyglow Woods">🍯 Honeyglow Woods</button>
+      <button type="button" data-pet-filter="Shipwreck Shores">🏴‍☠️ Shipwreck Shores</button>
+      <button type="button" data-pet-filter="Candy Cove">🍬 Candy Cove</button>
+      <button type="button" data-pet-filter="Kingdom of Oublié">🪸 Kingdom of Oublié</button>
     </div>
   </aside>
 
@@ -1191,9 +1201,10 @@ async function fetchWiki(){
   // A mensagem de carregamento só aparece se o usuário estiver na aba Receitas.
   const activeSection=()=>document.querySelector('#mainNav button.active')?.dataset.section;
   if(activeSection()==='recipes') $('#app').innerHTML='<div class="notice">✨ Carregando o guia…</div>';
-  if(await loadOfflineSnapshot()) return;
+  // Mostra o retrato salvo sem impedir a atualização com os dados atuais da Wiki.
+  await loadOfflineSnapshot();
   try{
-    const res=await fetch(API,{mode:'cors'});
+    const res=await fetch(API,{mode:'cors',cache:'no-store'});
     if(!res.ok) throw new Error('HTTP '+res.status);
     const json=await res.json();
     const raw=json?.parse?.text?.['*'];
@@ -1334,6 +1345,7 @@ function matches(r){
   if(f==='checked') return checked(r.name);
   if(f.startsWith('stars')) return r.stars===Number(f.slice(5));
   if(['Appetizers','Entrées','Desserts'].includes(f)) return r.type.includes(f);
+  if(f==='Keepsake Sea') return normalizeSearchText(r.collection).replace(/^the /,'')==='keepsake sea';
   return r.collection===f;
 }
 
@@ -1434,7 +1446,7 @@ function render(){
       <h3>${esc(r.name)}</h3>
       <div class="meta"><span class="badge">${esc(r.type||'Meal')}</span><span class="badge">${esc(r.collection)}</span></div>
       <div class="recipe-star-line"><span class="stars">${stars(r.stars)}</span>${getPtName(r)?`<span class="recipe-pt-name" title="Nome em português">${esc(getPtName(r))}</span>`:''}</div>
-      <div class="ing"><b>Ingredientes:</b><br>${r.ingredients.map(x=>`<span>${esc(x)}</span>`).join('')}</div>
+      <div class="ing"><b>Ingredientes:</b><br>${r.ingredients.length?r.ingredients.map(x=>`<span>${esc(x)}</span>`).join(''):'<span>A Wiki ainda não publicou os ingredientes desta receita.</span>'}</div>
       <div class="meta" style="margin-top:8px"><span class="badge">⚡ ${esc(r.energy||'—')}</span><span class="badge">🪙 ${esc(r.price||'—')}</span></div>
     </article>`).join('');
   observeTranslatedRecipeText();
@@ -1468,7 +1480,7 @@ function openModal(r){
   <h2>${esc(r.name)}</h2>
   <p class="stars">${stars(r.stars)}</p>
   <p><b>Categoria:</b> ${esc(r.type)}<br><b>Origem:</b> ${esc(r.collection)}</p>
-  <h3>Ingredientes</h3><ul>${r.ingredients.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
+  <h3>Ingredientes</h3>${r.ingredients.length?`<ul>${r.ingredients.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'<p>A Wiki ainda não publicou os ingredientes desta receita.</p>'}
   <p><b>Energia:</b> ${esc(r.energy||'não informado')}<br><b>Preço de venda:</b> ${esc(r.price||'não informado')}</p>
   ${r.href?`<p><a target="_blank" rel="noopener noreferrer" href="${esc(r.href)}">Abrir página desta receita no Wiki ↗</a></p>`:''}
   <p><small>Dados carregados diretamente da tabela de Cooking do Dreamlight Valley Wiki.</small></p>`;
@@ -1483,7 +1495,8 @@ const CRITTER_API='https://dreamlightvalleywiki.com/api.php?action=parse&page=Cr
 const petState={pets:[],query:'',species:'all',location:'all',filter:'all',loaded:false,error:''};
 let petFavCache=null;
 const petDays=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-const petSpeciesMap={'Crocodiles':'Crocodile','Foxes':'Fox','Rabbits':'Rabbit','Raccoons':'Raccoon','Ravens':'Raven','Sea Turtles':'Sea Turtle','Squirrels':'Squirrel','Sunbirds':'Sunbird','Capybaras':'Capybara','Cobras':'Cobra','Monkeys':'Monkey','Baby Dragons':'Baby Dragon','Pegasi':'Pegasus','Owls':'Owl','Geese':'Goose','Skunks':'Skunk','Bees':'Bee','Hedgehogs':'Hedgehog'};
+const PET_LOCATION_GROUPS={'Shipwreck Shores':["Peddler's Post",'Galleon Gulf','Barnacle Bay','Infernal Fortress'],'Candy Cove':['Peppermint Plaza','Sweetwater Wharf','Shortcake Summit','Frosted Fjord'],'Kingdom of Oublié':['Saltwater Square','Forgotten Lagoon','Coral Coast','Grand Garden']};
+const petSpeciesMap={'Crocodiles':'Crocodile','Foxes':'Fox','Rabbits':'Rabbit','Raccoons':'Raccoon','Ravens':'Raven','Sea Turtles':'Sea Turtle','Squirrels':'Squirrel','Sunbirds':'Sunbird','Capybaras':'Capybara','Cobras':'Cobra','Monkeys':'Monkey','Baby Dragons':'Baby Dragon','Pegasi':'Pegasus','Owls':'Owl','Geese':'Goose','Skunks':'Skunk','Bees':'Bee','Hedgehogs':'Hedgehog','Toucans':'Toucan','Meringuins':'Meringuin','Axolotls':'Axolotl'};
 function loadPetFavs(){if(petFavCache)return petFavCache;try{petFavCache=JSON.parse(localStorage.getItem('ddv_pet_favorites')||'{}')||{}}catch{petFavCache={}}return petFavCache}
 function togglePetFav(name){const x=loadPetFavs();if(x[name])delete x[name];else x[name]=1;localStorage.setItem('ddv_pet_favorites',JSON.stringify(x));renderPets()}
 function petText(el){return (el?.innerText||'').replace(/\s+/g,' ').trim()}
@@ -1491,6 +1504,12 @@ const PET_WIKI_IMAGES={"Beige Monkey":"https://dreamlightvalleywiki.com/images/c
 function petImageFromCell(cell,name){
   const key=String(name||'').trim();
   if(PET_WIKI_IMAGES[key]) return PET_WIKI_IMAGES[key];
+  const image=cell?.querySelector('img');
+  const source=image?.getAttribute('src')||image?.getAttribute('data-src');
+  if(source){
+    const original=source.replace(/\/images\/thumb\/(.+?\.(?:png|jpe?g|webp))\/[^/]+$/i,'/images/$1');
+    return new URL(original,'https://dreamlightvalleywiki.com').href;
+  }
   const fileName=(key.replace(/\s+/g,'_')+'.png');
   return `https://dreamlightvalleywiki.com/wiki/Special:Redirect/file/${encodeURIComponent(fileName)}`;
 }
@@ -1528,7 +1547,10 @@ const petFoodFallbacks={
   'Geese':{favorite:'Red Currants',liked:'Blueberry, Gooseberry, Raspberry, and Strawberry',location:'Wishing Alps',method:"Patience: Wait until they aren't shy."},
   'Skunks':{favorite:'Button Mushroom and Pincushion Peach',liked:'Cheese, Egg, Fruit, and Vegetables',location:'Glamour Gulch',method:'Red Light, Green Light: Watch their body language, and approach when they are relaxed. When they are alert, with their head up, remain still - otherwise, the Critter will move to a new location.'},
   'Bees':{favorite:'Honey Coral',liked:'Any Flowers',location:'Pixie Acres',method:'Tag: When you have caught their attention, chase after them until they stop.'},
-  'Hedgehogs':{favorite:'Pufflebud Pods and Golden Honey',liked:'Any Fruit',location:'Honeyglow Woods',method:'Patience: Wait until they are ready to come out of being rolled up. You can also drop food in front of them and they will come out immediately.'}
+  'Hedgehogs':{favorite:'Pufflebud Pods and Golden Honey',liked:'Any Fruit',location:'Honeyglow Woods',method:'Patience: Wait until they are ready to come out of being rolled up. You can also drop food in front of them and they will come out immediately.'},
+  'Toucans':{favorite:'Lychee',liked:'Any Fruit',location:'Shipwreck Shores',method:'Toucans play no games. Simply approach and be ready to feed them!'},
+  'Meringuins':{favorite:'Candy Pebbles',liked:'Any Fish',location:'Candy Cove',method:'Tag: When you have caught their attention, chase after them until they stop.'},
+  'Axolotls':{favorite:'Pink Coral',liked:'Any Seafood',location:'Kingdom of Oublié',method:'Red Light, Green Light: When they are hiding, remain still; approach when they are relaxed.'}
 };
 const petVariantFoodFallbacks={
   'Emerald Sunbird':{favorite:'Green and Yellow Flowers',liked:'All Other Flowers'},
@@ -1559,21 +1581,23 @@ function parsePetWiki(html){
    }
    return fallback;
  };
- const out=[];for(const tr of [...scheduleTable.querySelectorAll('tr')].slice(1)){const c=[...tr.children];if(c.length<10)continue;const name=cleanPetCell(c[1]);if(!name)continue;const location=cleanPetCell(c[2]);const schedule=c.slice(3,10).map(x=>cleanPetCell(x)||'n/a');const species=findPetSpecies(name);const base=findPetInfo(name);out.push({name,species,location:location||base.location||'—',favorite:base.favorite||'—',liked:base.liked||'—',method:base.method||'—',schedule,img:petImageFromCell(c[0],name),href:`https://dreamlightvalleywiki.com/${encodeURIComponent(name.replace(/ /g,'_'))}`});}return out;
+ const out=[];for(const tr of [...scheduleTable.querySelectorAll('tr')].slice(1)){const c=[...tr.children];if(c.length<10)continue;const name=cleanPetCell(c[1]);if(!name)continue;const location=cleanPetCell(c[2]);const schedule=c.slice(3,10).map(x=>cleanPetCell(x)||'n/a');const species=findPetSpecies(name);const base=findPetInfo(name);out.push({name,species,location:location||base.location||'—',favorite:base.favorite||'—',liked:base.liked||'—',method:base.method||'—',schedule,img:petImageFromCell(c[0],name),href:`https://dreamlightvalleywiki.com/${encodeURIComponent(name.replace(/ /g,'_'))}`});}
+ return out;
 }
 async function loadPets(){petState.loaded=false;petState.error='';renderPets();try{const r=await fetch(CRITTER_API,{cache:'no-store'});if(!r.ok)throw new Error('Falha ao acessar o Wiki.');const j=await r.json();const html=j?.parse?.text?.['*'];if(!html)throw new Error('O Wiki não retornou os dados.');petState.pets=parsePetWiki(html);petState.loaded=true;renderPets()}catch(e){petState.error=e.message||'Não foi possível carregar os pets.';petState.loaded=true;renderPets()}}
-function petMatches(p){const q=normalizeSearchText(p.name+' '+p.species+' '+p.location+' '+p.favorite+' '+p.liked);if(petState.query&&!q.includes(normalizeSearchText(petState.query)))return false;if(petState.species!=='all'&&p.species!==petState.species)return false;if(petState.location!=='all'&&!p.location.toLowerCase().includes(petState.location.toLowerCase()))return false;if(petState.filter==='favorites'&&!loadPetFavs()[p.name])return false;return true}
+function petMatches(p){const q=normalizeSearchText(p.name+' '+p.species+' '+p.location+' '+p.favorite+' '+p.liked);if(petState.query&&!q.includes(normalizeSearchText(petState.query)))return false;if(petState.species!=='all'&&p.species!==petState.species)return false;if(petState.location!=='all'){const group=PET_LOCATION_GROUPS[petState.location];if(group?!group.includes(p.location):!p.location.toLowerCase().includes(petState.location.toLowerCase()))return false}if(petState.filter==='favorites'&&!loadPetFavs()[p.name])return false;return true}
 function petDayCell(v,i){const off=/n\/a|not here/i.test(v);const all=/all day/i.test(v);return `<div class="pet-day ${off?'off':''} ${all?'all':''}"><b>${petDays[i]}</b>${esc(v)}</div>`}
 const PET_TRANSLATIONS={"Beige Monkey":"Macaco bege","Black and Brown Monkey":"Macaco preto e marrom","Black and Gray Monkey":"Macaco preto e cinza","Black and White Capybara":"Capivara preta e branca","Black Fox":"Raposa preta","Black Goose":"Ganso preto","Black Pegasus":"Pégaso preto","Black Rabbit":"Coelho preto","Black Raccoon":"Guaxinim preto","Black Sea Turtle":"Tartaruga-marinha preta","Black Squirrel":"Esquilo preto","Blue and Red Striped Cobra":"Cobra listrada azul e vermelha","Blue Baby Dragon":"Dragão bebê azul","Blue Crocodile":"Crocodilo azul","Blue Fox":"Raposa azul","Blue Goose":"Ganso azul","Blue Pegasus":"Pégaso azul","Blue Raccoon":"Guaxinim azul","Blue Raven":"Corvo azul","Blue Striped Capybara":"Capivara listrada azul","Blue Sweet Bee":"Abelha-doce azul","Brown Owl":"Coruja marrom","Brown Rabbit":"Coelho marrom","Brown Raven":"Corvo marrom","Brown Sea Turtle":"Tartaruga-marinha marrom","Brown Skunk":"Gambá marrom","Calico Rabbit":"Coelho tricolor","Classic Capybara":"Capivara clássica","Classic Cobra":"Cobra clássica","Classic Crocodile":"Crocodilo clássico","Classic Fox":"Raposa clássica","Classic Hedgehog":"Ouriço clássico","Classic Monkey":"Macaco clássico","Classic Rabbit":"Coelho clássico","Classic Raccoon":"Guaxinim clássico","Classic Raven":"Corvo clássico","Classic Sea Turtle":"Tartaruga-marinha clássica","Classic Squirrel":"Esquilo clássico","Dark Owl":"Coruja escura","Emerald Sunbird":"Pássaro-do-sol esmeralda","Golden Crocodile":"Crocodilo dourado","Golden Goose":"Ganso dourado","Golden Sunbird":"Pássaro-do-sol dourado","Goose":"Ganso","Gray Spotted Capybara":"Capivara cinza malhada","Gray Squirrel":"Esquilo cinza","Green and White Striped Cobra":"Cobra listrada verde e branca","Green Baby Dragon":"Dragão bebê verde","Orange Hedgehog":"Ouriço laranja","Orchid Sunbird":"Pássaro-do-sol orquídea","Patterned Skunk":"Gambá estampado","Peach Pegasus":"Pégaso pêssego","Pink Crocodile":"Crocodilo rosa","Pink Pegasus":"Pégaso rosa","Pink Spotted Cobra":"Cobra rosa malhada","Pink Sweet Bee":"Abelha-doce rosa","Purple Baby Dragon":"Dragão bebê roxo","Purple Owl":"Coruja roxa","Purple Sea Turtle":"Tartaruga-marinha roxa","Red and Beige Monkey":"Macaco vermelho e bege","Red and White Striped Capybara":"Capivara listrada vermelha e branca","Red Baby Dragon":"Dragão bebê vermelho","Red Crocodile":"Crocodilo vermelho","Red Fox":"Raposa vermelha","Red Raccoon":"Guaxinim vermelho","Red Raven":"Corvo vermelho","Red Squirrel":"Esquilo vermelho","Red Sunbird":"Pássaro-do-sol vermelho","Skunk":"Gambá","Sweet Bee":"Abelha-doce","Teal Baby Dragon":"Dragão bebê verde-azulado","Toon Capybara":"Capivara cartunesca","Toon Cobra":"Cobra cartunesca","Toon Monkey":"Macaco cartunesco","True North Goose":"Ganso do Norte Verdadeiro","Turquoise Sunbird":"Pássaro-do-sol turquesa","White Crocodile":"Crocodilo branco","White Fox":"Raposa branca","White Owl":"Coruja branca","White Rabbit":"Coelho branco","White Raccoon":"Guaxinim branco","White Raven":"Corvo branco","White Sea Turtle":"Tartaruga-marinha branca","White Skunk":"Gambá branco","White Squirrel":"Esquilo branco","White Sweet Bee":"Abelha-doce branca","Yellow and Purple Striped Cobra":"Cobra listrada amarela e roxa","Yellow Hedgehog":"Ouriço amarelo","Yellow Pegasus":"Pégaso amarelo"};
-function petTranslateText(v){const s=String(v||'').trim();return PET_TRANSLATIONS[s]||''}
+const PET_TRANSLATIONS_NEW={'Cloud Toucan':'Tucano-nuvem','Jungle Toucan':'Tucano da selva','Sea Toucan':'Tucano-do-mar','Shade Toucan':'Tucano-sombra','Sun Toucan':'Tucano-sol','Cherry Soda Meringuin':'Meringuim de cereja','Frosted Blueberry Meringuin':'Meringuim de mirtilo','Orange Cream Meringuin':'Meringuim de creme de laranja','Raspberry Sherbet Meringuin':'Meringuim de framboesa','Salted Licorice Meringuin':'Meringuim de alcaçuz salgado','Amethyst Axolotl':'Axolote ametista','Aquamarine Axolotl':'Axolote água-marinha','Onyx Axolotl':'Axolote ônix','Rose Quartz Axolotl':'Axolote quartzo rosa','Tourmaline Axolotl':'Axolote turmalina','Toucans':'Tucanos','Meringuins':'Meringuins','Axolotls':'Axolotes','Lychee':'Lichia','Any Fruit':'Qualquer fruta','Candy Pebbles':'Pedrinhas doces','Any Fish':'Qualquer peixe','Pink Coral':'Coral rosa','Any Seafood':'Qualquer fruto do mar'};
+function petTranslateText(v){const s=String(v||'').trim();return PET_TRANSLATIONS[s]||PET_TRANSLATIONS_NEW[s]||''}
 function petTranslateSchedule(v){const s=String(v||'').trim();return s}
 function petTranslationHtml(v){const t=petTranslateText(v);return t&&t!==String(v||'').trim()?`<small class="pet-translation">${esc(t)}</small>`:''}
-function petRenderCards(list){return list.map(p=>{const fav=!!loadPetFavs()[p.name];return `<article class="pet-card" data-pet="${esc(p.name)}"><button type="button" class="pet-fav ${fav?'on':''}" title="${fav?'Remover dos favoritos':'Adicionar aos favoritos'}">${fav?'♥':'♡'}</button><div class="pet-pic"><a class="pet-image-link" href="${esc(p.img)}" target="_blank" rel="noopener noreferrer" title="Abrir imagem original do Wiki"><img src="${esc(p.img)}" alt="${esc(p.name)}" loading="lazy" decoding="async" referrerpolicy="origin" decoding="async" data-pet-image="1"><div class="pet-fallback" style="display:none">🐾</div></a></div><h3>${esc(p.name)}${petTranslationHtml(p.name)}</h3><div class="pet-meta"><span class="pet-badge">${esc(p.species)}</span><span class="pet-badge">📍 ${esc(p.location)}</span></div><div class="pet-food"><b>🍎 Favorita:</b> ${esc(p.favorite)}<br><b>💗 Gosta:</b> ${esc(p.liked)}</div><div class="pet-days">${p.schedule.map(petDayCell).join('')}</div></article>`}).join('')}
+function petRenderCards(list){return list.map(p=>{const fav=!!loadPetFavs()[p.name];return `<article class="pet-card" data-pet="${esc(p.name)}"><button type="button" class="pet-fav ${fav?'on':''}" title="${fav?'Remover dos favoritos':'Adicionar aos favoritos'}">${fav?'♥':'♡'}</button><div class="pet-pic"><a class="pet-image-link" href="${esc(p.img)}" target="_blank" rel="noopener noreferrer" title="Abrir imagem original do Wiki"><img src="${esc(p.img)}" alt="${esc(p.name)}" loading="lazy" decoding="async" referrerpolicy="origin" decoding="async" data-pet-image="1"><div class="pet-fallback" style="display:none">🐾</div></a></div><h3>${esc(p.name)}${petTranslationHtml(p.name)}</h3><div class="pet-meta"><span class="pet-badge">${esc(p.species)}${petTranslationHtml(p.species)}</span><span class="pet-badge">📍 ${esc(p.location)}</span></div><div class="pet-food"><b>🍎 Favorita:</b> ${esc(p.favorite)}${petTranslationHtml(p.favorite)}<br><b>💗 Gosta:</b> ${esc(p.liked)}${petTranslationHtml(p.liked)}</div><div class="pet-days">${p.schedule.map(petDayCell).join('')}</div></article>`}).join('')}
 function bindPetControls(a){$('#petSearch').oninput=e=>{petState.query=e.target.value;renderPets(true)};$('#petSpecies').onchange=e=>{petState.species=e.target.value;renderPets()};$('#petLocation').onchange=e=>{petState.location=e.target.value;renderPets()};$('#petFilter').onchange=e=>{petState.filter=e.target.value;renderPets()};a.querySelectorAll('.pet-card').forEach(card=>{card.onclick=e=>{if(e.target.closest('.pet-fav'))return;const p=petState.pets.find(x=>x.name===card.dataset.pet);if(p)openPetModal(p)};card.querySelector('.pet-fav').onclick=e=>{e.stopPropagation();togglePetFav(card.dataset.pet)}})}
-function renderPets(keepSearchFocus=false){if(document.querySelector('#mainNav button.active')?.dataset.section!=='pets')return;const a=$('#app');const active=document.activeElement;const oldSearch=active?.id==='petSearch'?active:null;const caret=oldSearch?oldSearch.selectionStart:null;const caretEnd=oldSearch?oldSearch.selectionEnd:null;if(!petState.loaded){a.innerHTML='<div class="empty">🐾 Carregando os dados reais dos Pets/Critters do Wiki…</div>';return}if(petState.error){a.innerHTML=`<div class="empty"><h3>Não foi possível carregar a Wiki de Pets.</h3><p>${esc(petState.error)}</p><button class="offline-btn" type="button" data-action="load-pets">Tentar novamente</button></div>`;return}const species=[...new Set(petState.pets.map(p=>p.species))].sort((a,b)=>a.localeCompare(b));const locations=[...new Set(petState.pets.map(p=>p.location).filter(Boolean))].sort((a,b)=>a.localeCompare(b));const list=petState.pets.filter(petMatches).sort((a,b)=>a.name.localeCompare(b.name,'en'));const favCount=Object.keys(loadPetFavs()).length;
+function renderPets(keepSearchFocus=false){if(document.querySelector('#mainNav button.active')?.dataset.section!=='pets')return;const a=$('#app');const active=document.activeElement;const oldSearch=active?.id==='petSearch'?active:null;const caret=oldSearch?oldSearch.selectionStart:null;const caretEnd=oldSearch?oldSearch.selectionEnd:null;if(!petState.loaded){a.innerHTML='<div class="empty">🐾 Carregando os dados reais dos Pets/Critters do Wiki…</div>';return}if(petState.error){a.innerHTML=`<div class="empty"><h3>Não foi possível carregar a Wiki de Pets.</h3><p>${esc(petState.error)}</p><button class="offline-btn" type="button" data-action="load-pets">Tentar novamente</button></div>`;return}const species=[...new Set(petState.pets.map(p=>p.species))].sort((a,b)=>a.localeCompare(b));const locations=[...new Set([...petState.pets.map(p=>p.location).filter(Boolean),...Object.keys(PET_LOCATION_GROUPS)])].sort((a,b)=>a.localeCompare(b));const list=petState.pets.filter(petMatches).sort((a,b)=>a.name.localeCompare(b.name,'en'));const favCount=Object.keys(loadPetFavs()).length;
 a.innerHTML=`<div class="title-row"><div><h2>🐾 WIKI DE PETS</h2><p class="subtitle">Critters, variantes, comida favorita, localização e horários de aparição — usando os dados atuais do Dreamlight Valley Wiki.</p></div></div><div class="pet-note">✨ <b>Dica:</b> cada variante segue um horário próprio. Os horários abaixo são os publicados atualmente na tabela de Critter Schedules do Wiki.</div><div class="pets-controls"><input id="petSearch" placeholder="🔎 Procurar pet, raça, local ou comida…" value="${esc(petState.query)}"><select id="petSpecies"><option value="all">🐾 Todas as espécies</option>${species.map(x=>`<option value="${esc(x)}" ${petState.species===x?'selected':''}>${esc(x)}</option>`).join('')}</select><select id="petLocation"><option value="all">📍 Todos os locais</option>${locations.map(x=>`<option value="${esc(x)}" ${petState.location===x?'selected':''}>${esc(x)}</option>`).join('')}</select><select id="petFilter"><option value="all" ${petState.filter==='all'?'selected':''}>✨ Todos</option><option value="favorites" ${petState.filter==='favorites'?'selected':''}>❤️ Favoritos (${favCount})</option></select></div><div class="pets-stats"><span class="stat">🐾 ${petState.pets.length} variantes</span><span class="stat">🗂️ ${species.length} espécies</span><span class="stat">❤️ ${favCount} favoritos</span><span class="stat">📖 Dados do Wiki</span></div><div class="grid">${petRenderCards(list)}</div>${list.length?'':'<div class="empty">Nenhum pet encontrado com esses filtros.</div>'}`;bindPetControls(a);if(keepSearchFocus){const search=$('#petSearch');if(search){search.focus({preventScroll:true});const p=Math.min(caret??search.value.length,search.value.length);const q=Math.min(caretEnd??p,search.value.length);search.setSelectionRange(p,q)}}}
 
-function openPetModal(p){$('#modalBody').innerHTML=`<div class="pic" style="height:230px;margin-bottom:14px"><img src="${esc(p.img)}" alt="${esc(p.name)}" referrerpolicy="origin" decoding="async" style="width:100%;height:100%;object-fit:contain" data-pet-modal-image="1"></div><h2>🐾 ${esc(p.name)}</h2><p><span class="badge">${esc(p.species)}</span> <span class="badge">📍 ${esc(p.location)}</span></p><h3>🍎 Alimentação</h3><p><b>Comida favorita:</b> ${esc(p.favorite)}<br><b>Também gosta:</b> ${esc(p.liked)}</p><h3>🎯 Como alimentar</h3><p>${esc(p.method)}</p><h3>🕐 Horários</h3><div class="pet-days">${p.schedule.map(petDayCell).join('')}</div><p style="margin-top:16px"><a target="_blank" rel="noopener noreferrer" href="${esc(p.href)}">Abrir página deste pet no Wiki ↗</a></p><p><small>Dados obtidos da página Critters do Dreamlight Valley Wiki.</small></p>`;$('#modal').classList.add('open')}
+function openPetModal(p){$('#modalBody').innerHTML=`<div class="pic" style="height:230px;margin-bottom:14px"><img src="${esc(p.img)}" alt="${esc(p.name)}" referrerpolicy="origin" decoding="async" style="width:100%;height:100%;object-fit:contain" data-pet-modal-image="1"></div><h2>🐾 ${esc(p.name)}${petTranslationHtml(p.name)}</h2><p><span class="badge">${esc(p.species)}${petTranslationHtml(p.species)}</span> <span class="badge">📍 ${esc(p.location)}</span></p><h3>🍎 Alimentação</h3><p><b>Comida favorita:</b> ${esc(p.favorite)}${petTranslationHtml(p.favorite)}<br><b>Também gosta:</b> ${esc(p.liked)}${petTranslationHtml(p.liked)}</p><h3>🎯 Como alimentar</h3><p>${esc(p.method)}</p><h3>🕐 Horários</h3><div class="pet-days">${p.schedule.map(petDayCell).join('')}</div><p style="margin-top:16px"><a target="_blank" rel="noopener noreferrer" href="${esc(p.href)}">Abrir página deste pet no Wiki ↗</a></p><p><small>Dados obtidos da página Critters do Dreamlight Valley Wiki.</small></p>`;$('#modal').classList.add('open')}
 function setupPetSide(){document.querySelectorAll('[data-pet-filter]').forEach(b=>b.onclick=()=>{petState.filter=b.dataset.petFilter;petState.location=(b.dataset.petFilter==='all'||b.dataset.petFilter==='favorites')?'all':b.dataset.petFilter;document.querySelectorAll('[data-pet-filter]').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderPets()})}setupPetSide();
 
 document.querySelectorAll('#mainNav button').forEach(b=>b.onclick=()=>{
@@ -1834,6 +1858,7 @@ fetchWiki().catch(err=>{
   const host=document.getElementById('weatherEffectsCanvas');
   const fog=document.getElementById('weatherFog');
   const sunny=document.getElementById('weatherSunny');
+  const underwater=document.getElementById('weatherUnderwater');
   const type=document.getElementById('weatherType');
   const toggle=document.getElementById('weatherToggle');
   const intensity=document.getElementById('weatherIntensity');
@@ -1847,7 +1872,8 @@ fetchWiki().catch(err=>{
   canvas.style.width='100%';canvas.style.height='100%';canvas.style.display='block';
   host.appendChild(canvas);
   const ctx=canvas.getContext('2d');
-  let effect='none',active=false,particles=[],raf=0,last=0,dpr=1;
+  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let effect='none',active=false,particles=[],fish=[],bubbles=[],raf=0,last=0,dpr=1;
 
   function resize(){
     dpr=Math.min(window.devicePixelRatio||1,1.5);
@@ -1859,17 +1885,44 @@ fetchWiki().catch(err=>{
   function seed(){
     const n=Math.round(24+Number(intensity.value)*0.72);
     particles=Array.from({length:n},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:1+Math.random()*3,v:30+Math.random()*80,a:.35+Math.random()*.6,s:Math.random()*Math.PI*2}));
+    const amount=Number(intensity.value)/100;
+    const colors=['#41d7d0','#ffb84d','#f17ac2','#a58bff','#ff737e','#f6df68'];
+    fish=Array.from({length:Math.round(3+amount*7)},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,baseY:Math.random()*innerHeight,size:.48+Math.random()*.58,dir:Math.random()<.5?-1:1,speed:24+Math.random()*48,phase:Math.random()*Math.PI*2,tailSpeed:.7+Math.random()*.8,color:colors[Math.floor(Math.random()*colors.length)]}));
+    bubbles=Array.from({length:Math.round(12+amount*30)},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:1.5+Math.random()*4,speed:10+Math.random()*24,phase:Math.random()*Math.PI*2}));
+  }
+  function drawFish(f,t){
+    const wag=Math.sin(t*.012*f.tailSpeed+f.phase)*5;
+    ctx.save();ctx.globalAlpha=.86;ctx.translate(f.x,f.y+Math.sin(t*.0012+f.phase)*f.size*9);ctx.scale(f.dir*f.size,f.size);
+    ctx.fillStyle=f.color;ctx.beginPath();ctx.moveTo(-20,0);ctx.lineTo(-35,-8+wag);ctx.lineTo(-33,0);ctx.lineTo(-35,8+wag);ctx.closePath();ctx.fill();
+    const body=ctx.createLinearGradient(-18,-10,22,10);body.addColorStop(0,f.color);body.addColorStop(1,'#e6ffff');ctx.fillStyle=body;ctx.beginPath();ctx.moveTo(-23,0);ctx.quadraticCurveTo(-10,-13,6,-10);ctx.quadraticCurveTo(25,-8,29,0);ctx.quadraticCurveTo(25,8,6,10);ctx.quadraticCurveTo(-10,13,-23,0);ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,.55)';ctx.beginPath();ctx.moveTo(-3,-9);ctx.lineTo(4,-17);ctx.lineTo(11,-8);ctx.closePath();ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,.48)';ctx.beginPath();ctx.moveTo(-2,8);ctx.lineTo(7,16);ctx.lineTo(12,8);ctx.closePath();ctx.fill();
+    ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(21,-2,2.6,0,Math.PI*2);ctx.fill();ctx.fillStyle='#07304d';ctx.beginPath();ctx.arc(22,-2,1.2,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='rgba(4,53,77,.35)';ctx.lineWidth=1;ctx.beginPath();ctx.arc(10,0,6,-1.1,1.1);ctx.stroke();ctx.restore();
   }
   function setLayers(){
-    host.style.display=(active&&['rain','snow','magic','stars'].includes(effect))?'block':'none';
+    host.style.display=(active&&['rain','snow','magic','stars','underwater'].includes(effect))?'block':'none';
     fog.style.display=(active&&effect==='fog')?'block':'none';
     sunny.style.display=(active&&effect==='sunny')?'block':'none';
+    if(underwater) underwater.style.display=(active&&effect==='underwater')?'block':'none';
   }
   function draw(t){
-    if(!active || !['rain','snow','magic','stars'].includes(effect)){raf=0;return}
+    if(!active || !['rain','snow','magic','stars','underwater'].includes(effect)){raf=0;return}
     const dt=Math.min((t-last)/1000,.05); last=t;
     ctx.clearRect(0,0,innerWidth,innerHeight);
     const I=Number(intensity.value)/100, S=Number(speed.value)/100;
+    if(effect==='underwater'){
+      for(const b of bubbles){
+        if(!reduceMotion){b.y-=b.speed*dt*(.35+S*1.45);b.x+=Math.sin(t*.001+b.phase)*dt*5;if(b.y<-10){b.y=innerHeight+10;b.x=Math.random()*innerWidth}}
+        ctx.strokeStyle='rgba(198,250,255,'+(.22+I*.55)+')';ctx.lineWidth=1;ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);ctx.stroke();ctx.fillStyle='rgba(255,255,255,.35)';ctx.beginPath();ctx.arc(b.x-b.r*.3,b.y-b.r*.3,Math.max(.6,b.r*.18),0,Math.PI*2);ctx.fill();
+      }
+      for(const f of fish){
+        if(!reduceMotion){f.x+=f.dir*f.speed*dt*(.3+S*1.35);if((f.dir>0&&f.x>innerWidth+65)||(f.dir<0&&f.x<-65)){f.dir*=-1;f.baseY=Math.random()*innerHeight;f.y=f.baseY}}
+        drawFish(f,t);
+      }
+      if(reduceMotion){raf=0;return}
+      raf=requestAnimationFrame(draw);return;
+    }
     if(particles.length < Math.round(24+Number(intensity.value)*.72)) seed();
     for(const p of particles){
       p.y += p.v*dt*(.35+S*1.4); p.x += Math.sin(p.s+t*.0005)*dt*(effect==='snow'?18:5);
