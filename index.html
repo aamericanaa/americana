@@ -32,9 +32,9 @@ if (location.protocol === 'http:' || location.protocol === 'https:') {
   --ink:#6f0c55;--gold:#f5c45d;--white:#fff;--shadow:0 12px 17.5px rgba(113,12,85,.18);
 }
 *{box-sizing:border-box}
-/* Cursor personalizado: coração rosa */
+/* Cursor personalizado: concha do mar */
 html, body, body * {
-  cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23ff8acb%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23d51b83%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Cpath%20d%3D%22M16%2028.2%203.9%2016.7C-2.4%2010.7%201.8%202.1%209%202.1c3.1%200%205.5%201.5%207%204%201.5-2.5%203.9-4%207-4%207.2%200%2011.4%208.6%205.1%2014.6z%22%20fill%3D%22url(%23g)%22%20stroke%3D%22%239e1765%22%20stroke-width%3D%221.4%22%2F%3E%3Cpath%20d%3D%22M7.1%207.4c1.2-1.6%203.4-2.1%205-1.3%22%20fill%3D%22none%22%20stroke%3D%22%23ffd9ef%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E") 5 5, auto !important;
+  cursor: url("assets/cursor-shell.svg") 4 3, auto !important;
 }
 
 body{margin:0;font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:#fff0f8;min-height:100vh;position:relative}
@@ -308,38 +308,6 @@ body:after{
   .home-hero-image{border-radius:16px}
   .home-hero-image img{max-height:440px}
   .home-welcome{padding:15px}
-}
-
-/* ===== GUIA DOS ANIMAIS — páginas ilustradas ===== */
-.animals-panel{
-  width:100%;
-  display:flex;
-  flex-direction:column;
-  gap:22px;
-}
-.animals-image-frame{
-  width:100%;
-  border-radius:24px;
-  overflow:hidden;
-  border:3px solid #f0a8d2;
-  background:linear-gradient(145deg,#fff6fc,#ffd8ed);
-  box-shadow:0 16px 38px rgba(119,13,82,.20);
-  position:relative;
-}
-.animals-image-frame:after{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.7);
-}
-.animals-image-frame img{
-  display:block;
-  width:100%;
-  height:auto;
-}
-@media(max-width:700px){
-  .animals-image-frame{border-radius:16px}
 }
 
 /* Ajuste solicitado: título principal menor, restante do header preservado. */
@@ -866,6 +834,10 @@ body{
 #weatherControls .weather-label{font-size:9px;opacity:.8;display:flex;justify-content:space-between;margin:2px 1px 3px}
 #weatherControls .weather-toggle{width:100%;min-height:34px}
 #weatherControls .weather-toggle.active{background:linear-gradient(145deg,#e85aa9,#a91670);border-color:#ffd58b}
+#siteThemeControls{position:relative;margin-top:10px;padding-top:10px;border-top:1px solid rgba(247,211,121,.25)}
+#siteThemeControls label{display:block;font-weight:900;font-size:12px;color:#ffe8f7;margin-bottom:7px}
+#siteThemeControls select{width:100%;min-height:36px;padding:6px 9px;border-radius:11px;border:1px solid rgba(246,211,120,.55);background:rgba(91,47,126,.9);color:#fff;font:inherit}
+#siteThemeControls small{display:block;font-size:9px;line-height:1.35;opacity:.75;margin-top:6px}
 @keyframes weatherFogMove{from{transform:translate3d(-2%,0,0) scale(1.02)}to{transform:translate3d(2%,1%,0) scale(1.06)}}
 @keyframes underwaterCaustics{from{transform:translate3d(-3%,0,0) rotate(-2deg);opacity:.55}to{transform:translate3d(3%,2%,0) rotate(2deg);opacity:1}}
 @media(prefers-reduced-motion:reduce){#weatherUnderwater:before{animation:none!important}}
@@ -1020,6 +992,14 @@ body.pets-active .pets-side{display:block}
       <div class="weather-label"><span>Velocidade</span><span id="weatherSpeedValue">50%</span></div>
       <input id="weatherSpeed" type="range" min="10" max="100" value="50" aria-label="Velocidade do efeito">
     </div>
+    <div id="siteThemeControls" aria-label="Temas visuais do site">
+      <label for="siteThemeSelect">🎨 Tema visual do site</label>
+      <select id="siteThemeSelect">
+        <option value="classic">🌸 Original</option>
+        <option value="aquatic">🫧 Tema Aquático</option>
+      </select>
+      <small>O tema aquático aplica a nova arte e suas cores; o Tema Original mantém o visual anterior.</small>
+    </div>
   </div>
   <button type="button" id="openMagicClockControls" class="mcc-open" aria-label="Abrir controles do relógio">⚙️ Ajustar relógio</button>
   <button type="button" id="minimizedMagicClockControls" class="mcc-minimized" aria-label="Reabrir controles do relógio">☾</button>
@@ -1029,7 +1009,6 @@ body.pets-active .pets-side{display:block}
 <nav class="nav" id="mainNav">
   <button type="button" class="active" data-section="home">⌂ Início</button>
   <button type="button" data-section="recipes">🍳 Guia de Receitas ♥</button>
-  <button type="button" data-section="animals">🐾 Guia de Animais ♥</button>
   <button type="button" data-section="pets">🐾 Wiki dos animais ♥</button>
   <button type="button" data-section="extras">★ Dicas e Extras</button>
   <button type="button" data-section="about">💗 Sobre &amp; Créditos</button>
@@ -1703,7 +1682,7 @@ document.querySelectorAll('#mainNav button').forEach(b=>b.onclick=()=>{
     </div>`;
     return;
   }
-  const labels={home:'GUIA COMPLETO',animals:'GUIA DOS ANIMAIS',items:'ITENS E MATERIAIS',characters:'PERSONAGENS',maps:'MAPAS',extras:'DICAS E EXTRAS'};
+  const labels={home:'GUIA COMPLETO',items:'ITENS E MATERIAIS',characters:'PERSONAGENS',maps:'MAPAS',extras:'DICAS E EXTRAS'};
   if(b.dataset.section==='home'){
     $('#app').innerHTML=`<div class="home-panel">
       <div class="home-hero-image">
@@ -1716,18 +1695,6 @@ document.querySelectorAll('#mainNav button').forEach(b=>b.onclick=()=>{
 
 
     </div>`;
-    return;
-  }
-if(b.dataset.section==='animals'){
-    $('#app').innerHTML=`<div class="animals-panel">
-      <div class="animals-image-frame">
-        <img src="assets/embedded-e250e56262b0.webp" loading="lazy" alt="Guia dos Animais — primeira página">
-      </div>
-      <div class="animals-image-frame">
-        <img src="assets/embedded-dba7fe2f456f.webp" loading="lazy" alt="Guia dos Animais — segunda página">
-      </div>
-    </div>`;
-    updateMagicClock();
     return;
   }
     $('#app').innerHTML=`<div class="empty"><h2>${labels[b.dataset.section]}</h2><p>Esta seção está preparada para receber dados reais do Wiki. Nenhum conteúdo fictício foi preenchido.</p></div>`;
@@ -2182,6 +2149,56 @@ fetchWiki().catch(err=>{
   img, iframe { max-width:100% !important; }
 }
 </style>
+
+<style id="site-theme-system">
+body[data-site-theme="aquatic"]{
+  --ink:#073a51;
+  background-color:#06354d !important;
+  background-image:linear-gradient(180deg,rgba(4,111,133,.24),rgba(3,43,78,.42)),url("assets/theme-aquatic-mermaid.png") !important;
+  background-size:cover !important;
+  background-position:center center !important;
+  background-repeat:no-repeat !important;
+}
+body[data-site-theme="aquatic"] .nav{background:linear-gradient(180deg,var(--theme-primary),var(--theme-primary-dark)) !important;border-bottom-color:var(--theme-accent) !important}
+body[data-site-theme="aquatic"] .nav button{background:linear-gradient(180deg,#3ab5c1,#08738c) !important;border-color:#9aebed !important;color:#f4ffff !important}
+body[data-site-theme="aquatic"] .nav button.active,body[data-site-theme="aquatic"] .nav button:hover{background:linear-gradient(180deg,#75e0df,#168b9c) !important;color:#063a51 !important}
+body[data-site-theme="aquatic"] .side,body[data-site-theme="aquatic"] .content{background:rgba(232,250,251,.94) !important;border-color:var(--theme-accent) !important;color:var(--theme-text) !important}
+body[data-site-theme="aquatic"] .side button{color:#08627a !important}
+body[data-site-theme="aquatic"] .side button:hover,body[data-site-theme="aquatic"] .side button.active{background:linear-gradient(90deg,#43c9ce,#168b9c) !important;color:#fff !important}
+body[data-site-theme="aquatic"] .card,body[data-site-theme="aquatic"] .modal-box{background:linear-gradient(145deg,#f3ffff,#d9f6f6) !important;border-color:#55bfc9 !important;color:#073a51 !important}
+body[data-site-theme="aquatic"] .controls,body[data-site-theme="aquatic"] .pets-controls{background:#edfcfc !important;border-color:#6acbd2 !important}
+body[data-site-theme="aquatic"] .controls input,body[data-site-theme="aquatic"] .controls select,body[data-site-theme="aquatic"] .pets-controls input,body[data-site-theme="aquatic"] .pets-controls select{border-color:#66c3cc !important;background:#f9ffff !important;color:#073a51 !important}
+body[data-site-theme="aquatic"] .stat,body[data-site-theme="aquatic"] .badge{background:#d7f5f4 !important;border-color:#68c6cc !important;color:#07576c !important}
+body[data-site-theme="aquatic"] .card .pic{background:linear-gradient(135deg,#cbf1f0,#f5ffff) !important;border-color:#83d5d9 !important}
+body[data-site-theme="aquatic"] .footer{background:linear-gradient(180deg,#0e7387,#084d67) !important;border-top-color:#7adfe0 !important;color:#f0ffff !important}
+body[data-site-theme="aquatic"] #magicClockControls .mcc-panel{background:linear-gradient(145deg,rgba(8,103,129,.98),rgba(4,53,82,.98)) !important;border-color:#9ce9e6 !important}
+body[data-site-theme="aquatic"] #magicClockControls button,body[data-site-theme="aquatic"] #weatherControls select,body[data-site-theme="aquatic"] #siteThemeControls select{background:linear-gradient(145deg,#168da0,#07566f) !important;border-color:#8edfe1 !important;color:#f4ffff !important}
+body[data-site-theme="aquatic"] #weatherControls .weather-title,body[data-site-theme="aquatic"] #siteThemeControls label{color:#c5ffff !important}
+body[data-site-theme="aquatic"] #siteThemeControls small{color:#e4ffff !important}
+@media(max-width:700px){body[data-site-theme="aquatic"]{background-position:78% center !important}}
+</style>
+<script id="site-theme-controller">
+(function(){
+  const select=document.getElementById('siteThemeSelect');
+  if(!select)return;
+  const themes={
+    classic:{meta:'#c51b79',vars:{'--theme-primary':'#d82c91','--theme-primary-dark':'#a50f69','--theme-accent':'#f7a6d5','--theme-text':'#8c166d'}},
+    aquatic:{meta:'#087f98',vars:{'--theme-primary':'#168da0','--theme-primary-dark':'#064d67','--theme-accent':'#8de0df','--theme-text':'#073a51'}}
+  };
+  function applyTheme(name){
+    if(!themes[name])name='classic';
+    const theme=themes[name];
+    document.body.dataset.siteTheme=name;
+    Object.entries(theme.vars).forEach(([key,value])=>document.documentElement.style.setProperty(key,value));
+    const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content=theme.meta;
+    select.value=name;
+    try{localStorage.setItem('ddv_site_theme',name)}catch{}
+  }
+  let saved='classic';try{saved=localStorage.getItem('ddv_site_theme')||'classic'}catch{}
+  applyTheme(saved);
+  select.addEventListener('change',()=>applyTheme(select.value));
+})();
+</script>
 
 </body>
 </html>
