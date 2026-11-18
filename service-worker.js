@@ -1,4 +1,4 @@
-const CACHE="ddv-shell-v10";
+const CACHE="ddv-shell-v11";
 const SHELL=["./","./index.html","./manifest.json","./assets/favicon-heart.svg","./assets/cursor-heart.svg","./assets/cursor-shell.svg","./assets/theme-aquatic-mermaid.png","./assets/theme-aquatic-banner-v2.png"];
 
 self.addEventListener("install", event=>{
