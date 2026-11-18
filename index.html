@@ -1013,11 +1013,8 @@ body.pets-active .pets-side{display:block}
       <option value="classic">🌸 Original</option>
       <option value="aquatic">🫧 Tema Aquático</option>
     </select>
-    <button type="button" id="mascotToggle" aria-pressed="true" title="Ocultar mascote">Mascote: ligado</button>
   </div>
-</nav>
-<button id="cursorMascot" type="button" aria-label="Mascote do site; toque para uma reação"><span class="mascot-fairy" aria-hidden="true">🧚</span><svg class="mascot-axolotl" viewBox="0 0 72 52" aria-hidden="true"><path class="axo-gills" d="M18 24 6 12l4 13-7 5 15 1m36-7 12-12-4 13 7 5-15 1" fill="#ff91b5" stroke="#c75c88" stroke-width="2"/><path class="axo-tail" d="M49 30q17-8 21 3-10-1-16 10-3-9-10-12" fill="#f3a2ba"/><ellipse cx="35" cy="29" rx="20" ry="15" fill="#ffd1df" stroke="#c75c88" stroke-width="2"/><circle cx="28" cy="27" r="2"/><circle cx="42" cy="27" r="2"/><path d="M31 33q4 3 8 0" fill="none" stroke="#c75c88" stroke-width="2"/></svg></button>
-
+</nav>\r\n
 <main class="shell">
   <aside class="side" id="side">
     <div class="recipe-side">
@@ -2217,16 +2214,6 @@ body[data-site-theme="aquatic"] .hero{
   cursor:pointer !important;
 }
 .nav #siteThemeControls small{display:none !important}
-.nav #mascotToggle{border:1px solid rgba(255,199,232,.85);border-radius:12px;padding:8px;color:#fff;background:linear-gradient(#ed65b6,#b71979);font-weight:700;white-space:nowrap}
-#cursorMascot{position:fixed;z-index:9998;left:0;top:0;display:none;place-items:center;width:52px;height:54px;padding:0;border:0;background:transparent;filter:drop-shadow(0 3px 4px #3358);pointer-events:auto;cursor:pointer;touch-action:manipulation}
-#cursorMascot .mascot-fairy{font-size:40px;animation:mascotFloat 1.6s ease-in-out infinite}
-#cursorMascot .mascot-axolotl{display:none;width:100%;animation:mascotFloat 1.7s ease-in-out infinite}
-body[data-site-theme="aquatic"] #cursorMascot .mascot-fairy{display:none}body[data-site-theme="aquatic"] #cursorMascot .mascot-axolotl{display:block}
-#cursorMascot .axo-tail{transform-origin:50% 50%;animation:tailSwim .7s ease-in-out infinite alternate}#cursorMascot .axo-gills{transform-origin:center;animation:gillSwim .8s ease-in-out infinite alternate}
-#cursorMascot.is-reacting{animation:mascotSpin .65s ease-out}body[data-site-theme="aquatic"] #cursorMascot.is-reacting:after{content:'🫧';position:absolute;top:-12px;right:-8px}
-@keyframes mascotFloat{50%{transform:translateY(-4px) rotate(-3deg)}}@keyframes tailSwim{to{transform:rotate(12deg)}}@keyframes gillSwim{to{transform:scale(.9) rotate(-8deg)}}@keyframes mascotSpin{to{transform:rotate(360deg) scale(1.12)}}
-@media(pointer:coarse){#cursorMascot{display:grid;right:12px;bottom:16px;left:auto;top:auto;width:44px;height:46px}}
-@media(prefers-reduced-motion:reduce){#cursorMascot,#cursorMascot *{animation:none!important}}
 @media(max-width:1120px){
   .nav{flex-wrap:wrap !important;overflow:visible !important;height:auto !important}
 }
@@ -2252,9 +2239,6 @@ body[data-site-theme="aquatic"] #cursorMascot .mascot-fairy{display:none}body[da
   applyTheme(saved);
   select.addEventListener('change',()=>applyTheme(select.value));
 })();
-</script>
-<script>
-(function(){const m=document.getElementById('cursorMascot'),b=document.getElementById('mascotToggle');if(!m||!b)return;let on=true;try{on=localStorage.getItem('ddv_mascot_visible')!=='false'}catch{};const touch=matchMedia('(pointer:coarse)').matches;function show(){m.style.display=on&&touch?'grid':'none';b.textContent=on?'Mascote: ligado':'Mascote: oculto';b.setAttribute('aria-pressed',String(on));try{localStorage.setItem('ddv_mascot_visible',String(on))}catch{}}b.onclick=()=>{on=!on;show()};m.onclick=()=>{m.classList.remove('is-reacting');void m.offsetWidth;m.classList.add('is-reacting');setTimeout(()=>m.classList.remove('is-reacting'),700)};if(!touch){let x=innerWidth/2,y=innerHeight/2,tx=x,ty=y,raf=0;addEventListener('pointermove',e=>{if(!on)return;tx=Math.max(4,Math.min(innerWidth-60,e.clientX+22));ty=Math.max(4,Math.min(innerHeight-60,e.clientY+18));const hit=document.elementFromPoint(tx+26,ty+27);if(hit&&(hit.closest?.('a,button,input,select,textarea,label,p,h1,h2,h3,h4,li')||(!hit.children.length&&hit.textContent?.trim()))){m.style.display='none';return}m.style.opacity='1';m.style.display='grid';if(!raf)raf=requestAnimationFrame(function step(){x+=(tx-x)*.16;y+=(ty-y)*.16;m.style.transform=`translate(${x}px,${y}px)`;raf=(Math.abs(tx-x)+Math.abs(ty-y)>.7)?requestAnimationFrame(step):0})},{passive:true})}show()})();
 </script>
 
 </body>
