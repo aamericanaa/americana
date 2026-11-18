@@ -1,5 +1,5 @@
-const CACHE="ddv-shell-v6";
-const SHELL=["./","./index.html","./manifest.json","./assets/favicon-heart.svg","./assets/cursor-shell.svg","./assets/theme-aquatic-mermaid.png"];
+const CACHE="ddv-shell-v8";
+const SHELL=["./","./index.html","./manifest.json","./assets/favicon-heart.svg","./assets/cursor-heart.svg","./assets/cursor-shell.svg","./assets/theme-aquatic-mermaid.png","./assets/theme-aquatic-header.png"];
 
 self.addEventListener("install", event=>{
   event.waitUntil(

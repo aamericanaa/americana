@@ -32,8 +32,11 @@ if (location.protocol === 'http:' || location.protocol === 'https:') {
   --ink:#6f0c55;--gold:#f5c45d;--white:#fff;--shadow:0 12px 17.5px rgba(113,12,85,.18);
 }
 *{box-sizing:border-box}
-/* Cursor personalizado: concha do mar */
+/* Cursor do tema principal; o Tema Aquático troca para a concha abaixo. */
 html, body, body * {
+  cursor: url("assets/cursor-heart.svg") 6 5, auto !important;
+}
+body[data-site-theme="aquatic"], body[data-site-theme="aquatic"] * {
   cursor: url("assets/cursor-shell.svg") 4 3, auto !important;
 }
 
@@ -2176,6 +2179,16 @@ body[data-site-theme="aquatic"] #magicClockControls button,body[data-site-theme=
 body[data-site-theme="aquatic"] #weatherControls .weather-title,body[data-site-theme="aquatic"] #siteThemeControls label{color:#c5ffff !important}
 body[data-site-theme="aquatic"] #siteThemeControls small{color:#e4ffff !important}
 @media(max-width:700px){body[data-site-theme="aquatic"]{background-position:78% center !important}}
+body[data-site-theme="aquatic"] .hero{
+  background-image:linear-gradient(90deg,rgba(3,49,68,.08),rgba(3,49,68,0) 45%,rgba(3,49,68,.08)),url("assets/theme-aquatic-header.png") !important;
+  background-size:cover !important;
+  background-position:center 48% !important;
+  background-repeat:no-repeat !important;
+  background-color:#087f98 !important;
+}
+@media(max-width:700px){
+  body[data-site-theme="aquatic"] .hero{background-position:22% center !important}
+}
 </style>
 <script id="site-theme-controller">
 (function(){
