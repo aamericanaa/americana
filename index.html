@@ -1064,7 +1064,7 @@ body.pets-active .pets-side{display:block}
 </main>
 
 <div class="modal" id="modal"><div class="modal-box"><button type="button" class="close" id="close">×</button><div id="modalBody"></div></div></div>
-<footer class="footer"><span>Dados de receitas carregados do Dreamlight Valley Wiki. O site é uma interface pessoal de consulta.</span><button type="button" class="footer-about-button" data-section="about">Sobre &amp; Créditos</button></footer>
+
 
 <script>
 const API='https://dreamlightvalleywiki.com/api.php?action=parse&page=Cooking&prop=text&format=json&origin=*';
@@ -1704,6 +1704,9 @@ document.querySelectorAll('#mainNav button, .footer-about-button').forEach(b=>b.
             '<span class="home-feature-arrow" aria-hidden="true">→</span>',
           '</button>',
         '</section>',
+        '<div class="home-hero-image">',
+          '<img src="assets/embedded-f9b95214fe9c.webp" alt="Cena de fantasia de Dreamlight Valley com princesa, pégaso e castelo" loading="lazy">',
+        '</div>',
       '</div>'
     ].join('');
     return;
