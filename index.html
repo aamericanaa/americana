@@ -995,14 +995,6 @@ body.pets-active .pets-side{display:block}
       <div class="weather-label"><span>Velocidade</span><span id="weatherSpeedValue">50%</span></div>
       <input id="weatherSpeed" type="range" min="10" max="100" value="50" aria-label="Velocidade do efeito">
     </div>
-    <div id="siteThemeControls" aria-label="Temas visuais do site">
-      <label for="siteThemeSelect">🎨 Tema visual do site</label>
-      <select id="siteThemeSelect">
-        <option value="classic">🌸 Original</option>
-        <option value="aquatic">🫧 Tema Aquático</option>
-      </select>
-      <small>O tema aquático aplica a nova arte e suas cores; o Tema Original mantém o visual anterior.</small>
-    </div>
   </div>
   <button type="button" id="openMagicClockControls" class="mcc-open" aria-label="Abrir controles do relógio">⚙️ Ajustar relógio</button>
   <button type="button" id="minimizedMagicClockControls" class="mcc-minimized" aria-label="Reabrir controles do relógio">☾</button>
@@ -1012,9 +1004,16 @@ body.pets-active .pets-side{display:block}
 <nav class="nav" id="mainNav">
   <button type="button" class="active" data-section="home">⌂ Início</button>
   <button type="button" data-section="recipes">🍳 Guia de Receitas ♥</button>
-  <button type="button" data-section="pets">🐾 Wiki dos animais ♥</button>
+  <button type="button" data-section="pets">🐾 Guia dos Animais ♥</button>
   <button type="button" data-section="extras">★ Dicas e Extras</button>
   <button type="button" data-section="about">💗 Sobre &amp; Créditos</button>
+  <div id="siteThemeControls" aria-label="Temas visuais do site">
+    <label for="siteThemeSelect">🎨 Tema</label>
+    <select id="siteThemeSelect" aria-label="Tema visual do site">
+      <option value="classic">🌸 Original</option>
+      <option value="aquatic">🫧 Tema Aquático</option>
+    </select>
+  </div>
 </nav>
 
 <main class="shell">
@@ -1382,7 +1381,7 @@ function render(){
 
   const c=loadChecked(); const done=Object.keys(c).length;
   a.innerHTML=`
-  <div class="title-row"><div class="recipe-title-block"><h2>GUIA DE RECEITAS</h2><p class="subtitle">Todas as refeições encontradas na tabela atual de Cooking do Wiki. As fotos são carregadas da página correspondente de cada receita.</p></div><div class="recipe-translate-image"><img src="assets/embedded-284646185d8e.webp" alt="Instruções para traduzir as receitas para o seu idioma"></div></div><button id="offlineSave" class="offline-btn" type="button">💾 Salvar para uso offline</button>
+  <div class="title-row"><div class="recipe-title-block"><h2>GUIA DE RECEITAS</h2><p class="subtitle">Todas as refeições encontradas na tabela atual de Cooking do Wiki. As fotos são carregadas da página correspondente de cada receita.</p></div></div><button id="offlineSave" class="offline-btn" type="button">💾 Salvar para uso offline</button>
   <div class="controls">
     <input id="search" placeholder="🔎 Pesquisar receita, ingrediente ou DLC…" value="${esc(state.query)}">
     <select id="type"><option value="all">Todas as categorias</option><option value="Appetizers">Aperitivos</option><option value="Entrées">Entradas</option><option value="Desserts">Sobremesas</option></select>
@@ -2180,14 +2179,44 @@ body[data-site-theme="aquatic"] #weatherControls .weather-title,body[data-site-t
 body[data-site-theme="aquatic"] #siteThemeControls small{color:#e4ffff !important}
 @media(max-width:700px){body[data-site-theme="aquatic"]{background-position:78% center !important}}
 body[data-site-theme="aquatic"] .hero{
-  background-image:linear-gradient(90deg,rgba(3,49,68,.08),rgba(3,49,68,0) 45%,rgba(3,49,68,.08)),url("assets/theme-aquatic-header.png") !important;
-  background-size:cover !important;
-  background-position:center 48% !important;
+  background-image:url("assets/theme-aquatic-banner-v2.png") !important;
+  background-size:100% auto !important;
+  background-position:center top !important;
   background-repeat:no-repeat !important;
   background-color:#087f98 !important;
+  height:clamp(145px,27.4vw,680px) !important;
+  min-height:clamp(145px,27.4vw,680px) !important;
 }
-@media(max-width:700px){
-  body[data-site-theme="aquatic"] .hero{background-position:22% center !important}
+.nav #siteThemeControls{
+  position:relative !important;
+  display:flex !important;
+  align-items:center !important;
+  gap:8px !important;
+  flex:0 0 auto !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+}
+.nav #siteThemeControls label{
+  margin:0 !important;
+  color:#fff !important;
+  font-size:13px !important;
+  white-space:nowrap !important;
+}
+.nav #siteThemeControls select{
+  width:auto !important;
+  min-width:155px !important;
+  max-width:190px !important;
+  min-height:44px !important;
+  padding:8px 11px !important;
+  border:1px solid rgba(255,199,232,.85) !important;
+  border-radius:14px 14px 5px 5px !important;
+  font-weight:700 !important;
+  cursor:pointer !important;
+}
+.nav #siteThemeControls small{display:none !important}
+@media(max-width:1120px){
+  .nav{flex-wrap:wrap !important;overflow:visible !important;height:auto !important}
 }
 </style>
 <script id="site-theme-controller">
