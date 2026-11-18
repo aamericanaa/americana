@@ -1014,7 +1014,7 @@ body.pets-active .pets-side{display:block}
       <option value="aquatic">🫧 Tema Aquático</option>
     </select>
   </div>
-</nav>\r\n
+</nav>
 <main class="shell">
   <aside class="side" id="side">
     <div class="recipe-side">
@@ -2217,6 +2217,118 @@ body[data-site-theme="aquatic"] .hero{
 @media(max-width:1120px){
   .nav{flex-wrap:wrap !important;overflow:visible !important;height:auto !important}
 }
+</style>
+<style id="banner-navigation-seam-fix">
+/* Mantém a navegação encostada ao banner em todos os tamanhos de tela. */
+.hero + .nav{
+  margin-top:0 !important;
+  border-top:0 !important;
+}
+@media(max-width:700px){
+  body[data-site-theme="aquatic"] .hero{
+    height:27.4vw !important;
+    min-height:0 !important;
+  }
+}
+</style>
+<style id="refined-navigation">
+/* Navegação mais leve, com hierarquia clara e cores coordenadas ao tema. */
+.nav{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  flex-wrap:wrap !important;
+  gap:8px !important;
+  width:100% !important;
+  margin:0 !important;
+  padding:9px clamp(12px,2vw,28px) !important;
+  overflow:visible !important;
+  background:rgba(92,15,67,.96) !important;
+  border:0 !important;
+  border-bottom:1px solid rgba(255,255,255,.16) !important;
+  border-radius:0 !important;
+  box-shadow:0 5px 16px rgba(28,8,31,.16) !important;
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+.nav::before,.nav::after{display:none !important;content:none !important}
+.nav button{
+  flex:0 0 auto !important;
+  min-height:40px !important;
+  padding:9px 15px !important;
+  border:1px solid rgba(255,255,255,.18) !important;
+  border-radius:11px !important;
+  background:rgba(255,255,255,.09) !important;
+  box-shadow:none !important;
+  color:#fff8fd !important;
+  font:600 14px/1.2 Georgia,"Times New Roman",serif !important;
+  transition:background-color .18s ease,border-color .18s ease,color .18s ease,transform .18s ease !important;
+}
+.nav button:hover{
+  transform:translateY(-1px) !important;
+  background:rgba(255,255,255,.16) !important;
+  border-color:rgba(255,255,255,.32) !important;
+}
+.nav button.active{
+  background:#fff4fb !important;
+  border-color:#fff4fb !important;
+  color:#74124f !important;
+  box-shadow:0 2px 7px rgba(30,7,27,.16) !important;
+}
+.nav button:focus-visible,.nav #siteThemeControls select:focus-visible{
+  outline:3px solid #ffe08b !important;
+  outline-offset:2px !important;
+}
+.nav #siteThemeControls{gap:8px !important}
+.nav #siteThemeControls label{
+  color:rgba(255,255,255,.82) !important;
+  font-size:13px !important;
+  font-weight:600 !important;
+}
+.nav #siteThemeControls select{
+  min-width:150px !important;
+  min-height:40px !important;
+  padding:8px 12px !important;
+  border:1px solid rgba(255,255,255,.22) !important;
+  border-radius:10px !important;
+  background:rgba(255,255,255,.10) !important;
+  color:#fff !important;
+  box-shadow:none !important;
+  font:600 14px/1.2 Georgia,"Times New Roman",serif !important;
+}
+.nav #siteThemeControls select option{background:#173b50;color:#fff}
+body[data-site-theme="aquatic"] .nav{
+  background:rgba(5,54,75,.96) !important;
+  border-bottom-color:rgba(164,232,232,.24) !important;
+}
+body[data-site-theme="aquatic"] .nav button.active{
+  background:#b9eeee !important;
+  border-color:#b9eeee !important;
+  color:#06485b !important;
+}
+body[data-site-theme="aquatic"] .nav button:hover{
+  background:rgba(134,223,223,.22) !important;
+  border-color:rgba(164,232,232,.46) !important;
+}
+body[data-site-theme="aquatic"] .nav #siteThemeControls select{
+  border-color:rgba(164,232,232,.3) !important;
+  background:rgba(255,255,255,.08) !important;
+}
+@media(max-width:700px){
+  .nav{
+    justify-content:flex-start !important;
+    flex-wrap:nowrap !important;
+    gap:7px !important;
+    padding:8px 10px !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    scrollbar-width:none !important;
+    -webkit-overflow-scrolling:touch !important;
+  }
+  .nav::-webkit-scrollbar{display:none !important}
+  .nav button{min-height:38px !important;padding:8px 12px !important;font-size:13px !important}
+}
+@media(prefers-reduced-motion:reduce){.nav button{transition:none !important}}
 </style>
 <script id="site-theme-controller">
 (function(){
