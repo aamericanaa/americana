@@ -1,5 +1,5 @@
-const CACHE="ddv-shell-v10";
-const SHELL=["./","./index.html","./manifest.json","./assets/favicon-heart.svg","./assets/cursor-heart.svg","./assets/cursor-shell.svg","./assets/theme-aquatic-mermaid.png","./assets/theme-aquatic-banner-v2.png"];
+const CACHE="ddv-shell-v25";
+const SHELL=["./","./index.html","./manifest.json","./assets/favicon-heart.svg","./assets/cursor-heart.svg","./assets/cursor-shell.svg","./assets/theme-aquatic-mermaid.png","./assets/theme-aquatic-banner-v2.png","./assets/hero-original-hd.jpg","./assets/clock-frame-classic.png","./assets/clock-frame-ocean.png","./assets/clock-background-classic.png","./assets/clock-background-ocean.png","./assets/card-original-recipes-bg.jpg","./assets/card-original-pets-bg.jpg","./assets/card-original-news-bg.jpg","./assets/card-ocean-recipes-bg.jpg","./assets/card-ocean-pets-bg.jpg","./assets/card-ocean-news-bg.jpg"];
 
 self.addEventListener("install", event=>{
   event.waitUntil(

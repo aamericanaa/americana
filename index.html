@@ -684,7 +684,7 @@ body{
   background-attachment:fixed !important;
 }
 .hero{
-  background-image:url("assets/embedded-34a611395d90.webp") !important;
+  background-image:url("assets/hero-original-hd.jpg") !important;
   background-size:cover !important;
   background-position:center center !important;
   background-repeat:no-repeat !important;
@@ -907,7 +907,7 @@ body.pets-active .pets-side{display:block}
 <header class="hero" aria-label="Cabeçalho do guia">
   <img class="hero-banner-logo" src="assets/embedded-f775332cc437.png" alt="Disney Dreamlight Valley — Guia Completo" aria-hidden="true">
   <div class="hero-copy"></div>
-  <div class="magic-clock-wrap" aria-label="Relógio mágico Lua e Estrelas">
+  <div class="magic-clock-wrap" aria-label="Relógio com hora e data atuais">
     <section class="magic-clock">
       <div class="mc-ornament" aria-hidden="true"></div>
       <h3 class="mc-title">RELÓGIO MÁGICO</h3>
@@ -1004,14 +1004,13 @@ body.pets-active .pets-side{display:block}
 <nav class="nav" id="mainNav">
   <button type="button" class="active" data-section="home">⌂ Início</button>
   <button type="button" data-section="recipes">🍳 Guia de Receitas ♥</button>
-  <button type="button" data-section="pets">🐾 Guia dos Animais ♥</button>
+  <button type="button" data-section="pets">🐾 Guia dos Animais</button>
   <button type="button" data-section="extras">★ Dicas e Extras</button>
-  <button type="button" data-section="about">💗 Sobre &amp; Créditos</button>
   <div id="siteThemeControls" aria-label="Temas visuais do site">
-    <label for="siteThemeSelect">🎨 Tema</label>
+    <label for="siteThemeSelect">Tema</label>
     <select id="siteThemeSelect" aria-label="Tema visual do site">
       <option value="classic">🌸 Original</option>
-      <option value="aquatic">🫧 Tema Aquático</option>
+      <option value="aquatic">🌊 Oceano</option>
     </select>
   </div>
 </nav>
@@ -1065,7 +1064,7 @@ body.pets-active .pets-side{display:block}
 </main>
 
 <div class="modal" id="modal"><div class="modal-box"><button type="button" class="close" id="close">×</button><div id="modalBody"></div></div></div>
-<footer class="footer">Dados de receitas carregados do Dreamlight Valley Wiki. O site é uma interface pessoal de consulta.</footer>
+<footer class="footer"><span>Dados de receitas carregados do Dreamlight Valley Wiki. O site é uma interface pessoal de consulta.</span><button type="button" class="footer-about-button" data-section="about">Sobre &amp; Créditos</button></footer>
 
 <script>
 const API='https://dreamlightvalleywiki.com/api.php?action=parse&page=Cooking&prop=text&format=json&origin=*';
@@ -1580,10 +1579,11 @@ a.innerHTML=`<div class="title-row"><div><h2>🐾 WIKI DE PETS</h2><p class="sub
 function openPetModal(p){$('#modalBody').innerHTML=`<div class="pic" style="height:230px;margin-bottom:14px"><img src="${esc(p.img)}" alt="${esc(p.name)}" referrerpolicy="origin" decoding="async" style="width:100%;height:100%;object-fit:contain" data-pet-modal-image="1"></div><h2>🐾 ${esc(p.name)}${petTranslationHtml(p.name)}</h2><p><span class="badge">${esc(p.species)}${petTranslationHtml(p.species)}</span> <span class="badge">📍 ${esc(p.location)}</span></p><h3>🍎 Alimentação</h3><p><b>Comida favorita:</b> ${esc(p.favorite)}${petTranslationHtml(p.favorite)}<br><b>Também gosta:</b> ${esc(p.liked)}${petTranslationHtml(p.liked)}</p><h3>🎯 Como alimentar</h3><p>${esc(p.method)}</p><h3>🕐 Horários</h3><div class="pet-days">${p.schedule.map(petDayCell).join('')}</div><p style="margin-top:16px"><a target="_blank" rel="noopener noreferrer" href="${esc(p.href)}">Abrir página deste pet no Wiki ↗</a></p><p><small>Dados obtidos da página Critters do Dreamlight Valley Wiki.</small></p>`;$('#modal').classList.add('open')}
 function setupPetSide(){document.querySelectorAll('[data-pet-filter]').forEach(b=>b.onclick=()=>{petState.filter=b.dataset.petFilter;petState.location=(b.dataset.petFilter==='all'||b.dataset.petFilter==='favorites')?'all':b.dataset.petFilter;document.querySelectorAll('[data-pet-filter]').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderPets()})}setupPetSide();
 
-document.querySelectorAll('#mainNav button').forEach(b=>b.onclick=()=>{
+document.querySelectorAll('#mainNav button, .footer-about-button').forEach(b=>b.onclick=()=>{
   document.body.classList.toggle('recipes-active', b.dataset.section==='recipes');
   document.body.classList.toggle('pets-active', b.dataset.section==='pets');
-  document.querySelectorAll('#mainNav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+  document.body.classList.toggle('home-active', b.dataset.section==='home');
+  document.querySelectorAll('#mainNav button, .footer-about-button').forEach(x=>x.classList.remove('active'));b.classList.add('active');
   if(b.dataset.section==='pets'){
     document.querySelectorAll('[data-pet-filter]').forEach(x=>x.classList.remove('active'));
     document.querySelector('[data-pet-filter="all"]')?.classList.add('active');
@@ -1630,7 +1630,7 @@ document.querySelectorAll('#mainNav button').forEach(b=>b.onclick=()=>{
       <div class="about-card">
         <h3>📚 Sobre as informações</h3>
         <p>As informações apresentadas neste guia foram organizadas e apresentadas de maneira própria para facilitar a consulta dos jogadores.</p>
-        <p>Algumas informações utilizadas como referência foram consultadas em wikis, comunidades de jogadores e outras fontes públicas relacionadas ao jogo.</p>
+        <p>Algumas informações utilizadas como referência foram consultadas em wikis e outras fontes públicas relacionadas ao jogo.</p>
         <p>O objetivo deste projeto é reunir essas informações em uma apresentação simples, visual e fácil de consultar, especialmente para ajudar jogadores que preferem encontrar as informações em português.</p>
       </div>
 
@@ -1685,28 +1685,43 @@ document.querySelectorAll('#mainNav button').forEach(b=>b.onclick=()=>{
   }
   const labels={home:'GUIA COMPLETO',items:'ITENS E MATERIAIS',characters:'PERSONAGENS',maps:'MAPAS',extras:'DICAS E EXTRAS'};
   if(b.dataset.section==='home'){
-    $('#app').innerHTML=`<div class="home-panel">
-      <div class="home-hero-image">
-        <img src="assets/embedded-f9b95214fe9c.webp" alt="Cena de fantasia de Dreamlight Valley com princesa, pégaso e castelo">
-      </div>
-      <div class="home-welcome">
-        <h2>GUIA COMPLETO</h2>
-      </div>
-
-
-
-    </div>`;
+    $('#app').innerHTML=[
+      '<div class="home-panel">',
+        '<section class="home-feature-grid" aria-label="Atalhos principais do guia">',
+          '<button type="button" class="home-feature-card" data-home-link="recipes">',
+            '<span class="home-feature-art home-feature-art--recipes" aria-hidden="true"></span>',
+            '<span class="home-feature-copy"><strong>Receitas</strong><span>Descubra, prepare e complete todas as receitas do vale.</span></span>',
+            '<span class="home-feature-arrow" aria-hidden="true">→</span>',
+          '</button>',
+          '<button type="button" class="home-feature-card" data-home-link="pets">',
+            '<span class="home-feature-art home-feature-art--pets" aria-hidden="true"></span>',
+            '<span class="home-feature-copy"><strong>Pets e Animais</strong><span>Consulte comidas favoritas, locais e horários dos companheiros.</span></span>',
+            '<span class="home-feature-arrow" aria-hidden="true">→</span>',
+          '</button>',
+          '<button type="button" class="home-feature-card" data-home-link="extras">',
+            '<span class="home-feature-art home-feature-art--tips" aria-hidden="true"></span>',
+            '<span class="home-feature-copy"><strong>Novidades e Dicas</strong><span>Acesse dicas, redes sociais e informações sobre as lives.</span></span>',
+            '<span class="home-feature-arrow" aria-hidden="true">→</span>',
+          '</button>',
+        '</section>',
+      '</div>'
+    ].join('');
     return;
   }
     $('#app').innerHTML=`<div class="empty"><h2>${labels[b.dataset.section]}</h2><p>Esta seção está preparada para receber dados reais do Wiki. Nenhum conteúdo fictício foi preenchido.</p></div>`;
+});
+
+document.addEventListener('click',function(event){
+  const shortcut=event.target.closest('[data-home-link]');
+  if(!shortcut)return;
+  const destination=[...document.querySelectorAll('#mainNav button')].find(button=>button.dataset.section===shortcut.dataset.homeLink);
+  if(destination)destination.click();
 });
 
 document.querySelectorAll('.recipe-side button[data-filter]').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('.recipe-side button[data-filter]').forEach(x=>x.classList.remove('active'));b.classList.add('active');
   state.filter=b.dataset.filter;document.querySelector('[data-section="recipes"]').click();render();
 });
-
-
 function showTranslationTip(){
   const app=document.querySelector('#app');
   if(!app || document.querySelector('.translation-tip')) return;
@@ -2353,5 +2368,118 @@ body[data-site-theme="aquatic"] .nav #siteThemeControls select{
 })();
 </script>
 
+<style id="home-feature-design">
+.nav{width:calc(100% - 32px)!important;max-width:1210px!important;min-height:60px!important;margin:8px auto 16px!important;padding:8px 12px!important;display:flex!important;align-items:center!important;justify-content:center!important;flex-wrap:wrap!important;gap:8px!important;overflow:visible!important;position:sticky!important;top:8px!important;border:1px solid rgba(255,255,255,.82)!important;border-radius:32px!important;box-shadow:0 9px 26px rgba(72,20,53,.22),inset 0 1px 0 rgba(255,255,255,.25)!important;z-index:50!important;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+body[data-site-theme="classic"] .nav{background:linear-gradient(135deg,rgba(210,82,139,.95),rgba(162,44,97,.95))!important}
+body[data-site-theme="aquatic"] .nav{background:linear-gradient(135deg,rgba(17,107,132,.92),rgba(5,58,82,.94))!important;border-color:rgba(222,255,255,.88)!important;box-shadow:0 9px 26px rgba(5,45,65,.28),inset 0 1px 0 rgba(255,255,255,.3)!important}
+.nav button{min-height:40px!important;padding:9px 15px!important;border:1px solid rgba(255,255,255,.42)!important;border-radius:12px!important;background:rgba(255,255,255,.10)!important;color:#fff!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 2px 8px rgba(39,13,35,.12)!important;font:600 14px/1.2 Georgia,"Times New Roman",serif!important;transition:transform .18s ease,background .18s ease,border-color .18s ease,color .18s ease!important}
+body[data-site-theme="classic"] .nav button.active{background:#fff0f7!important;border-color:#fff!important;color:#962d5d!important}
+body[data-site-theme="aquatic"] .nav button.active{background:#dcfbff!important;border-color:#fff!important;color:#07566e!important}
+.nav button:hover{transform:translateY(-1px)!important;background:rgba(255,255,255,.2)!important}
+.nav button:focus-visible,.nav #siteThemeControls select:focus-visible{outline:3px solid #ffe08b!important;outline-offset:2px!important}
+.nav #siteThemeControls{display:flex!important;align-items:center!important;gap:8px!important;margin:0!important;padding:0!important;border:0!important}
+.nav #siteThemeControls label{display:inline-flex!important;align-items:center!important;gap:4px!important;color:#fff!important;font-size:14px!important;font-weight:700!important;white-space:nowrap!important}
+.nav #siteThemeControls label::before{content:"🎨"}
+body[data-site-theme="aquatic"] .nav #siteThemeControls label::before{content:"🌙"}
+.nav #siteThemeControls select{min-width:138px!important;max-width:160px!important;min-height:40px!important;padding:8px 11px!important;border:1px solid rgba(255,255,255,.44)!important;border-radius:12px!important;background:rgba(255,255,255,.12)!important;color:#fff!important;box-shadow:none!important;font:600 14px/1.2 Georgia,"Times New Roman",serif!important}
+.nav #siteThemeControls select option{background:#fff;color:#563149}
+body[data-site-theme="aquatic"] .nav #siteThemeControls select option{background:#e9fcff;color:#07566e}
+.nav #siteThemeControls small{display:none!important}
+
+body.home-active .shell{display:block!important;width:100%!important;max-width:1400px!important;margin:10px auto 20px!important;padding:0 clamp(12px,2.4vw,28px)!important}
+body.home-active .side{display:none!important}
+body.home-active .content{min-height:0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
+.home-panel{width:100%;display:flex;flex-direction:column;gap:16px}
+.home-feature-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;width:100%}
+.home-feature-card{position:relative;isolation:isolate;display:grid;grid-template-columns:150px minmax(0,1fr) 34px;align-items:center;gap:12px;min-width:0;min-height:146px;padding:10px 12px;overflow:hidden;border:2px solid rgba(255,255,255,.94);border-radius:24px;text-align:left;font:inherit;cursor:pointer;box-shadow:0 9px 22px rgba(97,30,70,.18),inset 0 1px 0 rgba(255,255,255,.85);transition:transform .18s ease,box-shadow .18s ease,filter .18s ease}
+body[data-site-theme="classic"] .home-feature-card{color:#672849;background:linear-gradient(135deg,#fff8fb,#f8dbe8);border-color:#fff8fc}
+body[data-site-theme="aquatic"] .home-feature-card{grid-template-columns:minmax(0,1fr) 150px 34px;color:#073e54;background:linear-gradient(135deg,#eafcff,#b8e7ee);border-color:#edffff;box-shadow:0 9px 22px rgba(3,61,81,.2),inset 0 1px 0 rgba(255,255,255,.86)}
+.home-feature-card:hover{transform:translateY(-3px);box-shadow:0 14px 28px rgba(97,30,70,.23),inset 0 1px 0 rgba(255,255,255,.9)}
+body[data-site-theme="aquatic"] .home-feature-card:hover{box-shadow:0 14px 28px rgba(3,61,81,.27),inset 0 1px 0 rgba(255,255,255,.9)}
+.home-feature-card:focus-visible{outline:3px solid #e582ae;outline-offset:3px}
+body[data-site-theme="aquatic"] .home-feature-card:focus-visible{outline-color:#35aebe}
+.home-feature-art{display:block;width:150px;height:100px;border-radius:17px;background-repeat:no-repeat;background-position:center center;background-size:contain;box-shadow:0 4px 12px rgba(81,26,57,.14)}
+body[data-site-theme="classic"] .home-feature-art--recipes{background-image:url("assets/card-original-recipes-bg.jpg");background-position:center center}
+body[data-site-theme="classic"] .home-feature-art--pets{background-image:url("assets/card-original-pets-bg.jpg");background-position:center center}
+body[data-site-theme="classic"] .home-feature-art--tips{background-image:url("assets/card-original-news-bg.jpg");background-position:center center}
+body[data-site-theme="aquatic"] .home-feature-art{background-size:contain;box-shadow:0 4px 12px rgba(3,56,77,.16)}
+body[data-site-theme="aquatic"] .home-feature-art--recipes{background-image:url("assets/card-ocean-recipes-bg.jpg");background-position:center center}
+body[data-site-theme="aquatic"] .home-feature-art--pets{background-image:url("assets/card-ocean-pets-bg.jpg");background-position:center center}
+body[data-site-theme="aquatic"] .home-feature-art--tips{background-image:url("assets/card-ocean-news-bg.jpg");background-position:center center}
+body[data-site-theme="aquatic"] .home-feature-card .home-feature-art{grid-column:2;grid-row:1}
+body[data-site-theme="aquatic"] .home-feature-card .home-feature-copy{grid-column:1;grid-row:1}
+body[data-site-theme="aquatic"] .home-feature-card .home-feature-arrow{grid-column:3;grid-row:1}
+.home-feature-copy{display:flex;flex-direction:column;gap:5px;min-width:0}
+.home-feature-copy strong{color:#9a315d;font-size:clamp(19px,2vw,27px);line-height:1.05}
+body[data-site-theme="aquatic"] .home-feature-copy strong{color:#0c5066}
+.home-feature-copy span{font-size:15px;line-height:1.25}
+.home-feature-arrow{align-self:end;display:grid;place-items:center;width:34px;height:34px;margin-bottom:1px;border-radius:50%;color:#fff;background:#dc6286;box-shadow:0 3px 8px rgba(126,27,65,.2);font:bold 24px/1 Arial,sans-serif}
+body[data-site-theme="aquatic"] .home-feature-arrow{background:#e37b55}
+.home-feature-card:nth-child(2) .home-feature-arrow{background:#d74d80}
+body[data-site-theme="aquatic"] .home-feature-card:nth-child(2) .home-feature-arrow{background:#e68159}
+.footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 14px}
+.footer-about-button{border:0;padding:3px 8px;color:inherit;background:transparent;text-decoration:underline;text-underline-offset:3px;cursor:pointer;font-size:13px}
+.footer-about-button:hover{filter:brightness(1.1)}
+@media(max-width:980px){.home-feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.home-feature-card:nth-child(3){grid-column:1/-1}}
+@media(max-width:680px){
+.nav{width:calc(100% - 18px)!important;max-width:none!important;justify-content:flex-start!important;flex-wrap:nowrap!important;gap:6px!important;padding:7px 9px!important;overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:none!important;-webkit-overflow-scrolling:touch!important}
+.nav::-webkit-scrollbar{display:none!important}
+.nav button{min-height:38px!important;padding:8px 11px!important;font-size:13px!important}
+.nav #siteThemeControls{flex:0 0 auto!important}
+.nav #siteThemeControls label{display:none!important}
+.nav #siteThemeControls select{min-width:126px!important;min-height:38px!important;font-size:13px!important}
+body.home-active .shell{padding:0 10px!important}
+.home-feature-grid{grid-template-columns:1fr}
+.home-feature-card,.home-feature-card:nth-child(3){grid-column:auto;grid-template-columns:112px minmax(0,1fr) 30px;min-height:132px;gap:9px;padding:8px;border-radius:19px}
+body[data-site-theme="aquatic"] .home-feature-card{grid-template-columns:minmax(0,1fr) 112px 30px}
+.home-feature-art{width:112px;height:75px;border-radius:14px}
+.home-feature-copy strong{font-size:20px}
+.home-feature-copy span{font-size:14px}
+.home-feature-arrow{width:30px;height:30px;font-size:21px}
+}
+@media(prefers-reduced-motion:reduce){.nav button,.home-feature-card{transition:none!important}.nav button:hover,.home-feature-card:hover{transform:none!important}}
+</style>
+<style id="full-feature-card-backgrounds">
+.home-feature-card{background:transparent!important}
+.home-feature-card::before{content:"";position:absolute;inset:0;z-index:0;border-radius:inherit;pointer-events:none;background-repeat:no-repeat;background-size:100% 100%;background-position:center center}
+.home-feature-card .home-feature-art{display:none!important}
+.home-feature-copy{grid-column:2;grid-row:1;position:relative;z-index:1}
+.home-feature-arrow{grid-column:3;grid-row:1;position:relative;z-index:1}
+body[data-site-theme="classic"] .home-feature-card:nth-child(1)::before{background-image:url("assets/card-original-recipes-bg.jpg")}
+body[data-site-theme="classic"] .home-feature-card:nth-child(2)::before{background-image:url("assets/card-original-pets-bg.jpg")}
+body[data-site-theme="classic"] .home-feature-card:nth-child(3)::before{background-image:url("assets/card-original-news-bg.jpg")}
+body[data-site-theme="classic"] .home-feature-copy{color:#672849;text-shadow:0 1px 2px rgba(255,255,255,.55)}
+body[data-site-theme="classic"] .home-feature-copy strong{color:#9a315d}
+body[data-site-theme="aquatic"] .home-feature-card:nth-child(1)::before{background-image:url("assets/card-ocean-recipes-bg.jpg")}
+body[data-site-theme="aquatic"] .home-feature-card:nth-child(2)::before{background-image:url("assets/card-ocean-pets-bg.jpg")}
+body[data-site-theme="aquatic"] .home-feature-card:nth-child(3)::before{background-image:url("assets/card-ocean-news-bg.jpg")}
+body[data-site-theme="aquatic"] .home-feature-copy{grid-column:1;color:#f4ffff;text-shadow:0 2px 6px rgba(0,28,45,.55)}
+body[data-site-theme="aquatic"] .home-feature-copy strong{color:#fff;text-shadow:0 2px 7px rgba(0,28,45,.7)}
+body[data-site-theme="aquatic"] .home-feature-copy span{color:#f0ffff}
+body[data-site-theme="aquatic"] .footer{display:none!important}
+</style>
+<style id="theme-clock-frames">
+/* Molduras decorativas; a hora e a data permanecem como texto HTML no centro. */
+.magic-clock-wrap{right:clamp(12px,2.8vw,42px)!important;top:14px!important;transform:none!important;width:198px!important;height:198px!important;z-index:20!important}
+.magic-clock{width:198px!important;height:198px!important;margin:0!important;border:0!important;border-radius:0!important;background:transparent url("assets/clock-frame-classic.png") center/contain no-repeat!important;box-shadow:none!important;isolation:isolate}
+.magic-clock::before{content:""!important;display:block!important;position:absolute!important;inset:31px!important;border:0!important;border-radius:50%!important;background:url("assets/clock-background-classic.png") center/cover no-repeat!important;box-shadow:inset 0 0 18px rgba(255,255,255,.55)!important;z-index:0!important;pointer-events:none!important}
+.magic-clock::after,.magic-clock .mc-ornament,.magic-clock .mc-title,.magic-clock .mc-sky,.magic-clock .mc-hanger{display:none!important}
+.magic-clock .mc-time-panel{position:absolute!important;left:50%!important;top:52%!important;bottom:auto!important;transform:translate(-50%,-50%)!important;width:49%!important;margin:0!important;padding:5px 2px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;color:#7d3158!important;text-align:center!important;z-index:1!important}
+.magic-clock .mc-time{font-size:27px!important;line-height:1!important;letter-spacing:1px!important;color:#7d3158!important;text-shadow:0 1px 0 rgba(255,255,255,.85),0 2px 6px rgba(126,48,87,.22)!important;white-space:nowrap}
+.magic-clock .mc-date{margin-top:5px!important;color:#8d4163!important;font-size:7px!important;line-height:1.22!important;text-shadow:0 1px 0 rgba(255,255,255,.88)!important}
+.magic-clock .mc-status{display:none!important}
+body[data-site-theme="aquatic"] .magic-clock{background-image:url("assets/clock-frame-ocean.png")!important}
+body[data-site-theme="aquatic"] .magic-clock::before{background-image:url("assets/clock-background-ocean.png")!important;box-shadow:inset 0 0 21px rgba(227,255,255,.7)!important}
+body[data-site-theme="aquatic"] .magic-clock .mc-time{color:#075d76!important;text-shadow:0 1px 0 rgba(255,255,255,.95),0 2px 7px rgba(0,80,110,.2)!important}
+body[data-site-theme="aquatic"] .magic-clock .mc-date{color:#0a6680!important;text-shadow:0 1px 0 rgba(255,255,255,.95)!important}
+@media(max-width:700px){
+  .magic-clock-wrap{right:7px!important;top:7px!important;width:126px!important;height:126px!important}
+  .magic-clock{width:126px!important;height:126px!important}
+  .magic-clock::before{inset:20px!important}
+  .magic-clock .mc-time-panel{width:51%!important;padding:3px 1px!important}
+  .magic-clock .mc-time{font-size:17px!important}
+  .magic-clock .mc-date{margin-top:3px!important;font-size:5px!important}
+}
+</style>
 </body>
 </html>
