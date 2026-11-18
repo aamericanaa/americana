@@ -906,7 +906,7 @@ body.pets-active .pets-side{display:block}
 
 <header class="hero" aria-label="Cabeçalho do guia">
   <img class="hero-banner-logo" src="assets/embedded-f775332cc437.png" alt="Disney Dreamlight Valley — Guia Completo" aria-hidden="true">
-  <div class="hero-copy"><span class="hero-brand">DISNEY DREAMLIGHT VALLEY</span><h1 class="hero-heading"></h1><p class="hero-tagline"></p></div>
+  <div class="hero-copy"></div>
   <div class="magic-clock-wrap" aria-label="Relógio mágico Lua e Estrelas">
     <section class="magic-clock">
       <div class="mc-ornament" aria-hidden="true"></div>
@@ -1686,15 +1686,16 @@ document.querySelectorAll('#mainNav button').forEach(b=>b.onclick=()=>{
   const labels={home:'GUIA COMPLETO',items:'ITENS E MATERIAIS',characters:'PERSONAGENS',maps:'MAPAS',extras:'DICAS E EXTRAS'};
   if(b.dataset.section==='home'){
     $('#app').innerHTML=`<div class="home-panel">
-      <div class="home-intro"><span class="home-kicker">DISNEY DREAMLIGHT VALLEY</span><h1 class="home-title"></h1><p class="home-subtitle"></p></div>
-      <div class="home-cards">
-        <button class="home-card recipes-card" type="button" data-home-section="recipes"><span class="home-card-icon">♨</span><span><strong>Receitas do Vale</strong><small>Descubra, prepare e complete suas receitas favoritas.</small></span><b class="home-arrow">›</b></button>
-        <button class="home-card pets-card" type="button" data-home-section="pets"><span class="home-card-icon">🐾</span><span><strong>Pets e Animais</strong><small>Conheça os companheiros e descubra como conquistá-los.</small></span><b class="home-arrow">›</b></button>
-        <button class="home-card extras-card" type="button" data-home-section="extras"><span class="home-card-icon">✦</span><span><strong>Dicas e novidades</strong><small>Acompanhe conteúdos, redes sociais e novidades do Vale.</small></span><b class="home-arrow">›</b></button>
+      <div class="home-hero-image">
+        <img src="assets/embedded-f9b95214fe9c.webp" alt="Cena de fantasia de Dreamlight Valley com princesa, pégaso e castelo">
       </div>
-      <aside class="home-community"><span class="community-icon">♟♟</span><div><strong>Cantinho da Comunidade</strong><p>Troque ideias e acompanhe as novidades do guia.</p></div><button type="button" data-home-section="about">Sobre o projeto <span>→</span></button></aside>
+      <div class="home-welcome">
+        <h2>GUIA COMPLETO</h2>
+      </div>
+
+
+
     </div>`;
-    document.querySelectorAll('[data-home-section]').forEach(card=>card.addEventListener('click',()=>document.querySelector(`[data-section="${card.dataset.homeSection}"]`)?.click()));
     return;
   }
     $('#app').innerHTML=`<div class="empty"><h2>${labels[b.dataset.section]}</h2><p>Esta seção está preparada para receber dados reais do Wiki. Nenhum conteúdo fictício foi preenchido.</p></div>`;
@@ -2328,106 +2329,6 @@ body[data-site-theme="aquatic"] .nav #siteThemeControls select{
   .nav button{min-height:38px !important;padding:8px 12px !important;font-size:13px !important}
 }
 @media(prefers-reduced-motion:reduce){.nav button{transition:none !important}}
-</style>
-<style id="reference-home-pages">
-body,body[data-site-theme="classic"]{
-  background-color:#fff0f8 !important;
-  background-image:radial-gradient(ellipse at 10% 15%,rgba(255,255,255,.92),transparent 45%),radial-gradient(ellipse at 90% 40%,rgba(255,194,226,.55),transparent 48%),linear-gradient(180deg,#f6b5d3,#ffe8f1 58%,#ffd2e4) !important;
-  background-attachment:scroll !important;
-}
-body[data-site-theme="aquatic"]{
-  background-color:#087f98 !important;
-  background-image:radial-gradient(ellipse at 50% 0%,rgba(159,244,248,.72),transparent 44%),linear-gradient(180deg,#0b7d98,#56c6d2 56%,#a7eff0) !important;
-  background-attachment:scroll !important;
-}
-.hero{
-  height:clamp(310px,34vw,500px) !important;
-  min-height:clamp(310px,34vw,500px) !important;
-  background-image:url("assets/embedded-34a611395d90.webp") !important;
-  background-size:cover !important;
-  background-position:center 38% !important;
-}
-body[data-site-theme="aquatic"] .hero{
-  height:clamp(300px,34vw,500px) !important;
-  min-height:clamp(300px,34vw,500px) !important;
-  background-image:url("assets/theme-aquatic-banner-v2.png") !important;
-  background-size:cover !important;
-  background-position:center 42% !important;
-}
-.hero-banner-logo{display:none !important}
-.hero-copy{
-  left:clamp(24px,7vw,120px) !important;
-  top:48% !important;
-  transform:translateY(-50%) !important;
-  width:min(390px,40%) !important;
-  text-align:center !important;
-  padding:20px 18px !important;
-  border-radius:22px !important;
-  background:linear-gradient(145deg,rgba(255,244,250,.92),rgba(255,221,237,.76)) !important;
-  border:1px solid rgba(255,255,255,.86) !important;
-  box-shadow:0 12px 35px rgba(82,14,58,.19) !important;
-  backdrop-filter:blur(7px);
-  -webkit-backdrop-filter:blur(7px);
-}
-.hero-brand{display:block;color:#9f1e5d;font-size:clamp(11px,1vw,15px);font-weight:800;letter-spacing:.18em}
-.hero-heading{margin:9px 0 5px !important;color:#ad1456 !important;font-size:clamp(30px,4vw,58px) !important;line-height:1.02 !important;letter-spacing:0 !important}
-.hero-tagline{margin:0 !important;color:#732444 !important;font-size:clamp(14px,1.5vw,20px);font-weight:600;letter-spacing:0 !important}
-body[data-site-theme="aquatic"] .hero-copy{background:linear-gradient(145deg,rgba(4,53,76,.84),rgba(4,91,113,.65)) !important;border-color:rgba(178,245,246,.85) !important;box-shadow:0 12px 35px rgba(0,25,50,.3) !important}
-body[data-site-theme="aquatic"] .hero-brand,body[data-site-theme="aquatic"] .hero-heading,body[data-site-theme="aquatic"] .hero-tagline{color:#e7ffff !important}
-body[data-site-theme="aquatic"] .hero-heading:after{content:" do Oceano"}
-body[data-site-theme="classic"] .hero-heading:after,body:not([data-site-theme]) .hero-heading:after{content:" da Vale ♡"}
-body[data-site-theme="aquatic"] .hero-heading:before{content:"Expansão"}
-body[data-site-theme="classic"] .hero-heading:before,body:not([data-site-theme]) .hero-heading:before{content:"Guia"}
-body[data-site-theme="aquatic"] .hero-tagline:after{content:"Guias, receitas, pets e tudo sobre a DLC mais oceânica do Dreamlight Valley!"}
-body[data-site-theme="classic"] .hero-tagline:after,body:not([data-site-theme]) .hero-tagline:after{content:"Seu guia em português de Disney Dreamlight Valley"}
-.shell{max-width:1480px !important;margin:18px auto 30px !important;padding:0 clamp(14px,4vw,48px) !important}
-.content{padding:0 !important;border:0 !important;background:transparent !important;box-shadow:none !important}
-.home-panel{width:100%;}
-.home-intro{display:none}
-.home-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:0 0 18px}
-.home-card{position:relative;display:grid;grid-template-columns:54px 1fr 34px;align-items:center;gap:13px;min-height:150px;padding:22px;border:2px solid rgba(255,255,255,.88);border-radius:25px;text-align:left;color:#fff;cursor:pointer;overflow:hidden;box-shadow:0 12px 26px rgba(34,54,75,.18);transition:transform .2s ease,box-shadow .2s ease}
-.home-card:hover{transform:translateY(-4px);box-shadow:0 17px 33px rgba(34,54,75,.24)}
-.home-card:focus-visible,.home-community button:focus-visible{outline:3px solid #ffc45a;outline-offset:3px}
-.home-card:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(2,44,65,.88),rgba(3,85,102,.58),rgba(2,44,65,.18));pointer-events:none}
-.home-card>*{position:relative;z-index:1}
-.home-card-icon{display:grid;place-items:center;width:50px;height:50px;border:1px solid rgba(255,255,255,.82);border-radius:50%;background:rgba(3,70,88,.46);font-size:25px}
-.home-card strong{display:block;font-size:clamp(20px,2vw,28px);line-height:1.12;text-shadow:0 2px 5px rgba(0,0,0,.3)}
-.home-card small{display:block;margin-top:7px;max-width:310px;font-size:15px;line-height:1.35;color:#f2ffff;text-shadow:0 1px 4px rgba(0,0,0,.55)}
-.home-arrow{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#f27b62;font-size:30px;line-height:1}
-.recipes-card{background:linear-gradient(90deg,rgba(3,70,90,.2),rgba(0,0,0,.05)),url("assets/embedded-34a611395d90.webp") center 60%/cover}
-.pets-card{background:linear-gradient(90deg,rgba(3,70,90,.28),rgba(0,0,0,.05)),url("assets/theme-aquatic-mermaid.png") center 45%/cover}
-.extras-card{background:linear-gradient(90deg,rgba(3,70,90,.3),rgba(0,0,0,.06)),url("assets/theme-aquatic-banner-v2.png") center 65%/cover}
-body[data-site-theme="classic"] .home-card:before,body:not([data-site-theme]) .home-card:before{background:linear-gradient(90deg,rgba(115,15,65,.82),rgba(170,36,101,.48),rgba(90,10,53,.14))}
-body[data-site-theme="classic"] .home-arrow,body:not([data-site-theme]) .home-arrow{background:#e94b83}
-.home-community{display:flex;align-items:center;gap:18px;max-width:1120px;min-height:100px;margin:22px auto 6px;padding:18px 26px;border:2px solid rgba(255,255,255,.86);border-radius:26px;background:linear-gradient(110deg,rgba(255,249,244,.97),rgba(255,236,229,.92));box-shadow:0 12px 28px rgba(34,54,75,.15);color:#173c52}
-.community-icon{font-size:34px;color:#137897;white-space:nowrap}
-.home-community div{flex:1}
-.home-community strong{display:block;font-size:clamp(21px,2.3vw,30px)}
-.home-community p{margin:3px 0 0;font-size:15px}
-.home-community button{border:0;border-radius:999px;padding:12px 19px;background:#ed5a68;color:white;font:700 15px Georgia,serif;cursor:pointer;box-shadow:0 4px 10px rgba(140,27,63,.2)}
-.home-community button span{margin-left:8px}
-body[data-site-theme="classic"] .home-community,body:not([data-site-theme]) .home-community{color:#821348;background:linear-gradient(110deg,rgba(255,249,244,.98),rgba(255,224,235,.94))}
-body[data-site-theme="classic"] .community-icon,body:not([data-site-theme]) .community-icon{color:#bf3474}
-.nav{
-  position:relative !important;
-  z-index:30 !important;
-  width:min(1240px,calc(100% - 48px)) !important;
-  margin:-38px auto 0 !important;
-  padding:9px 14px !important;
-  border:2px solid rgba(255,255,255,.88) !important;
-  border-radius:999px !important;
-  background:rgba(122,31,78,.86) !important;
-  box-shadow:0 10px 28px rgba(39,14,45,.25) !important;
-  justify-content:center !important;
-}
-body[data-site-theme="aquatic"] .nav{background:rgba(2,63,83,.84) !important;border-color:rgba(210,255,255,.9) !important}
-body[data-site-theme="aquatic"] .nav button{background:rgba(218,250,249,.12) !important;border-color:rgba(208,255,255,.52) !important;color:#f1ffff !important}
-body[data-site-theme="aquatic"] .nav button:hover{background:rgba(127,231,230,.28) !important}
-body[data-site-theme="aquatic"] .nav button.active{background:#c8f2ed !important;border-color:#c8f2ed !important;color:#075166 !important}
-body[data-site-theme="aquatic"] .nav #siteThemeControls select{background:rgba(218,250,249,.12) !important;border-color:rgba(208,255,255,.52) !important;color:#f1ffff !important}
-@media(max-width:800px){.home-cards{grid-template-columns:1fr}.home-card{min-height:128px}.home-community{flex-wrap:wrap;justify-content:center;text-align:center}.home-community div{flex:1 1 60%}.home-community button{flex:1 1 100%}}
-@media(max-width:700px){.hero,.hero[data-site-theme]{height:300px !important;min-height:300px !important}.hero-copy{left:16px !important;top:50% !important;width:min(300px,55%) !important;padding:13px 12px !important}.hero-heading{font-size:30px !important}.hero-tagline{font-size:13px !important}.nav{width:calc(100% - 20px) !important;margin:-30px auto 0 !important;border-radius:24px !important;justify-content:flex-start !important}.shell{margin:14px auto 22px !important;padding:0 12px !important}.home-card{grid-template-columns:44px 1fr 30px;padding:16px;min-height:120px;border-radius:20px}.home-card-icon{width:42px;height:42px}.home-card strong{font-size:21px}.home-card small{font-size:14px}.home-community{padding:16px;border-radius:20px}}
-@media(max-width:420px){.hero-copy{width:62% !important}.home-community{gap:10px}.community-icon{font-size:27px}}
 </style>
 <script id="site-theme-controller">
 (function(){
